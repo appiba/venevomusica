@@ -6,9 +6,17 @@
 
 body {
   font-family: Arial, Helvetica, sans-serif;
-  background: linear-gradient(160deg, #c73579, #e61b82, #ffec00);
   min-height: 100vh;
   color: #fff;
+  transition: background 0.5s ease;
+}
+
+body.lafan-theme {
+  background: linear-gradient(160deg, #c73579, #e61b82, #ffec00);
+}
+
+body.clip-theme {
+  background: linear-gradient(160deg, #006b35, #0a7a3d, #ffc400);
 }
 
 .app {
@@ -29,15 +37,31 @@ body {
   font-size: 13px;
   font-weight: 800;
   letter-spacing: 2px;
+}
+
+.lafan-theme .brand span {
   color: #ffec00;
 }
 
+.clip-theme .brand span {
+  color: #ffc400;
+}
+
 .brand h1 {
-  font-size: 48px;
+  font-size: 46px;
   line-height: 0.95;
   margin-top: 10px;
+  transition: 0.4s ease;
+}
+
+.lafan-theme .brand h1 {
   color: #ffec00;
   text-shadow: 4px 4px 0 #e61b82;
+}
+
+.clip-theme .brand h1 {
+  color: #ffc400;
+  text-shadow: 4px 4px 0 #006b35;
 }
 
 .brand p {
@@ -62,8 +86,15 @@ body {
   aspect-ratio: 1 / 1;
   border-radius: 28px;
   overflow: hidden;
-  background: #ffec00;
   margin-bottom: 20px;
+}
+
+.lafan-theme .cover {
+  background: #ffec00;
+}
+
+.clip-theme .cover {
+  background: #ffc400;
 }
 
 .cover img {
@@ -73,15 +104,22 @@ body {
 }
 
 .live {
-  color: #ffec00;
   font-size: 13px;
   font-weight: 900;
   letter-spacing: 1px;
   margin-bottom: 8px;
 }
 
+.lafan-theme .live {
+  color: #ffec00;
+}
+
+.clip-theme .live {
+  color: #ffc400;
+}
+
 .radio-info h2 {
-  font-size: 32px;
+  font-size: 30px;
   color: #fff;
 }
 
@@ -97,17 +135,25 @@ body {
   border-radius: 50%;
   border: none;
   margin: 24px auto 18px;
-  background: #ffec00;
-  color: #e61b82;
   font-size: 34px;
   font-weight: 900;
   cursor: pointer;
   box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+  transition: 0.3s ease;
+}
+
+.lafan-theme .play-btn {
+  background: #ffec00;
+  color: #e61b82;
+}
+
+.clip-theme .play-btn {
+  background: #ffc400;
+  color: #006b35;
 }
 
 .play-btn.playing {
   background: #fff;
-  color: #e61b82;
 }
 
 .visualizer {
@@ -121,9 +167,16 @@ body {
 .visualizer span {
   width: 7px;
   height: 12px;
-  background: #ffec00;
   border-radius: 20px;
   opacity: 0.4;
+}
+
+.lafan-theme .visualizer span {
+  background: #ffec00;
+}
+
+.clip-theme .visualizer span {
+  background: #ffc400;
 }
 
 .visualizer.active span {
@@ -150,43 +203,65 @@ body {
   margin-bottom: 14px;
 }
 
-.radio-list {
+.radio-slider {
   display: flex;
-  flex-direction: column;
-  gap: 14px;
+  gap: 18px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 4px 4px 14px;
 }
 
-.radio-item {
-  background: rgba(255,255,255,0.18);
-  border-radius: 22px;
-  padding: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid rgba(255,255,255,0.20);
+.radio-slider::-webkit-scrollbar {
+  display: none;
 }
 
-.radio-item strong {
-  font-size: 16px;
+.radio-card {
+  min-width: 245px;
+  height: 310px;
+  border-radius: 28px;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  cursor: pointer;
+  scroll-snap-align: start;
+  background: rgba(255,255,255,0.12);
+  border: 3px solid transparent;
+  transition: 0.3s ease;
 }
 
-.radio-item p {
-  margin-top: 4px;
-  font-size: 13px;
-  color: rgba(255,255,255,0.75);
+.radio-card.active-radio {
+  transform: scale(1.02);
 }
 
-.radio-item span {
-  background: #ffec00;
-  color: #e61b82;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  font-weight: 900;
+.lafan-theme .radio-card.active-radio {
+  border-color: #ffec00;
 }
 
-.disabled {
-  opacity: 0.55;
+.clip-theme .radio-card.active-radio {
+  border-color: #ffc400;
+}
+
+.radio-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.radio-overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 24px 20px;
+  background: linear-gradient(to top, rgba(0,0,0,0.88), transparent);
+}
+
+.radio-overlay h4 {
+  font-size: 24px;
+  color: #fff;
+}
+
+.radio-overlay p {
+  margin-top: 6px;
+  color: rgba(255,255,255,0.85);
+  font-size: 14px;
 }
