@@ -1,1 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Venevo Música | LA FAN FM</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
+  <main class="app">
+
+    <section class="hero">
+      <div class="brand">
+        <span>VENEVO MÚSICA</span>
+        <h1>LA FAN FM</h1>
+        <p>Tu radio en vivo, música y energía en un solo lugar.</p>
+      </div>
+
+      <div class="player-card">
+        <div class="cover">
+          <img src="assets/lafan-cover.jpg" alt="LA FAN FM" />
+        </div>
+
+        <div class="radio-info">
+          <p class="live">● EN VIVO</p>
+          <h2>LA FAN FM</h2>
+          <p>Escucha la radio online desde cualquier lugar.</p>
+        </div>
+
+        <button id="playBtn" class="play-btn">▶</button>
+
+        <div class="visualizer">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+
+        <audio id="radioPlayer">
+          <source src="https://radio.megahostec.com/listen/radio_la_fan_fm/stream" type="audio/mpeg">
+        </audio>
+      </div>
+    </section>
+
+    <section class="radios">
+      <h3>Radios disponibles</h3>
+
+      <div class="radio-list">
+        <div class="radio-item active">
+          <div>
+            <strong>LA FAN FM</strong>
+            <p>Radio en vivo</p>
+          </div>
+          <span>▶</span>
+        </div>
+
+        <div class="radio-item disabled">
+          <div>
+            <strong>Próximamente</strong>
+            <p>Nuevas radios musicales</p>
+          </div>
+          <span>+</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
