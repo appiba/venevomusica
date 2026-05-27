@@ -13,6 +13,9 @@ const splashScreen = document.getElementById("splashScreen");
 const splashVideo = document.getElementById("splashVideo");
 const dots = document.querySelectorAll(".dot");
 
+const prevRadioBtn = document.getElementById("prevRadioBtn");
+const nextRadioBtn = document.getElementById("nextRadioBtn");
+
 let isPlaying = false;
 let currentIndex = 0;
 let startX = 0;
@@ -137,6 +140,14 @@ playBtn.addEventListener("click", async () => {
   } else {
     stopRadio();
   }
+});
+
+nextRadioBtn.addEventListener("click", async () => {
+  await changeRadio(currentIndex + 1);
+});
+
+prevRadioBtn.addEventListener("click", async () => {
+  await changeRadio(currentIndex - 1);
 });
 
 playerCard.addEventListener("touchstart", (e) => {
