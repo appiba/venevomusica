@@ -113,14 +113,14 @@ body.pox-theme {
 
 .nav-arrow {
   position: absolute;
-  top: 34%;
+  top: 42%;
   transform: translateY(-50%);
   z-index: 10;
   width: 44px;
   height: 70px;
   border: none;
   border-radius: 24px;
-  background: rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.18);
   color: rgba(255,255,255,0.9);
   font-size: 48px;
   line-height: 1;
@@ -135,6 +135,37 @@ body.pox-theme {
 .clip-theme .nav-arrow,
 .oye-theme .nav-arrow { color: #ffc400; }
 .pox-theme .nav-arrow { color: #ff4b4b; }
+
+.mode-tabs {
+  display: flex;
+  width: 100%;
+  gap: 8px;
+  margin-bottom: 18px;
+  background: rgba(255,255,255,0.13);
+  border-radius: 18px;
+  padding: 6px;
+}
+
+.mode-btn {
+  flex: 1;
+  padding: 12px 10px;
+  border: none;
+  border-radius: 14px;
+  background: transparent;
+  color: rgba(255,255,255,0.8);
+  font-weight: 900;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.mode-btn.active-mode {
+  background: rgba(255,255,255,0.95);
+}
+
+.lafan-theme .mode-btn.active-mode { color: #e61b82; }
+.clip-theme .mode-btn.active-mode,
+.oye-theme .mode-btn.active-mode { color: #006b35; }
+.pox-theme .mode-btn.active-mode { color: #d71920; }
 
 .cover {
   width: 100%;
@@ -251,6 +282,38 @@ body.pox-theme {
   margin-top: 6px;
   font-size: 12px;
   color: rgba(255,255,255,0.75);
+}
+
+.streaming-box {
+  width: 100%;
+}
+
+.streaming-content {
+  width: 100%;
+  min-height: 420px;
+  border-radius: 28px;
+  overflow: hidden;
+  background: rgba(0,0,0,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.streaming-content p {
+  color: rgba(255,255,255,0.8);
+  padding: 20px;
+  line-height: 1.4;
+}
+
+.streaming-content iframe {
+  width: 100%;
+  height: 420px;
+  border: none;
+  border-radius: 28px;
+}
+
+.hidden {
+  display: none !important;
 }
 
 .dots {
