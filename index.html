@@ -30,25 +30,38 @@
         <button id="prevRadioBtn" class="nav-arrow nav-left">‹</button>
         <button id="nextRadioBtn" class="nav-arrow nav-right">›</button>
 
-        <div id="coverBox" class="cover">
-          <video id="coverMedia" autoplay muted loop playsinline src="introlafanlogo.mp4"></video>
+        <div class="mode-tabs">
+          <button id="radioModeBtn" class="mode-btn active-mode">RADIO</button>
+          <button id="streamingModeBtn" class="mode-btn">STREAMING</button>
         </div>
 
-        <div class="radio-info">
-          <p class="live">● EN VIVO</p>
-          <h2 id="radioTitle">LA FAN FM</h2>
-          <p id="radioText">Escucha la radio online desde cualquier lugar.</p>
+        <div id="radioModeBox">
+          <div id="coverBox" class="cover">
+            <video id="coverMedia" autoplay muted loop playsinline src="introlafanlogo.mp4"></video>
+          </div>
+
+          <div class="radio-info">
+            <p class="live">● EN VIVO</p>
+            <h2 id="radioTitle">LA FAN FM</h2>
+            <p id="radioText">Escucha la radio online desde cualquier lugar.</p>
+          </div>
+
+          <button id="playBtn" class="play-btn">▶</button>
+
+          <div class="visualizer">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+
+          <div class="swipe-text">Desliza o usa las flechas para cambiar de radio</div>
+
+          <audio id="radioPlayer" src="https://radio.megahostec.com/listen/radio_la_fan_fm/stream"></audio>
         </div>
 
-        <button id="playBtn" class="play-btn">▶</button>
-
-        <div class="visualizer">
-          <span></span><span></span><span></span><span></span><span></span>
+        <div id="streamingModeBox" class="streaming-box hidden">
+          <div id="streamingContent" class="streaming-content">
+            <p>Streaming no disponible por el momento.</p>
+          </div>
         </div>
-
-        <div class="swipe-text">Desliza o usa las flechas para cambiar de radio</div>
-
-        <audio id="radioPlayer" src="https://radio.megahostec.com/listen/radio_la_fan_fm/stream"></audio>
 
       </div>
 
