@@ -10,28 +10,51 @@ const radioTitle = document.getElementById("radioTitle");
 const radioText = document.getElementById("radioText");
 const coverImage = document.getElementById("coverImage");
 
+const splashScreen = document.getElementById("splashScreen");
+const splashVideo = document.getElementById("splashVideo");
+
 let isPlaying = false;
 
-playBtn.addEventListener("click", async () => {
+function stopRadio() {
+  radioPlayer.pause();
+  isPlaying = false;
+  playBtn.textContent = "▶";
+  playBtn.classList.remove("playing");
+  visualizer.classList.remove("active");
+}
+
+async function playRadio() {
   try {
-    if (!isPlaying) {
-      await radioPlayer.play();
+    await radioPlayer.play();
 
-      isPlaying = true;
-      playBtn.textContent = "❚❚";
-      playBtn.classList.add("playing");
-      visualizer.classList.add("active");
+    isPlaying = true;
+    playBtn.textContent = "❚❚";
+    playBtn.classList.add("playing");
+    visualizer.classList.add("active");
 
-    } else {
-      radioPlayer.pause();
-
-      isPlaying = false;
-      playBtn.textContent = "▶";
-      playBtn.classList.remove("playing");
-      visualizer.classList.remove("active");
-    }
   } catch (error) {
-    alert("No se pudo reproducir la radio. Intenta nuevamente.");
+    isPlaying = false;
+    playBtn.textContent = "▶";
+    playBtn.classList.remove("playing");
+    visualizer.classList.remove("active");
+  }
+}
+
+if (splashVideo && splashScreen) {
+  splashVideo.addEventListener("ended", () => {
+    splashScreen.style.display = "none";
+  });
+
+  setTimeout(() => {
+    splashScreen.style.display = "none";
+  }, 5000);
+}
+
+playBtn.addEventListener("click", async () => {
+  if (!isPlaying) {
+    await playRadio();
+  } else {
+    stopRadio();
   }
 });
 
@@ -42,6 +65,7 @@ radioCards.forEach(card => {
     const stream = card.dataset.stream;
     const image = card.dataset.image;
     const subtitle = card.dataset.subtitle;
+    const video = card.dataset.video;
 
     radioCards.forEach(c => c.classList.remove("active-radio"));
     card.classList.add("active-radio");
@@ -52,25 +76,26 @@ radioCards.forEach(card => {
     mainSubtitle.textContent = subtitle;
     radioTitle.textContent = name;
     radioText.textContent = "Escucha la radio online desde cualquier lugar.";
-    coverImage.src = image;
+
+    if (video) {
+      coverImage.outerHTML = `
+        <video
+          id="coverImage"
+          autoplay
+          muted
+          loop
+          playsinline
+          src="${video}">
+        </video>
+      `;
+    } else {
+      coverImage.src = image;
+    }
 
     radioPlayer.pause();
     radioPlayer.src = stream;
     radioPlayer.load();
 
-    try {
-      await radioPlayer.play();
-
-      isPlaying = true;
-      playBtn.textContent = "❚❚";
-      playBtn.classList.add("playing");
-      visualizer.classList.add("active");
-
-    } catch (error) {
-      isPlaying = false;
-      playBtn.textContent = "▶";
-      playBtn.classList.remove("playing");
-      visualizer.classList.remove("active");
-    }
+    await playRadio();
   });
 });
