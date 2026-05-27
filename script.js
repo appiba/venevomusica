@@ -2,18 +2,52 @@ const playBtn = document.getElementById("playBtn");
 const radioPlayer = document.getElementById("radioPlayer");
 const visualizer = document.querySelector(".visualizer");
 
-const radioCards = document.querySelectorAll(".radio-card");
-
 const mainTitle = document.getElementById("mainTitle");
 const mainSubtitle = document.getElementById("mainSubtitle");
 const radioTitle = document.getElementById("radioTitle");
 const radioText = document.getElementById("radioText");
 const coverBox = document.getElementById("coverBox");
+const playerCard = document.getElementById("playerCard");
 
 const splashScreen = document.getElementById("splashScreen");
 const splashVideo = document.getElementById("splashVideo");
+const dots = document.querySelectorAll(".dot");
 
 let isPlaying = false;
+let currentIndex = 0;
+let startX = 0;
+let endX = 0;
+
+const radios = [
+  {
+    name: "LA FAN FM",
+    theme: "lafan-theme",
+    stream: "https://radio.megahostec.com/listen/radio_la_fan_fm/stream",
+    video: "introlafanlogo.mp4",
+    subtitle: "Tu radio en vivo, música y energía en un solo lugar."
+  },
+  {
+    name: "CLIP FM",
+    theme: "clip-theme",
+    stream: "https://radio.megahostec.com/listen/radio_clipfm/stream",
+    video: "introcliplogo.mp4",
+    subtitle: "La radio con ritmo, frescura y buena música."
+  },
+  {
+    name: "OYE FM",
+    theme: "oye-theme",
+    stream: "https://radio.megahostec.com/listen/radio_oyefm/stream",
+    video: "introoyelogo.mp4",
+    subtitle: "La radio joven, dinámica y llena de energía."
+  },
+  {
+    name: "POX FM",
+    theme: "pox-theme",
+    stream: "https://radio.megahostec.com/listen/radio_pox_edmo/stream",
+    video: "intropoxlogo.mp4",
+    subtitle: "Música, entretenimiento y energía en vivo."
+  }
+];
 
 function hideSplash() {
   splashScreen.classList.add("hide");
@@ -53,6 +87,50 @@ async function playRadio() {
   }
 }
 
+function updateDots() {
+  dots.forEach((dot, index) => {
+    dot.classList.toggle("active-dot", index === currentIndex);
+  });
+}
+
+async function changeRadio(index) {
+  currentIndex = (index + radios.length) % radios.length;
+
+  const radio = radios[currentIndex];
+
+  document.body.className = radio.theme;
+
+  mainTitle.textContent = radio.name;
+  mainSubtitle.textContent = radio.subtitle;
+  radioTitle.textContent = radio.name;
+  radioText.textContent = "Escucha la radio online desde cualquier lugar.";
+
+  coverBox.innerHTML = `
+    <video
+      id="coverMedia"
+      autoplay
+      muted
+      loop
+      playsinline
+      src="${radio.video}">
+    </video>
+  `;
+
+  const wasPlaying = isPlaying;
+
+  radioPlayer.pause();
+  radioPlayer.src = radio.stream;
+  radioPlayer.load();
+
+  updateDots();
+
+  if (wasPlaying) {
+    await playRadio();
+  } else {
+    stopRadio();
+  }
+}
+
 playBtn.addEventListener("click", async () => {
   if (!isPlaying) {
     await playRadio();
@@ -61,39 +139,40 @@ playBtn.addEventListener("click", async () => {
   }
 });
 
-radioCards.forEach(card => {
-  card.addEventListener("click", async () => {
-    const name = card.dataset.name;
-    const theme = card.dataset.theme;
-    const stream = card.dataset.stream;
-    const video = card.dataset.video;
-    const subtitle = card.dataset.subtitle;
-
-    radioCards.forEach(c => c.classList.remove("active-radio"));
-    card.classList.add("active-radio");
-
-    document.body.className = theme;
-
-    mainTitle.textContent = name;
-    mainSubtitle.textContent = subtitle;
-    radioTitle.textContent = name;
-    radioText.textContent = "Escucha la radio online desde cualquier lugar.";
-
-    coverBox.innerHTML = `
-      <video
-        id="coverMedia"
-        autoplay
-        muted
-        loop
-        playsinline
-        src="${video}">
-      </video>
-    `;
-
-    radioPlayer.pause();
-    radioPlayer.src = stream;
-    radioPlayer.load();
-
-    await playRadio();
-  });
+playerCard.addEventListener("touchstart", (e) => {
+  startX = e.touches[0].clientX;
 });
+
+playerCard.addEventListener("touchend", async (e) => {
+  endX = e.changedTouches[0].clientX;
+
+  const diff = startX - endX;
+
+  if (Math.abs(diff) > 50) {
+    if (diff > 0) {
+      await changeRadio(currentIndex + 1);
+    } else {
+      await changeRadio(currentIndex - 1);
+    }
+  }
+});
+
+playerCard.addEventListener("mousedown", (e) => {
+  startX = e.clientX;
+});
+
+playerCard.addEventListener("mouseup", async (e) => {
+  endX = e.clientX;
+
+  const diff = startX - endX;
+
+  if (Math.abs(diff) > 50) {
+    if (diff > 0) {
+      await changeRadio(currentIndex + 1);
+    } else {
+      await changeRadio(currentIndex - 1);
+    }
+  }
+});
+
+updateDots();
