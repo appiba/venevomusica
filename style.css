@@ -15,8 +15,26 @@ body.lafan-theme {
   background: linear-gradient(160deg, #c73579, #e61b82, #ffec00);
 }
 
-body.clip-theme {
+body.clip-theme,
+body.oye-theme {
   background: linear-gradient(160deg, #006b35, #0a7a3d, #ffc400);
+}
+
+body.pox-theme {
+  background: linear-gradient(160deg, #07112f, #d71920, #ff4b4b);
+}
+
+.splash-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: #05010d;
+}
+
+.splash-screen video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .app {
@@ -25,6 +43,18 @@ body.clip-theme {
   margin: auto;
   min-height: 100vh;
   padding: 24px 18px;
+}
+
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+}
+
+.hidden {
+  display: none !important;
 }
 
 .hero {
@@ -43,8 +73,13 @@ body.clip-theme {
   color: #ffec00;
 }
 
-.clip-theme .brand span {
+.clip-theme .brand span,
+.oye-theme .brand span {
   color: #ffc400;
+}
+
+.pox-theme .brand span {
+  color: #ff4b4b;
 }
 
 .brand h1 {
@@ -59,9 +94,15 @@ body.clip-theme {
   text-shadow: 4px 4px 0 #e61b82;
 }
 
-.clip-theme .brand h1 {
+.clip-theme .brand h1,
+.oye-theme .brand h1 {
   color: #ffc400;
   text-shadow: 4px 4px 0 #006b35;
+}
+
+.pox-theme .brand h1 {
+  color: #ff4b4b;
+  text-shadow: 4px 4px 0 #07112f;
 }
 
 .brand p {
@@ -93,11 +134,17 @@ body.clip-theme {
   background: #ffec00;
 }
 
-.clip-theme .cover {
+.clip-theme .cover,
+.oye-theme .cover {
   background: #ffc400;
 }
 
-.cover img {
+.pox-theme .cover {
+  background: #07112f;
+}
+
+.cover img,
+.cover video {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -114,8 +161,13 @@ body.clip-theme {
   color: #ffec00;
 }
 
-.clip-theme .live {
+.clip-theme .live,
+.oye-theme .live {
   color: #ffc400;
+}
+
+.pox-theme .live {
+  color: #ff4b4b;
 }
 
 .radio-info h2 {
@@ -147,9 +199,15 @@ body.clip-theme {
   color: #e61b82;
 }
 
-.clip-theme .play-btn {
+.clip-theme .play-btn,
+.oye-theme .play-btn {
   background: #ffc400;
   color: #006b35;
+}
+
+.pox-theme .play-btn {
+  background: #ff4b4b;
+  color: #fff;
 }
 
 .play-btn.playing {
@@ -175,8 +233,13 @@ body.clip-theme {
   background: #ffec00;
 }
 
-.clip-theme .visualizer span {
+.clip-theme .visualizer span,
+.oye-theme .visualizer span {
   background: #ffc400;
+}
+
+.pox-theme .visualizer span {
+  background: #ff4b4b;
 }
 
 .visualizer.active span {
@@ -237,11 +300,17 @@ body.clip-theme {
   border-color: #ffec00;
 }
 
-.clip-theme .radio-card.active-radio {
+.clip-theme .radio-card.active-radio,
+.oye-theme .radio-card.active-radio {
   border-color: #ffc400;
 }
 
-.radio-card img {
+.pox-theme .radio-card.active-radio {
+  border-color: #ff4b4b;
+}
+
+.radio-card img,
+.radio-card video {
   width: 100%;
   height: 100%;
   object-fit: cover;
