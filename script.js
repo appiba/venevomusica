@@ -1,4 +1,4 @@
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw9fEPn7BreDlMMHbOmsMEkoy-A7DnW8Qwu1-dmN5NJnRRIP6MTs1_zhsBRRQscnFMa-g/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzQ9MncHHlMc3WFcQgdrp-2BfGI4YKuKN9F10e-izjC07OXAuGdgsvVUwbUEwzbr7M33Q/exec";
 
 const playBtn = document.getElementById("playBtn");
 const radioPlayer = document.getElementById("radioPlayer");
@@ -13,7 +13,6 @@ const playerCard = document.getElementById("playerCard");
 
 const splashScreen = document.getElementById("splashScreen");
 const splashVideo = document.getElementById("splashVideo");
-const dots = document.querySelectorAll(".dot");
 
 const prevRadioBtn = document.getElementById("prevRadioBtn");
 const nextRadioBtn = document.getElementById("nextRadioBtn");
@@ -76,36 +75,30 @@ function hideSplash() {
 if (splashVideo && splashScreen) {
   splashVideo.play().catch(() => {});
   splashVideo.addEventListener("ended", hideSplash);
-
-  setTimeout(() => {
-    hideSplash();
-  }, 6000);
+  setTimeout(hideSplash, 6000);
 }
 
-async function loadRadiosFromSheet() {
+async function loadStreamingLinks() {
   try {
-    const response = await fetch(`${APPS_SCRIPT_URL}?action=radios`);
+    const response = await fetch(APPS_SCRIPT_URL);
     const data = await response.json();
 
-    if (data.success && Array.isArray(data.radios) && data.radios.length > 0) {
-      radios = data.radios;
-      renderDots();
-      await changeRadio(0, false);
+    if (data.success && data.radios) {
+      radios = radios.map(radio => {
+        if (data.radios[radio.id]) {
+          return {
+            ...radio,
+            streamVideo: data.radios[radio.id].streamVideo || ""
+          };
+        }
+        return radio;
+      });
+
+      changeRadio(currentIndex, false);
     }
   } catch (error) {
-    console.log("No se pudo cargar Google Sheets. Se usa configuración local.");
+    console.log("No se pudo cargar streaming desde Google Sheets.");
   }
-}
-
-function renderDots() {
-  const dotsContainer = document.querySelector(".dots");
-  dotsContainer.innerHTML = "";
-
-  radios.forEach((_, index) => {
-    const dot = document.createElement("span");
-    dot.className = index === currentIndex ? "dot active-dot" : "dot";
-    dotsContainer.appendChild(dot);
-  });
 }
 
 function stopRadio() {
@@ -119,12 +112,10 @@ function stopRadio() {
 async function playRadio() {
   try {
     await radioPlayer.play();
-
     isPlaying = true;
     playBtn.textContent = "❚❚";
     playBtn.classList.add("playing");
     visualizer.classList.add("active");
-
   } catch (error) {
     isPlaying = false;
     playBtn.textContent = "▶";
@@ -134,17 +125,15 @@ async function playRadio() {
 }
 
 function updateDots() {
-  const updatedDots = document.querySelectorAll(".dot");
-
-  updatedDots.forEach((dot, index) => {
+  document.querySelectorAll(".dot").forEach((dot, index) => {
     dot.classList.toggle("active-dot", index === currentIndex);
   });
 }
 
 function updateStreamingBox(radio) {
-  const url = radio.streamVideo || "";
+  const url = (radio.streamVideo || "").trim();
 
-  if (!url.trim()) {
+  if (!url) {
     streamingContent.innerHTML = `<p>Streaming no disponible por el momento.</p>`;
     return;
   }
@@ -158,21 +147,19 @@ function updateStreamingBox(radio) {
   `;
 }
 
-async function changeRadio(index, keepPlaying = true) {
+function changeRadio(index, keepPlaying = true) {
   currentIndex = (index + radios.length) % radios.length;
-
   const radio = radios[currentIndex];
 
-  document.body.className = radio.tema || "lafan-theme";
+  document.body.className = radio.tema;
 
   mainTitle.textContent = radio.nombre;
-  mainSubtitle.textContent = radio.subtitulo || "";
+  mainSubtitle.textContent = radio.subtitulo;
   radioTitle.textContent = radio.nombre;
   radioText.textContent = "Escucha la radio online desde cualquier lugar.";
 
   coverBox.innerHTML = `
     <video
-      id="coverMedia"
       autoplay
       muted
       loop
@@ -190,8 +177,8 @@ async function changeRadio(index, keepPlaying = true) {
   updateStreamingBox(radio);
   updateDots();
 
-  if (keepPlaying && wasPlaying && currentMode === "radio") {
-    await playRadio();
+  if (currentMode === "radio" && keepPlaying && wasPlaying) {
+    playRadio();
   } else {
     stopRadio();
   }
@@ -203,38 +190,34 @@ function setMode(mode) {
   if (mode === "radio") {
     radioModeBtn.classList.add("active-mode");
     streamingModeBtn.classList.remove("active-mode");
-
     radioModeBox.classList.remove("hidden");
     streamingModeBox.classList.add("hidden");
   }
 
   if (mode === "streaming") {
     stopRadio();
-
     streamingModeBtn.classList.add("active-mode");
     radioModeBtn.classList.remove("active-mode");
-
     radioModeBox.classList.add("hidden");
     streamingModeBox.classList.remove("hidden");
-
     updateStreamingBox(radios[currentIndex]);
   }
 }
 
 playBtn.addEventListener("click", async () => {
-  if (!isPlaying) {
-    await playRadio();
-  } else {
+  if (isPlaying) {
     stopRadio();
+  } else {
+    await playRadio();
   }
 });
 
-nextRadioBtn.addEventListener("click", async () => {
-  await changeRadio(currentIndex + 1);
+nextRadioBtn.addEventListener("click", () => {
+  changeRadio(currentIndex + 1);
 });
 
-prevRadioBtn.addEventListener("click", async () => {
-  await changeRadio(currentIndex - 1);
+prevRadioBtn.addEventListener("click", () => {
+  changeRadio(currentIndex - 1);
 });
 
 radioModeBtn.addEventListener("click", () => {
@@ -249,16 +232,15 @@ playerCard.addEventListener("touchstart", (e) => {
   startX = e.touches[0].clientX;
 });
 
-playerCard.addEventListener("touchend", async (e) => {
+playerCard.addEventListener("touchend", (e) => {
   endX = e.changedTouches[0].clientX;
-
   const diff = startX - endX;
 
   if (Math.abs(diff) > 50) {
     if (diff > 0) {
-      await changeRadio(currentIndex + 1);
+      changeRadio(currentIndex + 1);
     } else {
-      await changeRadio(currentIndex - 1);
+      changeRadio(currentIndex - 1);
     }
   }
 });
@@ -267,19 +249,19 @@ playerCard.addEventListener("mousedown", (e) => {
   startX = e.clientX;
 });
 
-playerCard.addEventListener("mouseup", async (e) => {
+playerCard.addEventListener("mouseup", (e) => {
   endX = e.clientX;
-
   const diff = startX - endX;
 
   if (Math.abs(diff) > 50) {
     if (diff > 0) {
-      await changeRadio(currentIndex + 1);
+      changeRadio(currentIndex + 1);
     } else {
-      await changeRadio(currentIndex - 1);
+      changeRadio(currentIndex - 1);
     }
   }
 });
 
-renderDots();
-loadRadiosFromSheet();
+updateDots();
+changeRadio(0, false);
+loadStreamingLinks();
