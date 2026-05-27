@@ -10,8 +10,8 @@
 <body class="lafan-theme">
 
   <section id="splashScreen" class="splash-screen">
-    <video id="splashVideo" autoplay muted playsinline>
-      <source src="venevelogovideo.mp4" type="video/mp4">
+    <video id="splashVideo" autoplay muted playsinline preload="auto">
+      <source src="venevologovideo.mp4" type="video/mp4">
     </video>
   </section>
 
@@ -27,15 +27,8 @@
 
       <div class="player-card">
 
-        <div class="cover">
-          <video
-            id="coverImage"
-            autoplay
-            muted
-            loop
-            playsinline
-            src="introlafanlogo.mp4">
-          </video>
+        <div id="coverBox" class="cover">
+          <video id="coverMedia" autoplay muted loop playsinline src="introlafanlogo.mp4"></video>
         </div>
 
         <div class="radio-info">
@@ -50,10 +43,7 @@
           <span></span><span></span><span></span><span></span><span></span>
         </div>
 
-        <audio
-          id="radioPlayer"
-          src="https://radio.megahostec.com/listen/radio_la_fan_fm/stream">
-        </audio>
+        <audio id="radioPlayer" src="https://radio.megahostec.com/listen/radio_la_fan_fm/stream"></audio>
 
       </div>
 
@@ -64,8 +54,7 @@
 
       <div class="radio-slider">
 
-        <div
-          class="radio-card active-radio"
+        <div class="radio-card active-radio"
           data-name="LA FAN FM"
           data-theme="lafan-theme"
           data-stream="https://radio.megahostec.com/listen/radio_la_fan_fm/stream"
@@ -78,22 +67,20 @@
           </div>
         </div>
 
-        <div
-          class="radio-card"
-          data-name="DOBLE CLIP FM"
+        <div class="radio-card"
+          data-name="CLIP FM"
           data-theme="clip-theme"
           data-stream="https://radio.megahostec.com/listen/radio_clipfm/stream"
           data-video="introcliplogo.mp4"
           data-subtitle="La radio con ritmo, frescura y buena música.">
           <video autoplay muted loop playsinline src="introcliplogo.mp4"></video>
           <div class="radio-overlay">
-            <h4>DOBLE CLIP FM</h4>
+            <h4>CLIP FM</h4>
             <p>Entrar a radio</p>
           </div>
         </div>
 
-        <div
-          class="radio-card"
+        <div class="radio-card"
           data-name="OYE FM"
           data-theme="oye-theme"
           data-stream="https://radio.megahostec.com/listen/radio_oyefm/stream"
@@ -106,8 +93,7 @@
           </div>
         </div>
 
-        <div
-          class="radio-card"
+        <div class="radio-card"
           data-name="POX FM"
           data-theme="pox-theme"
           data-stream="https://radio.megahostec.com/listen/radio_pox_edmo/stream"
