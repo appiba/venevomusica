@@ -25,7 +25,7 @@
         <p id="mainSubtitle">Tu radio en vivo, música y energía en un solo lugar.</p>
       </div>
 
-      <div class="player-card">
+      <div id="playerCard" class="player-card">
 
         <div id="coverBox" class="cover">
           <video id="coverMedia" autoplay muted loop playsinline src="introlafanlogo.mp4"></video>
@@ -43,70 +43,19 @@
           <span></span><span></span><span></span><span></span><span></span>
         </div>
 
+        <div class="swipe-text">Desliza para cambiar de radio</div>
+
         <audio id="radioPlayer" src="https://radio.megahostec.com/listen/radio_la_fan_fm/stream"></audio>
 
       </div>
 
-    </section>
-
-    <section class="radios">
-      <h3>Radios disponibles</h3>
-
-      <div class="radio-slider">
-
-        <div class="radio-card active-radio"
-          data-name="LA FAN FM"
-          data-theme="lafan-theme"
-          data-stream="https://radio.megahostec.com/listen/radio_la_fan_fm/stream"
-          data-video="introlafanlogo.mp4"
-          data-subtitle="Tu radio en vivo, música y energía en un solo lugar.">
-          <video autoplay muted loop playsinline src="introlafanlogo.mp4"></video>
-          <div class="radio-overlay">
-            <h4>LA FAN FM</h4>
-            <p>Entrar a radio</p>
-          </div>
-        </div>
-
-        <div class="radio-card"
-          data-name="CLIP FM"
-          data-theme="clip-theme"
-          data-stream="https://radio.megahostec.com/listen/radio_clipfm/stream"
-          data-video="introcliplogo.mp4"
-          data-subtitle="La radio con ritmo, frescura y buena música.">
-          <video autoplay muted loop playsinline src="introcliplogo.mp4"></video>
-          <div class="radio-overlay">
-            <h4>CLIP FM</h4>
-            <p>Entrar a radio</p>
-          </div>
-        </div>
-
-        <div class="radio-card"
-          data-name="OYE FM"
-          data-theme="oye-theme"
-          data-stream="https://radio.megahostec.com/listen/radio_oyefm/stream"
-          data-video="introoyelogo.mp4"
-          data-subtitle="La radio joven, dinámica y llena de energía.">
-          <video autoplay muted loop playsinline src="introoyelogo.mp4"></video>
-          <div class="radio-overlay">
-            <h4>OYE FM</h4>
-            <p>Entrar a radio</p>
-          </div>
-        </div>
-
-        <div class="radio-card"
-          data-name="POX FM"
-          data-theme="pox-theme"
-          data-stream="https://radio.megahostec.com/listen/radio_pox_edmo/stream"
-          data-video="intropoxlogo.mp4"
-          data-subtitle="Música, entretenimiento y energía en vivo.">
-          <video autoplay muted loop playsinline src="intropoxlogo.mp4"></video>
-          <div class="radio-overlay">
-            <h4>POX FM</h4>
-            <p>Entrar a radio</p>
-          </div>
-        </div>
-
+      <div class="dots">
+        <span class="dot active-dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
       </div>
+
     </section>
 
   </main>
