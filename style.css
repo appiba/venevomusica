@@ -123,7 +123,6 @@ body.pox-theme {
   background: rgba(255,255,255,0.18);
   color: rgba(255,255,255,0.9);
   font-size: 48px;
-  line-height: 1;
   cursor: pointer;
   backdrop-filter: blur(10px);
 }
@@ -138,7 +137,6 @@ body.pox-theme {
 
 .mode-tabs {
   display: flex;
-  width: 100%;
   gap: 8px;
   margin-bottom: 18px;
   background: rgba(255,255,255,0.13);
