@@ -8,12 +8,25 @@ const mainTitle = document.getElementById("mainTitle");
 const mainSubtitle = document.getElementById("mainSubtitle");
 const radioTitle = document.getElementById("radioTitle");
 const radioText = document.getElementById("radioText");
-const coverImage = document.getElementById("coverImage");
+const coverBox = document.getElementById("coverBox");
 
 const splashScreen = document.getElementById("splashScreen");
 const splashVideo = document.getElementById("splashVideo");
 
 let isPlaying = false;
+
+function hideSplash() {
+  splashScreen.classList.add("hide");
+}
+
+if (splashVideo && splashScreen) {
+  splashVideo.play().catch(() => {});
+  splashVideo.addEventListener("ended", hideSplash);
+
+  setTimeout(() => {
+    hideSplash();
+  }, 6000);
+}
 
 function stopRadio() {
   radioPlayer.pause();
@@ -40,16 +53,6 @@ async function playRadio() {
   }
 }
 
-if (splashVideo && splashScreen) {
-  splashVideo.addEventListener("ended", () => {
-    splashScreen.style.display = "none";
-  });
-
-  setTimeout(() => {
-    splashScreen.style.display = "none";
-  }, 5000);
-}
-
 playBtn.addEventListener("click", async () => {
   if (!isPlaying) {
     await playRadio();
@@ -63,9 +66,8 @@ radioCards.forEach(card => {
     const name = card.dataset.name;
     const theme = card.dataset.theme;
     const stream = card.dataset.stream;
-    const image = card.dataset.image;
-    const subtitle = card.dataset.subtitle;
     const video = card.dataset.video;
+    const subtitle = card.dataset.subtitle;
 
     radioCards.forEach(c => c.classList.remove("active-radio"));
     card.classList.add("active-radio");
@@ -77,20 +79,16 @@ radioCards.forEach(card => {
     radioTitle.textContent = name;
     radioText.textContent = "Escucha la radio online desde cualquier lugar.";
 
-    if (video) {
-      coverImage.outerHTML = `
-        <video
-          id="coverImage"
-          autoplay
-          muted
-          loop
-          playsinline
-          src="${video}">
-        </video>
-      `;
-    } else {
-      coverImage.src = image;
-    }
+    coverBox.innerHTML = `
+      <video
+        id="coverMedia"
+        autoplay
+        muted
+        loop
+        playsinline
+        src="${video}">
+      </video>
+    `;
 
     radioPlayer.pause();
     radioPlayer.src = stream;
