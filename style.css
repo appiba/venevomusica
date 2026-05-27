@@ -128,26 +128,13 @@ body.pox-theme {
   backdrop-filter: blur(10px);
 }
 
-.nav-left {
-  left: 8px;
-}
+.nav-left { left: 8px; }
+.nav-right { right: 8px; }
 
-.nav-right {
-  right: 8px;
-}
-
-.lafan-theme .nav-arrow {
-  color: #ffec00;
-}
-
+.lafan-theme .nav-arrow { color: #ffec00; }
 .clip-theme .nav-arrow,
-.oye-theme .nav-arrow {
-  color: #ffc400;
-}
-
-.pox-theme .nav-arrow {
-  color: #ff4b4b;
-}
+.oye-theme .nav-arrow { color: #ffc400; }
+.pox-theme .nav-arrow { color: #ff4b4b; }
 
 .cover {
   width: 100%;
@@ -213,11 +200,16 @@ body.pox-theme {
 
 .pox-theme .play-btn {
   background: #ff4b4b;
-  color: #fff;
+  color: #07112f;
 }
 
 .play-btn.playing {
   background: #fff;
+}
+
+.pox-theme .play-btn.playing {
+  background: #ff4b4b;
+  color: #07112f;
 }
 
 .visualizer {
