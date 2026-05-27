@@ -27,8 +27,15 @@ body.pox-theme {
 .splash-screen {
   position: fixed;
   inset: 0;
-  z-index: 999;
+  z-index: 9999;
   background: #05010d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.splash-screen.hide {
+  display: none;
 }
 
 .splash-screen video {
@@ -45,18 +52,6 @@ body.pox-theme {
   padding: 24px 18px;
 }
 
-.screen {
-  display: none;
-}
-
-.screen.active {
-  display: block;
-}
-
-.hidden {
-  display: none !important;
-}
-
 .hero {
   display: flex;
   flex-direction: column;
@@ -69,18 +64,10 @@ body.pox-theme {
   letter-spacing: 2px;
 }
 
-.lafan-theme .brand span {
-  color: #ffec00;
-}
-
+.lafan-theme .brand span { color: #ffec00; }
 .clip-theme .brand span,
-.oye-theme .brand span {
-  color: #ffc400;
-}
-
-.pox-theme .brand span {
-  color: #ff4b4b;
-}
+.oye-theme .brand span { color: #ffc400; }
+.pox-theme .brand span { color: #ff4b4b; }
 
 .brand h1 {
   font-size: 46px;
@@ -113,7 +100,7 @@ body.pox-theme {
 }
 
 .player-card {
-  background: rgba(255, 255, 255, 0.16);
+  background: rgba(255,255,255,0.16);
   backdrop-filter: blur(18px);
   border-radius: 32px;
   padding: 22px;
@@ -130,21 +117,8 @@ body.pox-theme {
   margin-bottom: 20px;
 }
 
-.lafan-theme .cover {
-  background: #ffec00;
-}
-
-.clip-theme .cover,
-.oye-theme .cover {
-  background: #ffc400;
-}
-
-.pox-theme .cover {
-  background: #07112f;
-}
-
-.cover img,
-.cover video {
+.cover video,
+.cover img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -157,18 +131,10 @@ body.pox-theme {
   margin-bottom: 8px;
 }
 
-.lafan-theme .live {
-  color: #ffec00;
-}
-
+.lafan-theme .live { color: #ffec00; }
 .clip-theme .live,
-.oye-theme .live {
-  color: #ffc400;
-}
-
-.pox-theme .live {
-  color: #ff4b4b;
-}
+.oye-theme .live { color: #ffc400; }
+.pox-theme .live { color: #ff4b4b; }
 
 .radio-info h2 {
   font-size: 30px;
@@ -229,18 +195,10 @@ body.pox-theme {
   opacity: 0.4;
 }
 
-.lafan-theme .visualizer span {
-  background: #ffec00;
-}
-
+.lafan-theme .visualizer span { background: #ffec00; }
 .clip-theme .visualizer span,
-.oye-theme .visualizer span {
-  background: #ffc400;
-}
-
-.pox-theme .visualizer span {
-  background: #ff4b4b;
-}
+.oye-theme .visualizer span { background: #ffc400; }
+.pox-theme .visualizer span { background: #ff4b4b; }
 
 .visualizer.active span {
   animation: bounce 0.8s infinite ease-in-out;
@@ -259,6 +217,7 @@ body.pox-theme {
 
 .radios {
   margin-top: 34px;
+  overflow: hidden;
 }
 
 .radios h3 {
@@ -279,38 +238,30 @@ body.pox-theme {
 }
 
 .radio-card {
-  min-width: 245px;
-  height: 310px;
+  min-width: 100%;
+  height: 250px;
   border-radius: 28px;
   overflow: hidden;
   position: relative;
   flex-shrink: 0;
   cursor: pointer;
-  scroll-snap-align: start;
+  scroll-snap-align: center;
   background: rgba(255,255,255,0.12);
   border: 3px solid transparent;
   transition: 0.3s ease;
 }
 
 .radio-card.active-radio {
-  transform: scale(1.02);
+  transform: scale(1);
 }
 
-.lafan-theme .radio-card.active-radio {
-  border-color: #ffec00;
-}
-
+.lafan-theme .radio-card.active-radio { border-color: #ffec00; }
 .clip-theme .radio-card.active-radio,
-.oye-theme .radio-card.active-radio {
-  border-color: #ffc400;
-}
+.oye-theme .radio-card.active-radio { border-color: #ffc400; }
+.pox-theme .radio-card.active-radio { border-color: #ff4b4b; }
 
-.pox-theme .radio-card.active-radio {
-  border-color: #ff4b4b;
-}
-
-.radio-card img,
-.radio-card video {
+.radio-card video,
+.radio-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
