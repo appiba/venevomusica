@@ -107,6 +107,7 @@ body.pox-theme {
   box-shadow: 0 25px 60px rgba(0,0,0,0.25);
   text-align: center;
   border: 1px solid rgba(255,255,255,0.25);
+  touch-action: pan-y;
 }
 
 .cover {
@@ -215,73 +216,27 @@ body.pox-theme {
   50% { height: 38px; }
 }
 
-.radios {
-  margin-top: 34px;
-  overflow: hidden;
-}
-
-.radios h3 {
-  font-size: 20px;
-  margin-bottom: 14px;
-}
-
-.radio-slider {
-  display: flex;
-  gap: 18px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding: 4px 4px 14px;
-}
-
-.radio-slider::-webkit-scrollbar {
-  display: none;
-}
-
-.radio-card {
-  min-width: 100%;
-  height: 250px;
-  border-radius: 28px;
-  overflow: hidden;
-  position: relative;
-  flex-shrink: 0;
-  cursor: pointer;
-  scroll-snap-align: center;
-  background: rgba(255,255,255,0.12);
-  border: 3px solid transparent;
-  transition: 0.3s ease;
-}
-
-.radio-card.active-radio {
-  transform: scale(1);
-}
-
-.lafan-theme .radio-card.active-radio { border-color: #ffec00; }
-.clip-theme .radio-card.active-radio,
-.oye-theme .radio-card.active-radio { border-color: #ffc400; }
-.pox-theme .radio-card.active-radio { border-color: #ff4b4b; }
-
-.radio-card video,
-.radio-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.radio-overlay {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  padding: 24px 20px;
-  background: linear-gradient(to top, rgba(0,0,0,0.88), transparent);
-}
-
-.radio-overlay h4 {
-  font-size: 24px;
-  color: #fff;
-}
-
-.radio-overlay p {
+.swipe-text {
   margin-top: 6px;
-  color: rgba(255,255,255,0.85);
-  font-size: 14px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.75);
 }
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: -10px;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.45);
+}
+
+.lafan-theme .active-dot { background: #ffec00; }
+.clip-theme .active-dot,
+.oye-theme .active-dot { background: #ffc400; }
+.pox-theme .active-dot { background: #ff4b4b; }
