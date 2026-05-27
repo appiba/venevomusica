@@ -47,7 +47,7 @@ const radios = [
     name: "POX FM",
     theme: "pox-theme",
     stream: "https://radio.megahostec.com/listen/radio_pox_edmo/stream",
-    video: "intropoxlogo.mp4",
+    video: "poxvideo.mp4",
     subtitle: "Música, entretenimiento y energía en vivo."
   }
 ];
