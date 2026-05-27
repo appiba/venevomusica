@@ -6,78 +6,105 @@
   <title>Venevo Música</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="lafan-theme">
+<body>
 
-  <main class="app">
+<main class="app">
+
+  <section id="splashScreen" class="screen active splash-screen">
+    <video id="splashVideo" autoplay muted playsinline>
+      <source src="venevelogovideo.mp4" type="video/mp4">
+    </video>
+  </section>
+
+  <section id="mainScreen" class="screen">
+    <header class="top">
+      <p>PLATAFORMA DIGITAL</p>
+      <h1>VENEVO</h1>
+    </header>
+
+    <nav class="top-menu">
+      <button class="menu-btn active">📻 Radios</button>
+      <button class="menu-btn">🎧 Música</button>
+      <button class="menu-btn">🏪 Negocios</button>
+      <button class="menu-btn">📅 Reservas</button>
+      <button class="menu-btn">🎟️ Eventos</button>
+    </nav>
 
     <section class="hero">
-      <div class="brand">
-        <span>VENEVO MÚSICA</span>
-        <h1 id="mainTitle">LA FAN FM</h1>
-        <p id="mainSubtitle">Tu radio en vivo, música y energía en un solo lugar.</p>
-      </div>
-
-      <div class="player-card">
-        <div class="cover">
-          <img id="coverImage" src="assets/lafan-cover.jpg" alt="Radio cover" />
-        </div>
-
-        <div class="radio-info">
-          <p class="live">● EN VIVO</p>
-          <h2 id="radioTitle">LA FAN FM</h2>
-          <p id="radioText">Escucha la radio online desde cualquier lugar.</p>
-        </div>
-
-        <button id="playBtn" class="play-btn">▶</button>
-
-        <div class="visualizer">
-          <span></span><span></span><span></span><span></span><span></span>
-        </div>
-
-        <audio id="radioPlayer" src="https://radio.megahostec.com/listen/radio_la_fan_fm/stream"></audio>
-      </div>
+      <h2>Radios disponibles</h2>
+      <p>Escucha tus emisoras favoritas en vivo desde Venevo Música.</p>
     </section>
 
-    <section class="radios">
-      <h3>Radios disponibles</h3>
+    <section class="radios-grid">
 
-      <div class="radio-slider">
-
-        <div class="radio-card active-radio"
-          data-name="LA FAN FM"
-          data-theme="lafan-theme"
-          data-stream="https://radio.megahostec.com/listen/radio_la_fan_fm/stream"
-          data-image="assets/lafan-cover.jpg"
-          data-subtitle="Tu radio en vivo, música y energía en un solo lugar.">
-
-          <img src="assets/lafan-cover.jpg" alt="LA FAN FM">
-
-          <div class="radio-overlay">
-            <h4>LA FAN FM</h4>
-            <p>Radio en vivo</p>
-          </div>
-        </div>
-
-        <div class="radio-card"
-          data-name="DOBLE CLIP FM"
-          data-theme="clip-theme"
-          data-stream="https://radio.megahostec.com/listen/radio_clipfm/stream"
-          data-image="assets/clipfm-cover.jpg"
-          data-subtitle="La radio con ritmo, frescura y buena música.">
-
-          <img src="assets/clipfm-cover.jpg" alt="DOBLE CLIP FM">
-
-          <div class="radio-overlay">
-            <h4>DOBLE CLIP FM</h4>
-            <p>Radio en vivo</p>
-          </div>
-        </div>
-
+      <div class="radio-card lafan"
+        data-name="LA FAN FM"
+        data-stream="https://radio.megahostec.com/listen/radio_la_fan_fm/stream"
+        data-video="introlafanlogo.mp4"
+        data-theme="lafan-theme">
+        <video autoplay muted loop playsinline src="introlafanlogo.mp4"></video>
+        <div><h3>LA FAN FM</h3><p>Entrar a radio</p></div>
       </div>
+
+      <div class="radio-card clip"
+        data-name="DOBLE CLIP FM"
+        data-stream="https://radio.megahostec.com/listen/radio_clipfm/stream"
+        data-video="introcliplogo.mp4"
+        data-theme="clip-theme">
+        <video autoplay muted loop playsinline src="introcliplogo.mp4"></video>
+        <div><h3>DOBLE CLIP FM</h3><p>Entrar a radio</p></div>
+      </div>
+
+      <div class="radio-card oye"
+        data-name="OYE FM"
+        data-stream="https://radio.megahostec.com/listen/radio_oyefm/stream"
+        data-video="introoyelogo.mp4"
+        data-theme="oye-theme">
+        <video autoplay muted loop playsinline src="introoyelogo.mp4"></video>
+        <div><h3>OYE FM</h3><p>Entrar a radio</p></div>
+      </div>
+
+      <div class="radio-card pox"
+        data-name="POX FM"
+        data-stream="https://radio.megahostec.com/listen/radio_pox_edmo/stream"
+        data-video="intropoxlogo.mp4"
+        data-theme="pox-theme">
+        <video autoplay muted loop playsinline src="intropoxlogo.mp4"></video>
+        <div><h3>POX FM</h3><p>Entrar a radio</p></div>
+      </div>
+
+    </section>
+  </section>
+
+  <section id="playerScreen" class="screen">
+    <button id="backBtn" class="back-btn">← Radios</button>
+
+    <header class="radio-header">
+      <p>RADIO EN VIVO</p>
+      <h1 id="radioName">LA FAN FM</h1>
+      <span>● EN VIVO</span>
+    </header>
+
+    <section id="introBox" class="intro-box">
+      <video id="introVideo" playsinline></video>
+      <button id="skipBtn">Saltar intro</button>
     </section>
 
-  </main>
+    <section id="playerCard" class="player-card hidden">
+      <video id="logoVideo" autoplay muted loop playsinline></video>
 
-  <script src="script.js"></script>
+      <button id="playBtn" class="play-btn">▶</button>
+
+      <div id="bars" class="bars">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+
+      <audio id="radioPlayer"></audio>
+    </section>
+  </section>
+
+</main>
+
+<script src="script.js"></script>
 </body>
 </html>
