@@ -883,54 +883,57 @@ body.pox-theme .play-btn { color: #d71920; }
   }
 }
 /* ========================= */
-/* LOGO SUPERIOR LA FAN */
+/* TOP LOGO PNG CLEAN */
 /* ========================= */
 
-/* Estado normal para CLIP, OYE y POX */
-#radioNameTop {
-  font-size: 38px;
-  line-height: 0.9;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: white;
-  background-image: none;
-  width: auto;
-  height: auto;
-  text-indent: 0;
-  overflow: visible;
+#radioNameTop{
+  font-size:38px;
+  line-height:0.9;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  color:white;
 }
 
-/* Solo cuando esté LA FAN */
-body.lafan-theme #radioNameTop {
-  display: block;
-  width: 230px;
-  height: 86px;
+/* SOLO LA FAN */
 
-  font-size: 0 !important;
-  line-height: 0 !important;
-  color: transparent !important;
-  text-indent: -9999px;
-  overflow: hidden;
+body.lafan-theme #radioNameTop{
 
-  background-image: url("logosuperiorlafan.jpeg");
-  background-repeat: no-repeat;
-  background-position: left center;
-  background-size: contain;
+  width:230px;
+  height:82px;
 
-  mix-blend-mode: multiply;
+  font-size:0 !important;
+  color:transparent !important;
+
+  overflow:hidden;
+  text-indent:-9999px;
+
+  background-image:url("logosuperiorlafan.png");
+  background-repeat:no-repeat;
+  background-position:left center;
+  background-size:contain;
+
 }
 
-/* Ajuste móvil */
-@media (max-width: 420px) {
-  body.lafan-theme #radioNameTop {
-    width: 205px;
-    height: 76px;
+/* MOBILE */
+
+@media (max-width:420px){
+
+  body.lafan-theme #radioNameTop{
+
+    width:205px;
+    height:74px;
+
   }
+
 }
 
-@media (max-height: 760px) {
-  body.lafan-theme #radioNameTop {
-    width: 190px;
-    height: 70px;
+@media (max-height:760px){
+
+  body.lafan-theme #radioNameTop{
+
+    width:190px;
+    height:68px;
+
   }
+
 }
