@@ -136,8 +136,8 @@ body.pox-theme {
 
 /* LA FAN */
 body.lafan-theme #radioNameTop {
-  width: 220px;
-  height: 78px;
+  width: 440px;
+  height: 156px;
   font-size: 0 !important;
   line-height: 0 !important;
   color: transparent !important;
@@ -148,8 +148,8 @@ body.lafan-theme #radioNameTop {
 
 /* OYE */
 body.oye-theme #radioNameTop {
-  width: 220px;
-  height: 78px;
+  width: 440px;
+  height: 156px;
   font-size: 0 !important;
   line-height: 0 !important;
   color: transparent !important;
@@ -163,16 +163,16 @@ body.oye-theme #radioNameTop {
 @media (max-width: 420px) {
   body.lafan-theme #radioNameTop,
   body.oye-theme #radioNameTop {
-    width: 205px;
-    height: 74px;
+    width: 420px;
+    height: 150px;
   }
 }
 
 @media (max-height: 760px) {
   body.lafan-theme #radioNameTop,
   body.oye-theme #radioNameTop {
-    width: 188px;
-    height: 66px;
+    width: 760px;
+    height: 500px;
   }
 }
 
