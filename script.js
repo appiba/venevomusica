@@ -8,6 +8,7 @@ const radios = [
     subtitle: "POP · TOP HITS",
     theme: "lafan-theme",
     stream: "https://radio.megahostec.com/listen/radio_la_fan_fm/stream",
+    metadataApi: "https://radio.megahostec.com/api/nowplaying/radio_la_fan_fm",
     logoVideo: "introlafanlogo.mp4",
     streaming: ""
   },
@@ -18,6 +19,7 @@ const radios = [
     subtitle: "MÚSICA · HITS",
     theme: "clip-theme",
     stream: "https://radio.megahostec.com/listen/radio_clipfm/stream",
+    metadataApi: "https://radio.megahostec.com/api/nowplaying/radio_clipfm",
     logoVideo: "introcliplogo.mp4",
     streaming: ""
   },
@@ -28,6 +30,7 @@ const radios = [
     subtitle: "ENERGÍA · DIGITAL",
     theme: "oye-theme",
     stream: "https://radio.megahostec.com/listen/radio_oyefm/stream",
+    metadataApi: "https://radio.megahostec.com/api/nowplaying/radio_oyefm",
     logoVideo: "introoyelogo.mp4",
     streaming: ""
   },
@@ -38,6 +41,7 @@ const radios = [
     subtitle: "ENTRETENIMIENTO · LIVE",
     theme: "pox-theme",
     stream: "https://radio.megahostec.com/listen/radio_pox_edmo/stream",
+    metadataApi: "https://radio.megahostec.com/api/nowplaying/radio_pox_edmo",
     logoVideo: "poxvideo.mp4",
     streaming: ""
   }
