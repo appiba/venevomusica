@@ -883,27 +883,54 @@ body.pox-theme .play-btn { color: #d71920; }
   }
 }
 /* ========================= */
-/* LOGO SUPERIOR SOLO IMAGEN */
+/* LOGO SUPERIOR LA FAN */
 /* ========================= */
 
-#radioNameTop{
+/* Estado normal para CLIP, OYE y POX */
+#radioNameTop {
+  font-size: 38px;
+  line-height: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: white;
+  background-image: none;
+  width: auto;
+  height: auto;
+  text-indent: 0;
+  overflow: visible;
+}
 
-  position:relative;
+/* Solo cuando esté LA FAN */
+body.lafan-theme #radioNameTop {
+  display: block;
+  width: 230px;
+  height: 86px;
 
-  font-size:0 !important;
-  color:transparent !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  color: transparent !important;
+  text-indent: -9999px;
+  overflow: hidden;
 
-  text-indent:-9999px;
+  background-image: url("logosuperiorlafan.jpeg");
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: contain;
 
-  width:220px;
-  height:85px;
+  mix-blend-mode: multiply;
+}
 
-  overflow:hidden;
+/* Ajuste móvil */
+@media (max-width: 420px) {
+  body.lafan-theme #radioNameTop {
+    width: 205px;
+    height: 76px;
+  }
+}
 
-  background-repeat:no-repeat;
-  background-position:left center;
-  background-size:contain;
-
-  mix-blend-mode:multiply;
-
+@media (max-height: 760px) {
+  body.lafan-theme #radioNameTop {
+    width: 190px;
+    height: 70px;
+  }
 }
