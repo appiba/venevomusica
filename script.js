@@ -105,10 +105,13 @@ const volumeBtn = document.getElementById("volumeBtn");
 const volumePanel = document.getElementById("volumePanel");
 const volumeSlider = document.getElementById("volumeSlider");
 
-const nowPlayingBox = document.getElementById("nowPlayingBox");
 const nowCover = document.getElementById("nowCover");
 const nowTitle = document.getElementById("nowTitle");
 const nowArtist = document.getElementById("nowArtist");
+const songProgressFill = document.getElementById("songProgressFill");
+const songElapsed = document.getElementById("songElapsed");
+const songDuration = document.getElementById("songDuration");
+const songCoverMain = document.querySelector(".song-cover-main");
 
 const audioBars = document.querySelectorAll("#audioBars span");
 const bottomTabs = document.querySelectorAll(".bottom-tab");
@@ -244,7 +247,6 @@ function loadRadio(index) {
   updateTopIdentity(radio);
 
   dialRadioName.textContent = `${radio.name} FM`;
-  radioTitle.textContent = radio.name;
   dialSubtitle.textContent = radio.subtitle;
 
   radioLogoVideo.src = radio.logoVideo;
@@ -577,12 +579,20 @@ function setupVolume() {
 async function loadNowPlaying() {
   const radio = radios[currentRadio];
 
-  if (!nowPlayingBox || !nowTitle || !nowArtist || !nowCover) return;
+  if (!nowTitle || !nowArtist || !nowCover) return;
 
   nowTitle.textContent = "Cargando canción...";
   nowArtist.textContent = radio.name;
+
+  if (songProgressFill) songProgressFill.style.width = "0%";
+  if (songElapsed) songElapsed.textContent = "0:00";
+  if (songDuration) songDuration.textContent = "EN VIVO";
+
+  if (songCoverMain) {
+    songCoverMain.classList.remove("has-cover");
+  }
+
   nowCover.src = "";
-  nowCover.parentElement.classList.remove("has-cover");
 
   if (!radio.metadataApi) {
     nowTitle.textContent = radio.name;
@@ -612,23 +622,67 @@ async function loadNowPlaying() {
       song?.art ||
       "";
 
+    const elapsed =
+      Number(data?.now_playing?.elapsed || 0);
+
+    const duration =
+      Number(data?.now_playing?.duration || 0);
+
     nowTitle.textContent = title;
     nowArtist.textContent = artist;
 
     if (art) {
       nowCover.src = art;
-      nowCover.parentElement.classList.add("has-cover");
+      if (songCoverMain) {
+        songCoverMain.classList.add("has-cover");
+      }
     } else {
       nowCover.src = "";
-      nowCover.parentElement.classList.remove("has-cover");
+      if (songCoverMain) {
+        songCoverMain.classList.remove("has-cover");
+      }
     }
+
+    updateSongProgress(elapsed, duration);
 
   } catch (error) {
     nowTitle.textContent = radio.name;
     nowArtist.textContent = "Información no disponible";
-    nowCover.src = "";
-    nowCover.parentElement.classList.remove("has-cover");
+
+    if (songProgressFill) songProgressFill.style.width = "0%";
+    if (songElapsed) songElapsed.textContent = "0:00";
+    if (songDuration) songDuration.textContent = "EN VIVO";
+
+    if (songCoverMain) {
+      songCoverMain.classList.remove("has-cover");
+    }
   }
+}
+
+function formatTime(seconds) {
+  if (!seconds || isNaN(seconds)) return "0:00";
+
+  const min = Math.floor(seconds / 60);
+  const sec = Math.floor(seconds % 60).toString().padStart(2, "0");
+
+  return `${min}:${sec}`;
+}
+
+function updateSongProgress(elapsed, duration) {
+  if (!songProgressFill || !songElapsed || !songDuration) return;
+
+  if (!duration || duration <= 0) {
+    songProgressFill.style.width = "100%";
+    songElapsed.textContent = "EN VIVO";
+    songDuration.textContent = "LIVE";
+    return;
+  }
+
+  const percent = Math.min((elapsed / duration) * 100, 100);
+
+  songProgressFill.style.width = `${percent}%`;
+  songElapsed.textContent = formatTime(elapsed);
+  songDuration.textContent = formatTime(duration);
 }
 
 function startNowPlayingUpdater() {
