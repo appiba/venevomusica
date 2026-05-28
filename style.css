@@ -71,7 +71,7 @@ body.pox-theme {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 14px;
+  margin-bottom: 4px;
   gap: 12px;
   flex-shrink: 0;
 }
@@ -106,7 +106,7 @@ body.pox-theme {
   font-size: 11px;
   letter-spacing: 3px;
   opacity: 0.82;
-  margin-bottom: 7px;
+  margin-bottom: 4px;
 }
 
 .brand-title h1 {
@@ -116,41 +116,34 @@ body.pox-theme {
   letter-spacing: 1px;
 }
 
-/* LOGOS SUPERIORES */
+/* ========================= */
+/* LOGOS / TÍTULOS SUPERIORES */
+/* ========================= */
 
 #radioNameTop {
+  display: block;
   font-size: 38px;
   line-height: 0.9;
   text-transform: uppercase;
   letter-spacing: 1px;
   color: white;
-  background-image: none;
+
   width: auto;
   height: auto;
+
+  background-image: none;
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: contain;
+
   text-indent: 0;
   overflow: visible;
-  background-repeat: no-repeat;
-  background-position: left center;
-  background-size: contain;
 }
 
-/* LA FAN */
+/* LA FAN - LOGO SUPERIOR */
 body.lafan-theme #radioNameTop {
-  width: 220px;
-  height: 40px;
-  font-size: 0 !important;
-  line-height: 0 !important;
-  color: transparent !important;
-  text-indent: -9999px;
-  overflow: hidden;
-  background-image: url("logosuperiolafan.png?v=20");
-}
-
-/* OYE */
-body.oye-theme #radioNameTop {
-
-  width: 220px;
-  height: 39px;
+  width: 255px;
+  height: 92px;
 
   font-size: 0 !important;
   line-height: 0 !important;
@@ -158,30 +151,97 @@ body.oye-theme #radioNameTop {
   text-indent: -9999px;
   overflow: hidden;
 
-  background-image: url("logosuperioroye.svg?v=20");
+  background-image: url("logosuperiolafan.png?v=60");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
+}
 
+/* OYE - LOGO SUPERIOR SVG GRANDE */
+body.oye-theme #radioNameTop {
+  width: 310px;
+  height: 110px;
+
+  font-size: 0 !important;
+  line-height: 0 !important;
+  color: transparent !important;
+  text-indent: -9999px;
+  overflow: hidden;
+
+  background-image: url("logosuperioroye.svg?v=60");
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: contain;
+}
+
+/* CLIP Y POX - TEXTO NORMAL ALINEADO */
+body.clip-theme #radioNameTop,
+body.pox-theme #radioNameTop {
+  font-size: 38px;
+  line-height: 0.9;
+  height: 46px;
+  display: flex;
+  align-items: center;
+}
+
+/* RADIO / STREAMING MÁS PEGADO AL LOGO */
+.mode-tabs {
+  display: flex;
+  background: rgba(255,255,255,0.09);
+  border-radius: 26px;
+  padding: 6px;
+  margin-top: -14px;
+  margin-bottom: 10px;
+  flex-shrink: 0;
 }
 
 /* RESPONSIVE LOGOS */
 
 @media (max-width: 420px) {
-  body.lafan-theme #radioNameTop,
+  body.lafan-theme #radioNameTop {
+    width: 245px;
+    height: 88px;
+  }
+
   body.oye-theme #radioNameTop {
-    width: 420px;
-    height: 150px;
+    width: 300px;
+    height: 105px;
+  }
+
+  body.clip-theme #radioNameTop,
+  body.pox-theme #radioNameTop {
+    font-size: 36px;
+    height: 44px;
+  }
+
+  .mode-tabs {
+    margin-top: -18px;
   }
 }
 
 @media (max-height: 760px) {
-  body.lafan-theme #radioNameTop,
+  body.lafan-theme #radioNameTop {
+    width: 230px;
+    height: 82px;
+  }
+
   body.oye-theme #radioNameTop {
-    width: 760px;
-    height: 500px;
+    width: 285px;
+    height: 100px;
+  }
+
+  body.clip-theme #radioNameTop,
+  body.pox-theme #radioNameTop {
+    font-size: 34px;
+    height: 42px;
+  }
+
+  .mode-tabs {
+    margin-top: -20px;
   }
 }
+
+/* LIVE STATUS */
 
 .live-status {
   min-width: 92px;
@@ -239,15 +299,6 @@ body.oye-theme #radioNameTop {
 }
 
 /* MODE TABS */
-
-.mode-tabs {
-  display: flex;
-  background: rgba(255,255,255,0.09);
-  border-radius: 26px;
-  padding: 6px;
-  margin-bottom: 12px;
-  flex-shrink: 0;
-}
 
 .mode-tab {
   flex: 1;
@@ -916,7 +967,7 @@ body.pox-theme .play-btn { color: #d71920; }
 .oye-theme .bottom-tab.active-tab { color: #00cfff; }
 .pox-theme .bottom-tab.active-tab { color: #ff4b4b; }
 
-/* RESPONSIVE */
+/* RESPONSIVE GENERAL */
 
 @media (max-height: 760px) {
   .dial-container {
