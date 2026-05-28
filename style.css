@@ -143,7 +143,7 @@ body.lafan-theme #radioNameTop {
   color: transparent !important;
   text-indent: -9999px;
   overflow: hidden;
-  background-image: url("logosuperiolafan.png?v=80");
+  background-image: url("logosuperiolafan.png?v=30");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
@@ -157,7 +157,7 @@ body.oye-theme #radioNameTop {
   color: transparent !important;
   text-indent: -9999px;
   overflow: hidden;
-  background-image: url("logosuperioroye.svg?v=80");
+  background-image: url("logosuperioroye.svg?v=30");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
