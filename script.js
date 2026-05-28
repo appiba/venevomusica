@@ -642,3 +642,70 @@ volumeSlider.addEventListener("touchmove", function(e) {
 volumeSlider.addEventListener("change", function() {
   radioPlayer.volume = Number(volumeSlider.value);
 });
+/* ========================= */
+/* REAL INTERNAL VOLUME */
+/* ========================= */
+
+radioPlayer.volume = 1;
+volumeSlider.value = 1;
+
+/* PANEL INFO */
+
+if(!document.querySelector(".volume-label")){
+
+  const volumeInfo =
+  document.createElement("div");
+
+  volumeInfo.className =
+  "volume-label";
+
+  volumeInfo.innerHTML =
+  `
+  Volumen interno de Venevo.<br>
+  Usa los botones del teléfono para el volumen general.
+  `;
+
+  volumePanel.prepend(volumeInfo);
+
+}
+
+/* DESKTOP */
+
+volumeSlider.addEventListener("input", () => {
+
+  const volume =
+  parseFloat(volumeSlider.value);
+
+  radioPlayer.volume = volume;
+
+});
+
+/* MOBILE TOUCH */
+
+volumeSlider.addEventListener("touchmove", (e) => {
+
+  const rect =
+  volumeSlider.getBoundingClientRect();
+
+  const touch =
+  e.touches[0];
+
+  let percent =
+  (touch.clientX - rect.left) / rect.width;
+
+  percent =
+  Math.max(0, Math.min(1, percent));
+
+  volumeSlider.value = percent;
+
+  radioPlayer.volume = percent;
+
+}, { passive:true });
+
+/* OPEN PANEL */
+
+volumeBtn.addEventListener("click", () => {
+
+  volumePanel.classList.toggle("hidden");
+
+});
