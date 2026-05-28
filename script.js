@@ -58,7 +58,6 @@ let analyser = null;
 let sourceNode = null;
 let analyserReady = false;
 let fakeVisualizerInterval = null;
-
 let nowPlayingInterval = null;
 
 const splashScreen = document.getElementById("splashScreen");
@@ -607,12 +606,10 @@ async function loadNowPlaying() {
 
     const artist =
       song?.artist ||
-      data?.now_playing?.song?.artist ||
       "Artista no disponible";
 
     const art =
       song?.art ||
-      data?.now_playing?.song?.art ||
       "";
 
     nowTitle.textContent = title;
