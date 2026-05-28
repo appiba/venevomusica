@@ -115,6 +115,55 @@ body.pox-theme {
   letter-spacing: 1px;
 }
 
+/* LOGO SUPERIOR LA FAN PNG */
+
+#radioNameTop {
+  font-size: 38px;
+  line-height: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: white;
+  background-image: none;
+  width: auto;
+  height: auto;
+  text-indent: 0;
+  overflow: visible;
+}
+
+/* SOLO CUANDO ESTÉ LA FAN */
+
+body.lafan-theme #radioNameTop {
+  width: 230px;
+  height: 82px;
+
+  font-size: 0 !important;
+  line-height: 0 !important;
+  color: transparent !important;
+  text-indent: -9999px;
+  overflow: hidden;
+
+  background-image: url("logosuperiolafan.png");
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: contain;
+}
+
+/* RESPONSIVE LOGO */
+
+@media (max-width: 420px) {
+  body.lafan-theme #radioNameTop {
+    width: 205px;
+    height: 74px;
+  }
+}
+
+@media (max-height: 760px) {
+  body.lafan-theme #radioNameTop {
+    width: 190px;
+    height: 68px;
+  }
+}
+
 .live-status {
   min-width: 92px;
   padding: 9px 10px;
@@ -881,59 +930,4 @@ body.pox-theme .play-btn { color: #d71920; }
   .player-card {
     padding: 13px;
   }
-}
-/* ========================= */
-/* TOP LOGO PNG CLEAN */
-/* ========================= */
-
-#radioNameTop{
-  font-size:38px;
-  line-height:0.9;
-  text-transform:uppercase;
-  letter-spacing:1px;
-  color:white;
-}
-
-/* SOLO LA FAN */
-
-body.lafan-theme #radioNameTop{
-
-  width:230px;
-  height:82px;
-
-  font-size:0 !important;
-  color:transparent !important;
-
-  overflow:hidden;
-  text-indent:-9999px;
-
-  background-image:url("logosuperiorlafan.png");
-  background-repeat:no-repeat;
-  background-position:left center;
-  background-size:contain;
-
-}
-
-/* MOBILE */
-
-@media (max-width:420px){
-
-  body.lafan-theme #radioNameTop{
-
-    width:205px;
-    height:74px;
-
-  }
-
-}
-
-@media (max-height:760px){
-
-  body.lafan-theme #radioNameTop{
-
-    width:190px;
-    height:68px;
-
-  }
-
 }
