@@ -115,7 +115,7 @@ body.pox-theme {
   letter-spacing: 1px;
 }
 
-/* LOGO SUPERIOR LA FAN PNG */
+/* LOGOS SUPERIORES */
 
 #radioNameTop {
   font-size: 38px;
@@ -128,32 +128,46 @@ body.pox-theme {
   height: auto;
   text-indent: 0;
   overflow: visible;
-}
-
-/* SOLO CUANDO ESTÉ LA FAN */
-
-body.lafan-theme #radioNameTop {
-  width: 230px;
-  height: 82px;
-
-  font-size: 0 !important;
-  line-height: 0 !important;
-  color: transparent !important;
-  text-indent: -9999px;
-  overflow: hidden;
-
-  background-image: url("logosuperiolafan.png");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
 }
 
-/* RESPONSIVE LOGO */
+/* LA FAN */
+body.lafan-theme #radioNameTop {
+  width: 230px;
+  height: 82px;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  color: transparent !important;
+  text-indent: -9999px;
+  overflow: hidden;
+  background-image: url("logosuperiolafan.png?v=10");
+}
+
+/* OYE */
+body.oye-theme #radioNameTop {
+  width: 220px;
+  height: 78px;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  color: transparent !important;
+  text-indent: -9999px;
+  overflow: hidden;
+  background-image: url("logosuperioroye.svg?v=10");
+}
+
+/* RESPONSIVE LOGOS */
 
 @media (max-width: 420px) {
   body.lafan-theme #radioNameTop {
     width: 205px;
     height: 74px;
+  }
+
+  body.oye-theme #radioNameTop {
+    width: 200px;
+    height: 72px;
   }
 }
 
@@ -161,6 +175,11 @@ body.lafan-theme #radioNameTop {
   body.lafan-theme #radioNameTop {
     width: 190px;
     height: 68px;
+  }
+
+  body.oye-theme #radioNameTop {
+    width: 185px;
+    height: 66px;
   }
 }
 
