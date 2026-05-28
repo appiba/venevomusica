@@ -1001,3 +1001,33 @@ body.pox-theme .play-btn { color: #d71920; }
     padding: 13px;
   }
 }
+/* ========================= */
+/* BOTONES RADIO / STREAMING ELEGANTES */
+/* ========================= */
+
+.mode-tabs {
+  width: 210px !important;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  margin-top: -10px !important;
+  margin-bottom: 10px !important;
+
+  padding: 4px !important;
+  border-radius: 22px !important;
+
+  background: rgba(255,255,255,0.10) !important;
+  backdrop-filter: blur(18px);
+}
+
+.mode-tab {
+  height: 32px !important;
+  border-radius: 18px !important;
+  font-size: 11px !important;
+  letter-spacing: 1px;
+  font-weight: 900;
+}
+
+.active-mode {
+  background: rgba(255,255,255,0.92) !important;
+  color: #000 !important;
+}
