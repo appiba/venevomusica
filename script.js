@@ -660,3 +660,54 @@ loadStreamingLinks().then(() => {
   loadRadio(currentRadio);
   renderFavorites();
 });
+/* ========================= */
+/* TOP LOGO ONLY */
+/* ========================= */
+
+function updateTopLogo(){
+
+  const radio =
+  radios[currentRadio];
+
+  if(radio.id === "lafan"){
+
+    radioNameTop.style.backgroundImage =
+    'url("logosuperiorlafan.jpeg")';
+
+  }
+
+  if(radio.id === "clip"){
+
+    radioNameTop.style.backgroundImage =
+    'none';
+
+  }
+
+  if(radio.id === "oye"){
+
+    radioNameTop.style.backgroundImage =
+    'none';
+
+  }
+
+  if(radio.id === "pox"){
+
+    radioNameTop.style.backgroundImage =
+    'none';
+
+  }
+
+}
+
+const oldLoadRadioTopLogo =
+loadRadio;
+
+loadRadio = function(index){
+
+  oldLoadRadioTopLogo(index);
+
+  updateTopLogo();
+
+};
+
+updateTopLogo();
