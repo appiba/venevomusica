@@ -661,37 +661,37 @@ loadStreamingLinks().then(() => {
   renderFavorites();
 });
 /* ========================= */
-/* TOP LOGO / RADIO NAME FIX */
+/* FINAL TOP LOGO PNG */
 /* ========================= */
 
 function updateTopLogo(){
 
-  const radio = radios[currentRadio];
+  const radio =
+  radios[currentRadio];
 
   if(radio.id === "lafan"){
 
-    radioNameTop.textContent = "LA FAN";
-    radioNameTop.style.backgroundImage = 'url("logosuperiorlafan.jpeg")';
+    radioNameTop.textContent =
+    "LA FAN";
 
   }else{
 
-    radioNameTop.style.backgroundImage = "none";
-    radioNameTop.textContent = `${radio.name} FD`;
+    radioNameTop.textContent =
+    `${radio.name} FD`;
 
   }
 
 }
 
-/* Guardamos la función original una sola vez */
-const originalLoadRadioWithLogo = loadRadio;
+const originalLoadRadioTop =
+loadRadio;
 
 loadRadio = function(index){
 
-  originalLoadRadioWithLogo(index);
+  originalLoadRadioTop(index);
 
   updateTopLogo();
 
 };
 
-/* Primera carga */
 updateTopLogo();
