@@ -876,3 +876,42 @@ body{
 .bottom-nav{
   padding-bottom:env(safe-area-inset-bottom);
 }
+/* ========================= */
+/* SCROLL REAL MOBILE FIX */
+/* ========================= */
+
+html,
+body {
+  height: auto !important;
+  min-height: 100% !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+
+body {
+  position: relative !important;
+}
+
+.app {
+  height: auto !important;
+  min-height: 100dvh !important;
+  overflow: visible !important;
+  padding-bottom: 180px !important;
+}
+
+.view,
+.active-view,
+#radioView,
+#radioModeBox {
+  overflow: visible !important;
+  height: auto !important;
+  min-height: auto !important;
+}
+
+.player-card {
+  margin-bottom: 90px !important;
+}
+
+.bottom-nav {
+  bottom: calc(12px + env(safe-area-inset-bottom)) !important;
+}
