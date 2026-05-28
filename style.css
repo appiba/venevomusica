@@ -915,3 +915,40 @@ body {
 .bottom-nav {
   bottom: calc(12px + env(safe-area-inset-bottom)) !important;
 }
+/* ========================= */
+/* INTERNAL RADIO SCROLL FIX */
+/* ========================= */
+
+body {
+  overflow: hidden !important;
+}
+
+.app {
+  height: 100dvh !important;
+  overflow: hidden !important;
+  padding-bottom: 92px !important;
+}
+
+#radioView.active-view {
+  overflow: hidden !important;
+}
+
+#radioModeBox {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 150px !important;
+}
+
+#radioModeBox::-webkit-scrollbar {
+  display: none;
+}
+
+.player-card {
+  margin-bottom: 120px !important;
+}
+
+.bottom-nav {
+  position: fixed !important;
+  bottom: calc(12px + env(safe-area-inset-bottom)) !important;
+}
