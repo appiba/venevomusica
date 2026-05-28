@@ -1,322 +1,337 @@
-/* ========================= */
-/* REEMPLAZA TODO TU STYLE  */
-/* ========================= */
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body{
-  font-family:Arial, Helvetica, sans-serif;
-  overflow:hidden;
-  transition:0.5s ease;
-  min-height:100vh;
-  color:white;
+html, body {
+  width: 100%;
+  min-height: 100%;
 }
 
-body.lafan-theme{
-  background:
-  radial-gradient(circle at top,#ff0099,#290025,#000);
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  color: white;
+  overflow: hidden;
+  transition: 0.5s ease;
 }
 
-body.clip-theme{
-  background:
-  radial-gradient(circle at top,#00ff88,#002b17,#000);
+body.lafan-theme {
+  background: radial-gradient(circle at top, #ff0099, #38002f 48%, #070006);
 }
 
-body.oye-theme{
-  background:
-  radial-gradient(circle at top,#00cfff,#001a2d,#000);
+body.clip-theme {
+  background: radial-gradient(circle at top, #00ff88, #00351d 48%, #000);
 }
 
-body.pox-theme{
-  background:
-  radial-gradient(circle at top,#ff4b4b,#2d0000,#000);
+body.oye-theme {
+  background: radial-gradient(circle at top, #00cfff, #001e36 48%, #000);
 }
 
-.hidden{
-  display:none !important;
+body.pox-theme {
+  background: radial-gradient(circle at top, #ff4b4b, #350000 48%, #000);
 }
 
-.app{
-  width:100%;
-  max-width:430px;
-  margin:auto;
-  min-height:100vh;
-  padding:20px;
+.hidden {
+  display: none !important;
 }
 
-.splash-screen{
-  position:fixed;
-  inset:0;
-  z-index:9999;
-  background:black;
+.splash-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #000;
 }
 
-.splash-screen video{
-  width:100%;
-  height:100%;
-  object-fit:cover;
+.splash-screen video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.top-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:25px;
+.app {
+  width: 100%;
+  max-width: 430px;
+  height: 100dvh;
+  margin: auto;
+  padding: 14px 18px 16px;
+  display: flex;
+  flex-direction: column;
 }
 
-.mini-title{
-  font-size:14px;
-  letter-spacing:3px;
-  margin-bottom:10px;
-  opacity:0.8;
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
 }
 
-.top-header h1{
-  font-size:52px;
-  line-height:1;
+.mini-title {
+  font-size: 12px;
+  letter-spacing: 3px;
+  opacity: 0.82;
+  margin-bottom: 8px;
 }
 
-.live-box{
-  padding:12px 18px;
-  border-radius:40px;
-  background:rgba(255,255,255,0.1);
-  backdrop-filter:blur(12px);
-  font-weight:bold;
+.top-header h1 {
+  font-size: 42px;
+  line-height: 0.9;
 }
 
-.switch-container{
-  width:100%;
-  display:flex;
-  background:rgba(255,255,255,0.08);
-  border-radius:30px;
-  padding:8px;
-  margin-bottom:30px;
+.live-box {
+  padding: 10px 14px;
+  border-radius: 30px;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(12px);
+  font-size: 13px;
+  font-weight: 900;
+  margin-top: 4px;
 }
 
-.switch-btn{
-  flex:1;
-  border:none;
-  height:50px;
-  border-radius:24px;
-  background:none;
-  color:white;
-  font-size:17px;
-  font-weight:bold;
-  cursor:pointer;
+.switch-container {
+  display: flex;
+  background: rgba(255,255,255,0.09);
+  border-radius: 26px;
+  padding: 6px;
+  margin-bottom: 14px;
 }
 
-.active-switch{
-  background:white;
-  color:black;
+.switch-btn {
+  flex: 1;
+  border: none;
+  height: 42px;
+  border-radius: 22px;
+  background: transparent;
+  color: white;
+  font-size: 15px;
+  font-weight: 900;
 }
 
-.dial-container{
-  position:relative;
-  width:100%;
-  height:420px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+.active-switch {
+  background: white;
+  color: black;
 }
 
-.dial-wrapper{
-  width:350px;
-  height:350px;
-  position:relative;
+#radioSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
-.dial-ring{
-  position:absolute;
-  inset:0;
-  border-radius:50%;
-  border:10px solid rgba(255,255,255,0.15);
-  animation:rotateDial 12s linear infinite;
+.dial-container {
+  position: relative;
+  height: 310px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: pan-y;
 }
 
-.second-ring{
-  inset:18px;
-  border-width:4px;
-  opacity:0.6;
-  animation-direction:reverse;
+.dial-wrapper {
+  width: 270px;
+  height: 270px;
+  position: relative;
+  transition: transform 0.65s ease;
 }
 
-@keyframes rotateDial{
-  from{
-    transform:rotate(0deg);
-  }
-  to{
-    transform:rotate(360deg);
-  }
+.dial-wrapper.spin {
+  transform: rotate(360deg);
 }
 
-.dial-center{
-  position:absolute;
-  inset:40px;
-  border-radius:50%;
-  background:rgba(0,0,0,0.5);
-  backdrop-filter:blur(20px);
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
+.dial-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 8px solid rgba(255,255,255,0.14);
+  box-shadow: 0 0 35px rgba(255,255,255,0.12);
+  animation: rotateDial 14s linear infinite;
 }
 
-.playing-text{
-  font-size:14px;
-  margin-bottom:12px;
-  opacity:0.7;
+.second-ring {
+  inset: 16px;
+  border-width: 3px;
+  opacity: 0.55;
+  animation-direction: reverse;
 }
 
-#dialNumber{
-  font-size:82px;
-  line-height:1;
+@keyframes rotateDial {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-#dialRadioName{
-  font-size:28px;
-  margin-top:10px;
+.dial-center {
+  position: absolute;
+  inset: 34px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.48);
+  backdrop-filter: blur(18px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
-#dialSubtitle{
-  opacity:0.7;
-  margin-top:6px;
+.playing-text {
+  font-size: 12px;
+  opacity: 0.7;
+  margin-bottom: 8px;
 }
 
-.waveform{
-  margin-top:20px;
-  display:flex;
-  gap:5px;
-  align-items:end;
-  height:40px;
+#dialNumber {
+  font-size: 64px;
+  line-height: 0.95;
 }
 
-.waveform span{
-  width:6px;
-  background:white;
-  border-radius:20px;
-  animation:bounce 1s infinite ease-in-out;
+#dialRadioName {
+  font-size: 24px;
+  margin-top: 8px;
 }
 
-.waveform span:nth-child(1){height:10px;}
-.waveform span:nth-child(2){height:20px;}
-.waveform span:nth-child(3){height:35px;}
-.waveform span:nth-child(4){height:22px;}
-.waveform span:nth-child(5){height:15px;}
-.waveform span:nth-child(6){height:28px;}
-
-@keyframes bounce{
-  0%,100%{
-    transform:scaleY(1);
-  }
-  50%{
-    transform:scaleY(1.5);
-  }
+#dialSubtitle {
+  margin-top: 5px;
+  font-size: 14px;
+  opacity: 0.68;
 }
 
-.player-card{
-  margin-top:20px;
-  background:rgba(255,255,255,0.08);
-  border-radius:35px;
-  padding:22px;
-  backdrop-filter:blur(25px);
+.waveform {
+  margin-top: 14px;
+  display: flex;
+  gap: 5px;
+  align-items: end;
+  height: 32px;
 }
 
-.song-box{
-  display:flex;
-  gap:15px;
-  align-items:center;
+.waveform span {
+  width: 5px;
+  background: white;
+  border-radius: 20px;
+  animation: bounce 1s infinite ease-in-out;
 }
 
-.song-box video{
-  width:95px;
-  height:95px;
-  border-radius:22px;
-  object-fit:cover;
+.waveform span:nth-child(1){height: 8px;}
+.waveform span:nth-child(2){height: 18px;}
+.waveform span:nth-child(3){height: 30px;}
+.waveform span:nth-child(4){height: 20px;}
+.waveform span:nth-child(5){height: 12px;}
+.waveform span:nth-child(6){height: 24px;}
+
+@keyframes bounce {
+  0%,100% { transform: scaleY(1); }
+  50% { transform: scaleY(1.45); }
 }
 
-.song-live{
-  color:#ff3b3b;
-  font-size:13px;
-  font-weight:bold;
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 50;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 58px;
+  border: none;
+  border-radius: 24px;
+  background: rgba(255,255,255,0.16);
+  backdrop-filter: blur(12px);
+  color: white;
+  font-size: 42px;
+  font-weight: bold;
 }
 
-.song-info h3{
-  font-size:30px;
-  margin-top:5px;
+.left-arrow {
+  left: 0;
 }
 
-.song-info p{
-  margin-top:8px;
-  opacity:0.7;
-  line-height:1.4;
+.right-arrow {
+  right: 0;
 }
 
-.controls{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:25px;
-  margin-top:30px;
+.player-card {
+  margin-top: 10px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 28px;
+  padding: 16px;
+  backdrop-filter: blur(22px);
+  flex-shrink: 0;
 }
 
-.control-btn{
-  width:60px;
-  height:60px;
-  border-radius:50%;
-  border:none;
-  background:rgba(255,255,255,0.08);
-  color:white;
-  font-size:22px;
+.song-box {
+  display: flex;
+  gap: 13px;
+  align-items: center;
 }
 
-.play-btn{
-  width:95px;
-  height:95px;
-  border-radius:50%;
-  border:none;
-  font-size:38px;
-  font-weight:bold;
-  cursor:pointer;
-  background:white;
+.song-box video {
+  width: 82px;
+  height: 82px;
+  border-radius: 20px;
+  object-fit: cover;
+  flex-shrink: 0;
 }
 
-.nav-arrow{
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  z-index:50;
-  width:55px;
-  height:55px;
-  border:none;
-  border-radius:50%;
-  background:rgba(255,255,255,0.15);
-  backdrop-filter:blur(10px);
-  color:white;
-  font-size:42px;
-  cursor:pointer;
+.song-live {
+  color: #ff4b4b;
+  font-size: 12px;
+  font-weight: 900;
 }
 
-.left-arrow{
-  left:-5px;
+.song-info h3 {
+  font-size: 27px;
+  line-height: 1;
+  margin-top: 5px;
 }
 
-.right-arrow{
-  right:-5px;
+.song-info p {
+  margin-top: 7px;
+  font-size: 14px;
+  opacity: 0.72;
+  line-height: 1.35;
 }
 
-#streamingSection{
-  margin-top:20px;
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+  margin-top: 16px;
 }
 
-#streamingFrame{
-  width:100%;
-  height:78vh;
-  border:none;
-  border-radius:35px;
-  background:black;
+.control-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.12);
+  color: white;
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.play-btn {
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  border: none;
+  font-size: 30px;
+  font-weight: 900;
+  background: white;
+  color: black;
+}
+
+body.lafan-theme .play-btn { color: #e61b82; }
+body.clip-theme .play-btn { color: #006b35; }
+body.oye-theme .play-btn { color: #00a5d6; }
+body.pox-theme .play-btn { color: #d71920; }
+
+#streamingSection {
+  flex: 1;
+  min-height: 0;
+}
+
+#streamingFrame {
+  width: 100%;
+  height: calc(100dvh - 170px);
+  border: none;
+  border-radius: 28px;
+  background: black;
 }
