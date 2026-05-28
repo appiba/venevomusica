@@ -148,14 +148,21 @@ body.lafan-theme #radioNameTop {
 
 /* OYE */
 body.oye-theme #radioNameTop {
+
   width: 440px;
   height: 156px;
+
   font-size: 0 !important;
   line-height: 0 !important;
   color: transparent !important;
   text-indent: -9999px;
   overflow: hidden;
+
   background-image: url("logosuperioroye.svg?v=20");
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: contain;
+
 }
 
 /* RESPONSIVE LOGOS */
@@ -941,50 +948,5 @@ body.pox-theme .play-btn { color: #d71920; }
 
   .player-card {
     padding: 13px;
-  }
-}
-/* ========================= */
-/* AJUSTE LOGO SUPERIOR OYE */
-/* ========================= */
-
-body.oye-theme .top-header {
-  margin-bottom: 4px !important;
-}
-
-body.oye-theme #radioNameTop {
-  width: 170px !important;
-  height: 70px !important;
-  background-image: url("logosuperioroye.svg?v=30") !important;
-  background-size: contain !important;
-  background-position: left center !important;
-  background-repeat: no-repeat !important;
-}
-
-body.oye-theme .mode-tabs {
-  margin-top: -8px !important;
-  margin-bottom: 10px !important;
-}
-
-/* Celular */
-@media (max-width: 420px) {
-  body.oye-theme #radioNameTop {
-    width: 160px !important;
-    height: 66px !important;
-  }
-
-  body.oye-theme .mode-tabs {
-    margin-top: -10px !important;
-  }
-}
-
-/* Pantallas bajas */
-@media (max-height: 760px) {
-  body.oye-theme #radioNameTop {
-    width: 150px !important;
-    height: 62px !important;
-  }
-
-  body.oye-theme .mode-tabs {
-    margin-top: -12px !important;
   }
 }
