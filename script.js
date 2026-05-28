@@ -1,267 +1,198 @@
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzQ9MncHHlMc3WFcQgdrp-2BfGI4YKuKN9F10e-izjC07OXAuGdgsvVUwbUEwzbr7M33Q/exec";
+/* ========================= */
+/* REEMPLAZA TODO TU SCRIPT */
+/* ========================= */
 
-const playBtn = document.getElementById("playBtn");
-const radioPlayer = document.getElementById("radioPlayer");
-const visualizer = document.querySelector(".visualizer");
+const radios = [
 
-const mainTitle = document.getElementById("mainTitle");
-const mainSubtitle = document.getElementById("mainSubtitle");
-const radioTitle = document.getElementById("radioTitle");
-const radioText = document.getElementById("radioText");
-const coverBox = document.getElementById("coverBox");
-const playerCard = document.getElementById("playerCard");
+{
+  name:"LA FAN",
+  number:"90.5",
+  subtitle:"POP • TOP HITS",
+  theme:"lafan-theme",
+  stream:"https://radio.megahostec.com/listen/radio_la_fan_fm/stream",
+  logoVideo:"introlafanlogo.mp4",
+  streaming:"https://www.youtube.com/embed/36YnV9STBqc"
+},
 
-const splashScreen = document.getElementById("splashScreen");
-const splashVideo = document.getElementById("splashVideo");
+{
+  name:"CLIP",
+  number:"80.5",
+  subtitle:"MÚSICA • HITS",
+  theme:"clip-theme",
+  stream:"https://radio.megahostec.com/listen/radio_clipfm/stream",
+  logoVideo:"introcliplogo.mp4",
+  streaming:"https://www.youtube.com/embed/HnUvZH5PBko"
+},
 
-const prevRadioBtn = document.getElementById("prevRadioBtn");
-const nextRadioBtn = document.getElementById("nextRadioBtn");
+{
+  name:"OYE",
+  number:"93.5",
+  subtitle:"ENERGÍA • DIGITAL",
+  theme:"oye-theme",
+  stream:"https://radio.megahostec.com/listen/radio_oyefm/stream",
+  logoVideo:"introoyelogo.mp4",
+  streaming:"https://www.youtube.com/embed/36YnV9STBqc"
+},
 
-const radioModeBtn = document.getElementById("radioModeBtn");
-const streamingModeBtn = document.getElementById("streamingModeBtn");
-const radioModeBox = document.getElementById("radioModeBox");
-const streamingModeBox = document.getElementById("streamingModeBox");
-const streamingContent = document.getElementById("streamingContent");
+{
+  name:"POX",
+  number:"100.5",
+  subtitle:"ENTRETENIMIENTO • LIVE",
+  theme:"pox-theme",
+  stream:"https://radio.megahostec.com/listen/radio_pox_edmo/stream",
+  logoVideo:"poxvideo.mp4",
+  streaming:"https://www.youtube.com/embed/36YnV9STBqc"
+}
 
-let isPlaying = false;
-let currentIndex = 0;
-let startX = 0;
-let endX = 0;
-let currentMode = "radio";
-
-let radios = [
-  {
-    id: "lafan",
-    nombre: "LA FAN FM",
-    tema: "lafan-theme",
-    streamRadio: "https://radio.megahostec.com/listen/radio_la_fan_fm/stream",
-    streamVideo: "",
-    videoLogo: "introlafanlogo.mp4",
-    subtitulo: "Tu radio en vivo, música y energía en un solo lugar."
-  },
-  {
-    id: "clip",
-    nombre: "CLIP FM",
-    tema: "clip-theme",
-    streamRadio: "https://radio.megahostec.com/listen/radio_clipfm/stream",
-    streamVideo: "",
-    videoLogo: "introcliplogo.mp4",
-    subtitulo: "La radio con ritmo, frescura y buena música."
-  },
-  {
-    id: "oye",
-    nombre: "OYE FM",
-    tema: "oye-theme",
-    streamRadio: "https://radio.megahostec.com/listen/radio_oyefm/stream",
-    streamVideo: "",
-    videoLogo: "introoyelogo.mp4",
-    subtitulo: "La radio joven, dinámica y llena de energía."
-  },
-  {
-    id: "pox",
-    nombre: "POX FM",
-    tema: "pox-theme",
-    streamRadio: "https://radio.megahostec.com/listen/radio_pox_edmo/stream",
-    streamVideo: "",
-    videoLogo: "poxvideo.mp4",
-    subtitulo: "Música, entretenimiento y energía en vivo."
-  }
 ];
 
-function hideSplash() {
-  splashScreen.classList.add("hide");
-}
+let currentRadio = 0;
+let isPlaying = false;
 
-if (splashVideo && splashScreen) {
-  splashVideo.play().catch(() => {});
-  splashVideo.addEventListener("ended", hideSplash);
-  setTimeout(hideSplash, 6000);
-}
+const splashScreen = document.getElementById("splashScreen");
+const mainApp = document.getElementById("mainApp");
 
-async function loadStreamingLinks() {
-  try {
-    const response = await fetch(APPS_SCRIPT_URL);
-    const data = await response.json();
+const dialNumber = document.getElementById("dialNumber");
+const dialRadioName = document.getElementById("dialRadioName");
+const radioTitle = document.getElementById("radioTitle");
+const radioNameTop = document.getElementById("radioNameTop");
+const dialSubtitle = document.getElementById("dialSubtitle");
 
-    if (data.success && data.radios) {
-      radios = radios.map(radio => {
-        if (data.radios[radio.id]) {
-          return {
-            ...radio,
-            streamVideo: data.radios[radio.id].streamVideo || ""
-          };
-        }
-        return radio;
-      });
+const radioLogoVideo =
+document.getElementById("radioLogoVideo");
 
-      changeRadio(currentIndex, false);
-    }
-  } catch (error) {
-    console.log("No se pudo cargar streaming desde Google Sheets.");
+const radioPlayer =
+document.getElementById("radioPlayer");
+
+const playBtn =
+document.getElementById("playBtn");
+
+const prevRadio =
+document.getElementById("prevRadio");
+
+const nextRadio =
+document.getElementById("nextRadio");
+
+const radioTab =
+document.getElementById("radioTab");
+
+const streamingTab =
+document.getElementById("streamingTab");
+
+const radioSection =
+document.getElementById("radioSection");
+
+const streamingSection =
+document.getElementById("streamingSection");
+
+const streamingFrame =
+document.getElementById("streamingFrame");
+
+setTimeout(() => {
+
+  splashScreen.classList.add("hidden");
+  mainApp.classList.remove("hidden");
+
+}, 3500);
+
+function loadRadio(index){
+
+  const radio = radios[index];
+
+  document.body.className = radio.theme;
+
+  dialNumber.textContent = radio.number;
+
+  dialRadioName.textContent = radio.name;
+
+  radioTitle.textContent = radio.name;
+
+  radioNameTop.textContent = radio.name;
+
+  dialSubtitle.textContent = radio.subtitle;
+
+  radioLogoVideo.src = radio.logoVideo;
+
+  streamingFrame.src = radio.streaming;
+
+  radioPlayer.src = radio.stream;
+
+  if(isPlaying){
+
+    radioPlayer.play();
+
   }
+
 }
 
-function stopRadio() {
-  radioPlayer.pause();
-  isPlaying = false;
-  playBtn.textContent = "▶";
-  playBtn.classList.remove("playing");
-  visualizer.classList.remove("active");
-}
+playBtn.addEventListener("click", async()=>{
 
-async function playRadio() {
-  try {
+  if(!isPlaying){
+
     await radioPlayer.play();
+
     isPlaying = true;
-    playBtn.textContent = "❚❚";
-    playBtn.classList.add("playing");
-    visualizer.classList.add("active");
-  } catch (error) {
+
+    playBtn.innerHTML = "❚❚";
+
+  }else{
+
+    radioPlayer.pause();
+
     isPlaying = false;
-    playBtn.textContent = "▶";
-    playBtn.classList.remove("playing");
-    visualizer.classList.remove("active");
-  }
-}
 
-function updateDots() {
-  document.querySelectorAll(".dot").forEach((dot, index) => {
-    dot.classList.toggle("active-dot", index === currentIndex);
-  });
-}
+    playBtn.innerHTML = "▶";
 
-function updateStreamingBox(radio) {
-  const url = (radio.streamVideo || "").trim();
-
-  if (!url) {
-    streamingContent.innerHTML = `<p>Streaming no disponible por el momento.</p>`;
-    return;
   }
 
-  streamingContent.innerHTML = `
-    <iframe
-      src="${url}"
-      allow="autoplay; fullscreen; picture-in-picture"
-      allowfullscreen>
-    </iframe>
-  `;
-}
+});
 
-function changeRadio(index, keepPlaying = true) {
-  currentIndex = (index + radios.length) % radios.length;
-  const radio = radios[currentIndex];
+nextRadio.addEventListener("click", ()=>{
 
-  document.body.className = radio.tema;
+  currentRadio++;
 
-  mainTitle.textContent = radio.nombre;
-  mainSubtitle.textContent = radio.subtitulo;
-  radioTitle.textContent = radio.nombre;
-  radioText.textContent = "Escucha la radio online desde cualquier lugar.";
+  if(currentRadio >= radios.length){
 
-  coverBox.innerHTML = `
-    <video
-      autoplay
-      muted
-      loop
-      playsinline
-      src="${radio.videoLogo}">
-    </video>
-  `;
+    currentRadio = 0;
 
-  const wasPlaying = isPlaying;
-
-  radioPlayer.pause();
-  radioPlayer.src = radio.streamRadio;
-  radioPlayer.load();
-
-  updateStreamingBox(radio);
-  updateDots();
-
-  if (currentMode === "radio" && keepPlaying && wasPlaying) {
-    playRadio();
-  } else {
-    stopRadio();
-  }
-}
-
-function setMode(mode) {
-  currentMode = mode;
-
-  if (mode === "radio") {
-    radioModeBtn.classList.add("active-mode");
-    streamingModeBtn.classList.remove("active-mode");
-    radioModeBox.classList.remove("hidden");
-    streamingModeBox.classList.add("hidden");
   }
 
-  if (mode === "streaming") {
-    stopRadio();
-    streamingModeBtn.classList.add("active-mode");
-    radioModeBtn.classList.remove("active-mode");
-    radioModeBox.classList.add("hidden");
-    streamingModeBox.classList.remove("hidden");
-    updateStreamingBox(radios[currentIndex]);
+  loadRadio(currentRadio);
+
+});
+
+prevRadio.addEventListener("click", ()=>{
+
+  currentRadio--;
+
+  if(currentRadio < 0){
+
+    currentRadio = radios.length - 1;
+
   }
-}
 
-playBtn.addEventListener("click", async () => {
-  if (isPlaying) {
-    stopRadio();
-  } else {
-    await playRadio();
-  }
+  loadRadio(currentRadio);
+
 });
 
-nextRadioBtn.addEventListener("click", () => {
-  changeRadio(currentIndex + 1);
+streamingTab.addEventListener("click", ()=>{
+
+  radioTab.classList.remove("active-switch");
+  streamingTab.classList.add("active-switch");
+
+  radioSection.classList.add("hidden");
+  streamingSection.classList.remove("hidden");
+
 });
 
-prevRadioBtn.addEventListener("click", () => {
-  changeRadio(currentIndex - 1);
+radioTab.addEventListener("click", ()=>{
+
+  streamingTab.classList.remove("active-switch");
+  radioTab.classList.add("active-switch");
+
+  streamingSection.classList.add("hidden");
+  radioSection.classList.remove("hidden");
+
 });
 
-radioModeBtn.addEventListener("click", () => {
-  setMode("radio");
-});
-
-streamingModeBtn.addEventListener("click", () => {
-  setMode("streaming");
-});
-
-playerCard.addEventListener("touchstart", (e) => {
-  startX = e.touches[0].clientX;
-});
-
-playerCard.addEventListener("touchend", (e) => {
-  endX = e.changedTouches[0].clientX;
-  const diff = startX - endX;
-
-  if (Math.abs(diff) > 50) {
-    if (diff > 0) {
-      changeRadio(currentIndex + 1);
-    } else {
-      changeRadio(currentIndex - 1);
-    }
-  }
-});
-
-playerCard.addEventListener("mousedown", (e) => {
-  startX = e.clientX;
-});
-
-playerCard.addEventListener("mouseup", (e) => {
-  endX = e.clientX;
-  const diff = startX - endX;
-
-  if (Math.abs(diff) > 50) {
-    if (diff > 0) {
-      changeRadio(currentIndex + 1);
-    } else {
-      changeRadio(currentIndex - 1);
-    }
-  }
-});
-
-updateDots();
-changeRadio(0, false);
-loadStreamingLinks();
+loadRadio(currentRadio);
