@@ -661,53 +661,37 @@ loadStreamingLinks().then(() => {
   renderFavorites();
 });
 /* ========================= */
-/* TOP LOGO ONLY */
+/* TOP LOGO / RADIO NAME FIX */
 /* ========================= */
 
 function updateTopLogo(){
 
-  const radio =
-  radios[currentRadio];
+  const radio = radios[currentRadio];
 
   if(radio.id === "lafan"){
 
-    radioNameTop.style.backgroundImage =
-    'url("logosuperiorlafan.jpeg")';
+    radioNameTop.textContent = "LA FAN";
+    radioNameTop.style.backgroundImage = 'url("logosuperiorlafan.jpeg")';
 
-  }
+  }else{
 
-  if(radio.id === "clip"){
-
-    radioNameTop.style.backgroundImage =
-    'none';
-
-  }
-
-  if(radio.id === "oye"){
-
-    radioNameTop.style.backgroundImage =
-    'none';
-
-  }
-
-  if(radio.id === "pox"){
-
-    radioNameTop.style.backgroundImage =
-    'none';
+    radioNameTop.style.backgroundImage = "none";
+    radioNameTop.textContent = `${radio.name} FD`;
 
   }
 
 }
 
-const oldLoadRadioTopLogo =
-loadRadio;
+/* Guardamos la función original una sola vez */
+const originalLoadRadioWithLogo = loadRadio;
 
 loadRadio = function(index){
 
-  oldLoadRadioTopLogo(index);
+  originalLoadRadioWithLogo(index);
 
   updateTopLogo();
 
 };
 
+/* Primera carga */
 updateTopLogo();
