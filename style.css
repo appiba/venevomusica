@@ -151,13 +151,13 @@ body.lafan-theme #radioNameTop {
   text-indent: -9999px;
   overflow: hidden;
 
-  background-image: url("logosuperiolafan.png?v=60");
+  background-image: url("logosuperiolafan.png?v=70");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
 }
 
-/* OYE - LOGO SUPERIOR SVG GRANDE */
+/* OYE - LOGO SUPERIOR SVG */
 body.oye-theme #radioNameTop {
   width: 155px;
   height: 55px;
@@ -168,7 +168,7 @@ body.oye-theme #radioNameTop {
   text-indent: -9999px;
   overflow: hidden;
 
-  background-image: url("logosuperioroye.svg?v=60");
+  background-image: url("logosuperioroye.svg?v=70");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
@@ -182,17 +182,6 @@ body.pox-theme #radioNameTop {
   height: 46px;
   display: flex;
   align-items: center;
-}
-
-/* RADIO / STREAMING MÁS PEGADO AL LOGO */
-.mode-tabs {
-  display: flex;
-  background: rgba(255,255,255,0.09);
-  border-radius: 26px;
-  padding: 6px;
-  margin-top: -14px;
-  margin-bottom: 10px;
-  flex-shrink: 0;
 }
 
 /* RESPONSIVE LOGOS */
@@ -213,10 +202,6 @@ body.pox-theme #radioNameTop {
     font-size: 36px;
     height: 44px;
   }
-
-  .mode-tabs {
-    margin-top: -18px;
-  }
 }
 
 @media (max-height: 760px) {
@@ -234,10 +219,6 @@ body.pox-theme #radioNameTop {
   body.pox-theme #radioNameTop {
     font-size: 34px;
     height: 42px;
-  }
-
-  .mode-tabs {
-    margin-top: -20px;
   }
 }
 
@@ -298,24 +279,6 @@ body.pox-theme #radioNameTop {
   flex-direction: column;
 }
 
-/* MODE TABS */
-
-.mode-tab {
-  flex: 1;
-  border: none;
-  height: 40px;
-  border-radius: 22px;
-  background: transparent;
-  color: white;
-  font-size: 14px;
-  font-weight: 900;
-}
-
-.active-mode {
-  background: white;
-  color: black;
-}
-
 /* INTERNAL RADIO SCROLL */
 
 #radioView.active-view {
@@ -337,15 +300,21 @@ body.pox-theme #radioNameTop {
   display: none;
 }
 
-/* LIVE ACTIVITY */
+/* ========================= */
+/* LIVE ACTIVITY + RADIO / STREAMING */
+/* ========================= */
 
 .live-activity {
+  position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 11px;
+
   margin-bottom: 10px;
-  padding: 10px 14px;
-  border-radius: 18px;
+  padding: 18px 14px;
+  min-height: 112px;
+
+  border-radius: 24px;
   background: rgba(255,255,255,0.08);
   backdrop-filter: blur(14px);
   flex-shrink: 0;
@@ -354,6 +323,7 @@ body.pox-theme #radioNameTop {
 .activity-dot {
   width: 12px;
   height: 12px;
+  margin-top: 34px;
   border-radius: 50%;
   background: #00ff88;
   box-shadow: 0 0 18px #00ff88;
@@ -361,10 +331,8 @@ body.pox-theme #radioNameTop {
   flex-shrink: 0;
 }
 
-@keyframes pulseLive {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.35); opacity: .55; }
-  100% { transform: scale(1); opacity: 1; }
+.activity-info {
+  margin-top: 20px;
 }
 
 .live-activity p {
@@ -374,9 +342,56 @@ body.pox-theme #radioNameTop {
 }
 
 .live-activity h4 {
-  margin-top: 2px;
+  margin-top: 4px;
   font-size: 16px;
   font-weight: 900;
+}
+
+/* RADIO / STREAMING DENTRO DEL CUADRO */
+
+.mode-tabs {
+  position: absolute;
+  top: 16px;
+  right: 14px;
+
+  width: 188px;
+  height: 38px;
+
+  display: flex;
+  padding: 4px;
+  border-radius: 22px;
+
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(18px);
+
+  margin: 0 !important;
+  flex-shrink: 0;
+}
+
+.mode-tab {
+  flex: 1;
+  border: none;
+
+  height: 30px;
+  border-radius: 18px;
+
+  background: transparent;
+  color: white;
+
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: 900;
+}
+
+.active-mode {
+  background: rgba(255,255,255,0.94) !important;
+  color: #000 !important;
+}
+
+@keyframes pulseLive {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.35); opacity: .55; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 /* DIAL */
@@ -1000,34 +1015,4 @@ body.pox-theme .play-btn { color: #d71920; }
   .player-card {
     padding: 13px;
   }
-}
-/* ========================= */
-/* BOTONES RADIO / STREAMING ELEGANTES */
-/* ========================= */
-
-.mode-tabs {
-  width: 210px !important;
-  margin-left: auto !important;
-  margin-right: 0 !important;
-  margin-top: -10px !important;
-  margin-bottom: 10px !important;
-
-  padding: 4px !important;
-  border-radius: 22px !important;
-
-  background: rgba(255,255,255,0.10) !important;
-  backdrop-filter: blur(18px);
-}
-
-.mode-tab {
-  height: 32px !important;
-  border-radius: 18px !important;
-  font-size: 11px !important;
-  letter-spacing: 1px;
-  font-weight: 900;
-}
-
-.active-mode {
-  background: rgba(255,255,255,0.92) !important;
-  color: #000 !important;
 }
