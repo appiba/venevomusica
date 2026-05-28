@@ -59,6 +59,8 @@ let sourceNode = null;
 let analyserReady = false;
 let fakeVisualizerInterval = null;
 
+let nowPlayingInterval = null;
+
 const splashScreen = document.getElementById("splashScreen");
 const splashVideo = document.getElementById("splashVideo");
 
@@ -103,6 +105,11 @@ const favoritesList = document.getElementById("favoritesList");
 const volumeBtn = document.getElementById("volumeBtn");
 const volumePanel = document.getElementById("volumePanel");
 const volumeSlider = document.getElementById("volumeSlider");
+
+const nowPlayingBox = document.getElementById("nowPlayingBox");
+const nowCover = document.getElementById("nowCover");
+const nowTitle = document.getElementById("nowTitle");
+const nowArtist = document.getElementById("nowArtist");
 
 const audioBars = document.querySelectorAll("#audioBars span");
 const bottomTabs = document.querySelectorAll(".bottom-tab");
@@ -249,6 +256,9 @@ function loadRadio(index) {
 
   updateFavoriteButton();
   updateStreamingBox();
+
+  loadNowPlaying();
+  startNowPlayingUpdater();
 
   if (isPlaying) {
     radioPlayer.play().catch(() => {});
@@ -561,6 +571,79 @@ function setupVolume() {
     volumeSlider.value = percent.toFixed(2);
     radioPlayer.volume = percent;
   }, { passive: false });
+}
+
+/* NOW PLAYING */
+
+async function loadNowPlaying() {
+  const radio = radios[currentRadio];
+
+  if (!nowPlayingBox || !nowTitle || !nowArtist || !nowCover) return;
+
+  nowTitle.textContent = "Cargando canción...";
+  nowArtist.textContent = radio.name;
+  nowCover.src = "";
+  nowCover.parentElement.classList.remove("has-cover");
+
+  if (!radio.metadataApi) {
+    nowTitle.textContent = radio.name;
+    nowArtist.textContent = radio.subtitle;
+    return;
+  }
+
+  try {
+    const response = await fetch(`${radio.metadataApi}?t=${Date.now()}`, {
+      cache: "no-store"
+    });
+
+    const data = await response.json();
+
+    const song = data?.now_playing?.song || null;
+
+    const title =
+      song?.title ||
+      song?.text ||
+      "Canción no disponible";
+
+    const artist =
+      song?.artist ||
+      data?.now_playing?.song?.artist ||
+      "Artista no disponible";
+
+    const art =
+      song?.art ||
+      data?.now_playing?.song?.art ||
+      "";
+
+    nowTitle.textContent = title;
+    nowArtist.textContent = artist;
+
+    if (art) {
+      nowCover.src = art;
+      nowCover.parentElement.classList.add("has-cover");
+    } else {
+      nowCover.src = "";
+      nowCover.parentElement.classList.remove("has-cover");
+    }
+
+  } catch (error) {
+    nowTitle.textContent = radio.name;
+    nowArtist.textContent = "Información no disponible";
+    nowCover.src = "";
+    nowCover.parentElement.classList.remove("has-cover");
+  }
+}
+
+function startNowPlayingUpdater() {
+  if (nowPlayingInterval) {
+    clearInterval(nowPlayingInterval);
+  }
+
+  loadNowPlaying();
+
+  nowPlayingInterval = setInterval(() => {
+    loadNowPlaying();
+  }, 15000);
 }
 
 /* LIVE ACTIVITY */
