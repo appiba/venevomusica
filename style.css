@@ -35,7 +35,22 @@ body.pox-theme {
 .hidden {
   display: none !important;
 }
+/* ========================= */
+/* MOBILE VOLUME FIX */
+/* ========================= */
 
+.volume-panel {
+  touch-action: none !important;
+  position: relative;
+  z-index: 9999;
+}
+
+.volume-panel input[type="range"] {
+  touch-action: none !important;
+  pointer-events: auto !important;
+  height: 34px;
+  width: 100%;
+}
 /* SPLASH */
 
 .splash-screen {
