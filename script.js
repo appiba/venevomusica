@@ -709,3 +709,58 @@ volumeBtn.addEventListener("click", () => {
   volumePanel.classList.toggle("hidden");
 
 });
+/* ========================= */
+/* FINAL VOLUME FIX */
+/* ========================= */
+
+/* FORCE PANEL */
+
+volumeBtn.onclick = function(){
+
+  volumePanel.classList.toggle("hidden");
+
+};
+
+/* FORCE INTERNAL VOLUME */
+
+volumeSlider.oninput = function(){
+
+  radioPlayer.volume =
+  parseFloat(this.value);
+
+};
+
+/* MOBILE */
+
+volumeSlider.addEventListener("touchstart", function(e){
+
+  e.stopPropagation();
+
+}, { passive:true });
+
+volumeSlider.addEventListener("touchmove", function(e){
+
+  e.preventDefault();
+
+  const rect =
+  this.getBoundingClientRect();
+
+  const touch =
+  e.touches[0];
+
+  let percent =
+  (touch.clientX - rect.left) / rect.width;
+
+  percent =
+  Math.max(0, Math.min(1, percent));
+
+  this.value = percent;
+
+  radioPlayer.volume = percent;
+
+}, { passive:false });
+
+/* DEFAULT */
+
+radioPlayer.volume = 1;
+volumeSlider.value = 1;
