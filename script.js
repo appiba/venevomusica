@@ -216,6 +216,8 @@ function spinDial() {
 function updateTopIdentity(radio) {
   if (radio.id === "lafan") {
     radioNameTop.textContent = "LA FAN";
+  } else if (radio.id === "oye") {
+    radioNameTop.textContent = "OYE";
   } else {
     radioNameTop.textContent = `${radio.name} FD`;
   }
