@@ -116,9 +116,7 @@ body.pox-theme {
   letter-spacing: 1px;
 }
 
-/* ========================= */
 /* LOGOS / TÍTULOS SUPERIORES */
-/* ========================= */
 
 #radioNameTop {
   display: block;
@@ -127,54 +125,44 @@ body.pox-theme {
   text-transform: uppercase;
   letter-spacing: 1px;
   color: white;
-
   width: auto;
   height: auto;
-
   background-image: none;
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
-
   text-indent: 0;
   overflow: visible;
 }
 
-/* LA FAN - LOGO SUPERIOR */
 body.lafan-theme #radioNameTop {
   width: 255px;
   height: 92px;
-
   font-size: 0 !important;
   line-height: 0 !important;
   color: transparent !important;
   text-indent: -9999px;
   overflow: hidden;
-
-  background-image: url("logosuperiolafan.png?v=70");
+  background-image: url("logosuperiolafan.png?v=80");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
 }
 
-/* OYE - LOGO SUPERIOR SVG */
 body.oye-theme #radioNameTop {
   width: 155px;
   height: 55px;
-
   font-size: 0 !important;
   line-height: 0 !important;
   color: transparent !important;
   text-indent: -9999px;
   overflow: hidden;
-
-  background-image: url("logosuperioroye.svg?v=70");
+  background-image: url("logosuperioroye.svg?v=80");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
 }
 
-/* CLIP Y POX - TEXTO NORMAL ALINEADO */
 body.clip-theme #radioNameTop,
 body.pox-theme #radioNameTop {
   font-size: 38px;
@@ -183,8 +171,6 @@ body.pox-theme #radioNameTop {
   display: flex;
   align-items: center;
 }
-
-/* RESPONSIVE LOGOS */
 
 @media (max-width: 420px) {
   body.lafan-theme #radioNameTop {
@@ -300,20 +286,16 @@ body.pox-theme #radioNameTop {
   display: none;
 }
 
-/* ========================= */
 /* LIVE ACTIVITY + RADIO / STREAMING */
-/* ========================= */
 
 .live-activity {
   position: relative;
   display: flex;
   align-items: flex-start;
   gap: 11px;
-
   margin-bottom: 10px;
   padding: 18px 14px;
   min-height: 112px;
-
   border-radius: 24px;
   background: rgba(255,255,255,0.08);
   backdrop-filter: blur(14px);
@@ -347,23 +329,17 @@ body.pox-theme #radioNameTop {
   font-weight: 900;
 }
 
-/* RADIO / STREAMING DENTRO DEL CUADRO */
-
 .mode-tabs {
   position: absolute;
   top: 16px;
   right: 14px;
-
   width: 188px;
   height: 38px;
-
   display: flex;
   padding: 4px;
   border-radius: 22px;
-
   background: rgba(255,255,255,0.12);
   backdrop-filter: blur(18px);
-
   margin: 0 !important;
   flex-shrink: 0;
 }
@@ -371,13 +347,10 @@ body.pox-theme #radioNameTop {
 .mode-tab {
   flex: 1;
   border: none;
-
   height: 30px;
   border-radius: 18px;
-
   background: transparent;
   color: white;
-
   font-size: 10px;
   letter-spacing: 1px;
   font-weight: 900;
@@ -691,6 +664,88 @@ body.pox-theme #radioNameTop {
   border: none;
   border-radius: 50%;
   background: white;
+}
+
+/* NOW PLAYING SONG INFO */
+
+.now-playing-box {
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 22px;
+  background: rgba(0,0,0,0.22);
+  border: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(18px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.now-cover-wrap {
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.10);
+  display: grid;
+  place-items: center;
+}
+
+.now-cover-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+}
+
+.now-cover-wrap.has-cover img {
+  display: block;
+}
+
+.now-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.now-info span {
+  font-size: 10px;
+  letter-spacing: 2px;
+  font-weight: 900;
+  opacity: 0.62;
+}
+
+.now-info h4 {
+  margin-top: 5px;
+  font-size: 17px;
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.now-info p {
+  margin-top: 4px;
+  font-size: 13px;
+  opacity: 0.72;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+body.lafan-theme .now-info span {
+  color: #ffec00;
+}
+
+body.clip-theme .now-info span {
+  color: #00ff88;
+}
+
+body.oye-theme .now-info span {
+  color: #00cfff;
+}
+
+body.pox-theme .now-info span {
+  color: #ff4b4b;
 }
 
 /* CONTROLS */
