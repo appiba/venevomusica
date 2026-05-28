@@ -620,3 +620,25 @@ loadRadio = function(index){
 /* FIRST INIT */
 
 updateFinalRadioTexts();
+/* ========================= */
+/* MOBILE VOLUME FIX */
+/* ========================= */
+
+volumeSlider.addEventListener("touchstart", function(e) {
+  e.stopPropagation();
+}, { passive: true });
+
+volumeSlider.addEventListener("touchmove", function(e) {
+  e.stopPropagation();
+
+  const rect = volumeSlider.getBoundingClientRect();
+  const touch = e.touches[0];
+  const percent = Math.min(Math.max((touch.clientX - rect.left) / rect.width, 0), 1);
+
+  volumeSlider.value = percent;
+  radioPlayer.volume = percent;
+}, { passive: true });
+
+volumeSlider.addEventListener("change", function() {
+  radioPlayer.volume = Number(volumeSlider.value);
+});
