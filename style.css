@@ -98,7 +98,7 @@ body.pox-theme {
 }
 
 .brand-title {
-  flex: 1;
+  flex: none;
   min-width: 0;
 }
 
