@@ -583,3 +583,40 @@ loadStreamingLinks().then(() => {
   loadRadio(currentRadio);
   renderFavorites();
 });
+/* ========================= */
+/* FINAL RADIO TEXT FIX */
+/* ========================= */
+
+function updateFinalRadioTexts(){
+
+  const radio =
+  radios[currentRadio];
+
+  /* HEADER */
+
+  radioNameTop.textContent =
+  `${radio.name} FD`;
+
+  /* DIAL */
+
+  dialRadioName.textContent =
+  `${radio.name} FM`;
+
+}
+
+/* AUTO UPDATE */
+
+const originalLoadRadio =
+loadRadio;
+
+loadRadio = function(index){
+
+  originalLoadRadio(index);
+
+  updateFinalRadioTexts();
+
+};
+
+/* FIRST INIT */
+
+updateFinalRadioTexts();
