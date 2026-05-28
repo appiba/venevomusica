@@ -147,8 +147,8 @@ body.lafan-theme #radioNameTop {
 
 /* OYE */
 body.oye-theme #radioNameTop {
-  width: 220px;
-  height: 78px;
+  width: 280px;
+  height: 98px;
   font-size: 0 !important;
   line-height: 0 !important;
   color: transparent !important;
@@ -166,8 +166,8 @@ body.oye-theme #radioNameTop {
   }
 
   body.oye-theme #radioNameTop {
-    width: 200px;
-    height: 72px;
+    width: 240px;
+    height: 86px;
   }
 }
 
@@ -178,8 +178,8 @@ body.oye-theme #radioNameTop {
   }
 
   body.oye-theme #radioNameTop {
-    width: 185px;
-    height: 66px;
+    width: 220px;
+    height: 78px;
   }
 }
 
