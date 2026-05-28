@@ -4,9 +4,10 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   width: 100%;
-  min-height: 100%;
+  height: 100%;
 }
 
 body {
@@ -35,22 +36,7 @@ body.pox-theme {
 .hidden {
   display: none !important;
 }
-/* ========================= */
-/* MOBILE VOLUME FIX */
-/* ========================= */
 
-.volume-panel {
-  touch-action: none !important;
-  position: relative;
-  z-index: 9999;
-}
-
-.volume-panel input[type="range"] {
-  touch-action: none !important;
-  pointer-events: auto !important;
-  height: 34px;
-  width: 100%;
-}
 /* SPLASH */
 
 .splash-screen {
@@ -73,7 +59,7 @@ body.pox-theme {
   max-width: 430px;
   height: 100dvh;
   margin: auto;
-  padding: 14px 18px 94px;
+  padding: 14px 18px 92px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -87,6 +73,7 @@ body.pox-theme {
   align-items: flex-start;
   margin-bottom: 14px;
   gap: 12px;
+  flex-shrink: 0;
 }
 
 .icon-btn {
@@ -122,8 +109,10 @@ body.pox-theme {
 }
 
 .brand-title h1 {
-  font-size: 40px;
+  font-size: 38px;
   line-height: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .live-status {
@@ -208,6 +197,27 @@ body.pox-theme {
   color: black;
 }
 
+/* INTERNAL RADIO SCROLL */
+
+#radioView.active-view {
+  overflow: hidden;
+}
+
+#radioModeBox {
+  min-height: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 150px;
+}
+
+#radioModeBox::-webkit-scrollbar {
+  display: none;
+}
+
 /* LIVE ACTIVITY */
 
 .live-activity {
@@ -219,6 +229,7 @@ body.pox-theme {
   border-radius: 18px;
   background: rgba(255,255,255,0.08);
   backdrop-filter: blur(14px);
+  flex-shrink: 0;
 }
 
 .activity-dot {
@@ -249,14 +260,7 @@ body.pox-theme {
   font-weight: 900;
 }
 
-/* RADIO SECTION */
-
-#radioModeBox {
-  min-height: 0;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
+/* DIAL */
 
 .dial-container {
   position: relative;
@@ -344,26 +348,25 @@ body.pox-theme {
 }
 
 .playing-text {
-  font-size: 10px;
-  letter-spacing: 1.4px;
-  opacity: 0.72;
-  margin-bottom: 6px;
+  display: none !important;
 }
 
 #dialNumber {
   font-size: 58px;
   line-height: 0.95;
+  margin-top: 10px;
 }
 
 #dialRadioName {
-  font-size: 22px;
-  margin-top: 7px;
+  font-size: 23px;
+  margin-top: 12px;
+  letter-spacing: 1px;
 }
 
 #dialSubtitle {
-  margin-top: 5px;
+  margin-top: 6px;
   font-size: 12px;
-  opacity: 0.68;
+  opacity: 0.72;
 }
 
 .waveform {
@@ -412,6 +415,7 @@ body.pox-theme {
 
 .player-card {
   margin-top: 8px;
+  margin-bottom: 120px;
   background: rgba(255,255,255,0.08);
   border-radius: 28px;
   padding: 15px;
@@ -486,15 +490,73 @@ body.pox-theme {
   stroke: #ff4b4b;
 }
 
+/* VOLUME */
+
 .volume-panel {
-  margin-top: 12px;
-  padding: 10px 14px;
-  border-radius: 16px;
-  background: rgba(255,255,255,0.10);
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  z-index: 99999;
+  touch-action: none;
 }
 
-.volume-panel input {
+.volume-panel.hidden {
+  display: none !important;
+}
+
+.volume-label {
+  font-size: 12px;
+  line-height: 1.4;
+  opacity: .72;
+}
+
+.volume-panel input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
   width: 100%;
+  height: 34px;
+  background: transparent;
+  outline: none;
+  touch-action: none;
+  pointer-events: auto;
+}
+
+.volume-panel input[type="range"]::-webkit-slider-runnable-track {
+  height: 7px;
+  border-radius: 30px;
+  background: rgba(255,255,255,0.20);
+}
+
+.volume-panel input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  margin-top: -9px;
+  border-radius: 50%;
+  background: white;
+  border: none;
+  box-shadow: 0 0 15px rgba(255,255,255,.55);
+}
+
+.volume-panel input[type="range"]::-moz-range-track {
+  height: 7px;
+  border-radius: 30px;
+  background: rgba(255,255,255,0.20);
+}
+
+.volume-panel input[type="range"]::-moz-range-thumb {
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 50%;
+  background: white;
 }
 
 /* CONTROLS */
@@ -739,7 +801,7 @@ body.pox-theme .play-btn { color: #d71920; }
 .bottom-nav {
   position: fixed;
   left: 50%;
-  bottom: 12px;
+  bottom: calc(12px + env(safe-area-inset-bottom));
   transform: translateX(-50%);
   width: calc(100% - 28px);
   max-width: 420px;
@@ -786,6 +848,8 @@ body.pox-theme .play-btn { color: #d71920; }
 .oye-theme .bottom-tab.active-tab { color: #00cfff; }
 .pox-theme .bottom-tab.active-tab { color: #ff4b4b; }
 
+/* RESPONSIVE */
+
 @media (max-height: 760px) {
   .dial-container {
     height: 258px;
@@ -798,6 +862,10 @@ body.pox-theme .play-btn { color: #d71920; }
 
   #dialNumber {
     font-size: 50px;
+  }
+
+  #dialRadioName {
+    font-size: 21px;
   }
 
   .song-box video {
@@ -813,212 +881,4 @@ body.pox-theme .play-btn { color: #d71920; }
   .player-card {
     padding: 13px;
   }
-}
-/* ========================= */
-/* FINAL DIAL STRUCTURE FIX */
-/* ========================= */
-
-.playing-text{
-  display:none !important;
-}
-
-#dialNumber{
-  margin-top:10px;
-}
-
-#dialRadioName{
-  margin-top:12px;
-  font-size:24px !important;
-  letter-spacing:1px;
-}
-
-#dialSubtitle{
-  margin-top:6px;
-  font-size:12px;
-  opacity:0.72;
-}
-
-/* HEADER RADIO NAME */
-
-.brand-title h1{
-  text-transform:uppercase;
-  letter-spacing:1px;
-}
-
-/* SCROLL FIX */
-
-body{
-  overflow-x:hidden !important;
-  overflow-y:auto !important;
-}
-
-.app{
-  overflow-y:auto !important;
-  overflow-x:hidden !important;
-  -webkit-overflow-scrolling:touch;
-  padding-bottom:120px !important;
-}
-
-/* RESPONSIVE DIAL */
-
-@media (max-height:820px){
-
-  .dial-container{
-    height:255px !important;
-  }
-
-  .dial-wrapper{
-    width:220px !important;
-    height:220px !important;
-  }
-
-  #dialNumber{
-    font-size:54px !important;
-  }
-
-  #dialRadioName{
-    font-size:21px !important;
-  }
-
-  .player-card{
-    margin-top:0px !important;
-  }
-
-}
-
-/* IPHONE SAFE AREA */
-
-.bottom-nav{
-  padding-bottom:env(safe-area-inset-bottom);
-}
-/* ========================= */
-/* SCROLL REAL MOBILE FIX */
-/* ========================= */
-
-html,
-body {
-  height: auto !important;
-  min-height: 100% !important;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
-}
-
-body {
-  position: relative !important;
-}
-
-.app {
-  height: auto !important;
-  min-height: 100dvh !important;
-  overflow: visible !important;
-  padding-bottom: 180px !important;
-}
-
-.view,
-.active-view,
-#radioView,
-#radioModeBox {
-  overflow: visible !important;
-  height: auto !important;
-  min-height: auto !important;
-}
-
-.player-card {
-  margin-bottom: 90px !important;
-}
-
-.bottom-nav {
-  bottom: calc(12px + env(safe-area-inset-bottom)) !important;
-}
-/* ========================= */
-/* INTERNAL RADIO SCROLL FIX */
-/* ========================= */
-
-body {
-  overflow: hidden !important;
-}
-
-.app {
-  height: 100dvh !important;
-  overflow: hidden !important;
-  padding-bottom: 92px !important;
-}
-
-#radioView.active-view {
-  overflow: hidden !important;
-}
-
-#radioModeBox {
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 150px !important;
-}
-
-#radioModeBox::-webkit-scrollbar {
-  display: none;
-}
-
-.player-card {
-  margin-bottom: 120px !important;
-}
-
-.bottom-nav {
-  position: fixed !important;
-  bottom: calc(12px + env(safe-area-inset-bottom)) !important;
-}
-/* ========================= */
-/* REAL MOBILE VOLUME PANEL */
-/* ========================= */
-
-.volume-panel{
-  margin-top:14px;
-  padding:14px;
-  border-radius:18px;
-  background:rgba(255,255,255,0.08);
-  backdrop-filter:blur(20px);
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  position:relative;
-  z-index:99999;
-}
-
-.volume-panel.hidden{
-  display:none !important;
-}
-
-.volume-label{
-  font-size:12px;
-  line-height:1.4;
-  opacity:.72;
-}
-
-.volume-panel input[type="range"]{
-  -webkit-appearance:none;
-  appearance:none;
-  width:100%;
-  height:6px;
-  border-radius:30px;
-  background:rgba(255,255,255,0.18);
-  outline:none;
-}
-
-.volume-panel input[type="range"]::-webkit-slider-thumb{
-  -webkit-appearance:none;
-  appearance:none;
-  width:24px;
-  height:24px;
-  border-radius:50%;
-  background:white;
-  border:none;
-  box-shadow:0 0 15px rgba(255,255,255,.55);
-}
-
-.volume-panel input[type="range"]::-moz-range-thumb{
-  width:24px;
-  height:24px;
-  border:none;
-  border-radius:50%;
-  background:white;
 }
