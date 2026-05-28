@@ -105,9 +105,7 @@ const bottomTabs = document.querySelectorAll(".bottom-tab");
 const views = document.querySelectorAll(".view");
 const bottomStreamingBtn = document.getElementById("bottomStreamingBtn");
 
-/* ========================= */
 /* SPLASH */
-/* ========================= */
 
 function hideSplash() {
   if (splashScreen) {
@@ -121,9 +119,7 @@ if (splashVideo && splashScreen) {
   setTimeout(hideSplash, 3500);
 }
 
-/* ========================= */
 /* GOOGLE SHEETS STREAMING */
-/* ========================= */
 
 function convertToEmbedUrl(url) {
   if (!url) return "";
@@ -169,9 +165,7 @@ async function loadStreamingLinks() {
   }
 }
 
-/* ========================= */
 /* LIVE STATUS */
-/* ========================= */
 
 function setLiveStatus(type, label) {
   if (!liveStatus) return;
@@ -190,9 +184,7 @@ radioPlayer.addEventListener("playing", () => setLiveStatus("playing", "EN VIVO"
 radioPlayer.addEventListener("pause", () => setLiveStatus("paused", "PAUSADO"));
 radioPlayer.addEventListener("error", () => setLiveStatus("error", "SIN SEÑAL"));
 
-/* ========================= */
 /* DIAL */
-/* ========================= */
 
 function animateNumber(from, to) {
   const duration = 650;
@@ -221,6 +213,14 @@ function spinDial() {
   dialWrapper.classList.add("spin");
 }
 
+function updateTopIdentity(radio) {
+  if (radio.id === "lafan") {
+    radioNameTop.textContent = "LA FAN";
+  } else {
+    radioNameTop.textContent = `${radio.name} FD`;
+  }
+}
+
 function loadRadio(index) {
   const radio = radios[index];
 
@@ -229,7 +229,8 @@ function loadRadio(index) {
   spinDial();
   animateNumber(currentNumber, radio.number);
 
-  radioNameTop.textContent = `${radio.name} FD`;
+  updateTopIdentity(radio);
+
   dialRadioName.textContent = `${radio.name} FM`;
   radioTitle.textContent = radio.name;
   dialSubtitle.textContent = radio.subtitle;
@@ -253,9 +254,7 @@ function changeRadio(direction) {
   loadRadio(currentRadio);
 }
 
-/* ========================= */
 /* PLAYER */
-/* ========================= */
 
 async function playRadio() {
   try {
@@ -287,9 +286,7 @@ playBtn.addEventListener("click", async () => {
   }
 });
 
-/* ========================= */
 /* RADIO NAVIGATION */
-/* ========================= */
 
 nextRadio.addEventListener("click", () => changeRadio(1));
 prevRadio.addEventListener("click", () => changeRadio(-1));
@@ -322,9 +319,7 @@ dialArea.addEventListener("mouseup", e => {
   }
 });
 
-/* ========================= */
 /* STREAMING */
-/* ========================= */
 
 function updateStreamingBox() {
   const radio = radios[currentRadio];
@@ -368,9 +363,7 @@ function setMode(mode) {
 radioModeBtn.addEventListener("click", () => setMode("radio"));
 streamingModeBtn.addEventListener("click", () => setMode("streaming"));
 
-/* ========================= */
 /* BOTTOM NAV */
-/* ========================= */
 
 function showView(viewId) {
   views.forEach(view => view.classList.remove("active-view"));
@@ -403,9 +396,7 @@ bottomTabs.forEach(tab => {
   });
 });
 
-/* ========================= */
 /* DRAWER */
-/* ========================= */
 
 function openDrawer() {
   sideDrawer.classList.add("open");
@@ -421,9 +412,7 @@ menuBtn.addEventListener("click", openDrawer);
 closeDrawerBtn.addEventListener("click", closeDrawer);
 drawerOverlay.addEventListener("click", closeDrawer);
 
-/* ========================= */
 /* SHARE */
-/* ========================= */
 
 async function shareCurrentRadio() {
   const radio = radios[currentRadio];
@@ -450,9 +439,7 @@ shareBtn.addEventListener("click", shareCurrentRadio);
 drawerShareBtn.addEventListener("click", shareCurrentRadio);
 moreShareBtn.addEventListener("click", shareCurrentRadio);
 
-/* ========================= */
 /* FAVORITES */
-/* ========================= */
 
 function getFavorites() {
   return JSON.parse(localStorage.getItem("venevoFavorites") || "[]");
@@ -526,9 +513,7 @@ function renderFavorites() {
   });
 }
 
-/* ========================= */
-/* VOLUME - CLEAN FINAL */
-/* ========================= */
+/* VOLUME */
 
 function setupVolume() {
   radioPlayer.volume = 1;
@@ -572,9 +557,7 @@ function setupVolume() {
   }, { passive: false });
 }
 
-/* ========================= */
 /* LIVE ACTIVITY */
-/* ========================= */
 
 function updateListeners() {
   const variation = Math.floor(Math.random() * 420);
@@ -590,9 +573,7 @@ function updateListeners() {
 
 setInterval(updateListeners, 3500);
 
-/* ========================= */
 /* AUDIO VISUALIZER */
-/* ========================= */
 
 async function initAudioVisualizer() {
   if (analyserReady) return;
@@ -650,9 +631,7 @@ function startFakeVisualizer() {
   }, 180);
 }
 
-/* ========================= */
 /* INIT */
-/* ========================= */
 
 setupVolume();
 
@@ -660,38 +639,3 @@ loadStreamingLinks().then(() => {
   loadRadio(currentRadio);
   renderFavorites();
 });
-/* ========================= */
-/* FINAL TOP LOGO PNG */
-/* ========================= */
-
-function updateTopLogo(){
-
-  const radio =
-  radios[currentRadio];
-
-  if(radio.id === "lafan"){
-
-    radioNameTop.textContent =
-    "LA FAN";
-
-  }else{
-
-    radioNameTop.textContent =
-    `${radio.name} FD`;
-
-  }
-
-}
-
-const originalLoadRadioTop =
-loadRadio;
-
-loadRadio = function(index){
-
-  originalLoadRadioTop(index);
-
-  updateTopLogo();
-
-};
-
-updateTopLogo();
