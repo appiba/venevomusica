@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Venevo Música</title>
-  <link rel="stylesheet" href="style.css?v=30" />
+  <link rel="stylesheet" href="style.css?v=40" />
 </head>
 
 <body class="lafan-theme">
@@ -131,13 +131,26 @@
 
         <!-- PLAYER -->
         <section class="player-card">
-          <div class="song-box">
-            <video id="radioLogoVideo" autoplay muted loop playsinline></video>
+
+          <div class="song-box song-box-now">
+            <div class="song-cover-main">
+              <img id="nowCover" src="" alt="Cover canción actual">
+              <video id="radioLogoVideo" autoplay muted loop playsinline></video>
+            </div>
 
             <div class="song-info">
-              <span id="songStatus" class="song-live">EN VIVO</span>
-              <h3 id="radioTitle">LA FAN</h3>
-              <p id="radioDescription">Escucha la radio online desde cualquier lugar.</p>
+              <span id="songStatus" class="song-live">SONANDO AHORA</span>
+              <h3 id="nowTitle">Cargando canción...</h3>
+              <p id="nowArtist">Venevo Música</p>
+
+              <div class="song-progress">
+                <div id="songProgressFill" class="song-progress-fill"></div>
+              </div>
+
+              <div class="song-times">
+                <small id="songElapsed">0:00</small>
+                <small id="songDuration">EN VIVO</small>
+              </div>
             </div>
           </div>
 
@@ -164,19 +177,6 @@
 
           <div id="volumePanel" class="volume-panel hidden">
             <input id="volumeSlider" type="range" min="0" max="1" step="0.01" value="1">
-          </div>
-
-          <!-- NOW PLAYING -->
-          <div id="nowPlayingBox" class="now-playing-box">
-            <div class="now-cover-wrap">
-              <img id="nowCover" src="" alt="Cover canción actual">
-            </div>
-
-            <div class="now-info">
-              <span>SONANDO AHORA</span>
-              <h4 id="nowTitle">Cargando canción...</h4>
-              <p id="nowArtist">Venevo Música</p>
-            </div>
           </div>
 
           <div class="controls">
@@ -284,6 +284,6 @@
 
   <audio id="radioPlayer" crossorigin="anonymous"></audio>
 
-  <script src="script.js?v=30"></script>
+  <script src="script.js?v=40"></script>
 </body>
 </html>
