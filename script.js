@@ -105,10 +105,14 @@ const bottomTabs = document.querySelectorAll(".bottom-tab");
 const views = document.querySelectorAll(".view");
 const bottomStreamingBtn = document.getElementById("bottomStreamingBtn");
 
+/* ========================= */
 /* SPLASH */
+/* ========================= */
 
 function hideSplash() {
-  splashScreen.classList.add("hidden");
+  if (splashScreen) {
+    splashScreen.classList.add("hidden");
+  }
 }
 
 if (splashVideo && splashScreen) {
@@ -117,7 +121,9 @@ if (splashVideo && splashScreen) {
   setTimeout(hideSplash, 3500);
 }
 
+/* ========================= */
 /* GOOGLE SHEETS STREAMING */
+/* ========================= */
 
 function convertToEmbedUrl(url) {
   if (!url) return "";
@@ -163,11 +169,19 @@ async function loadStreamingLinks() {
   }
 }
 
-/* STATUS */
+/* ========================= */
+/* LIVE STATUS */
+/* ========================= */
 
 function setLiveStatus(type, label) {
+  if (!liveStatus) return;
+
   liveStatus.className = `live-status ${type}`;
-  liveStatus.querySelector("b").textContent = label;
+  const labelBox = liveStatus.querySelector("b");
+
+  if (labelBox) {
+    labelBox.textContent = label;
+  }
 }
 
 radioPlayer.addEventListener("waiting", () => setLiveStatus("connecting", "CONECTANDO"));
@@ -176,7 +190,9 @@ radioPlayer.addEventListener("playing", () => setLiveStatus("playing", "EN VIVO"
 radioPlayer.addEventListener("pause", () => setLiveStatus("paused", "PAUSADO"));
 radioPlayer.addEventListener("error", () => setLiveStatus("error", "SIN SEÑAL"));
 
+/* ========================= */
 /* DIAL */
+/* ========================= */
 
 function animateNumber(from, to) {
   const duration = 650;
@@ -213,9 +229,9 @@ function loadRadio(index) {
   spinDial();
   animateNumber(currentNumber, radio.number);
 
-  dialRadioName.textContent = radio.name;
+  radioNameTop.textContent = `${radio.name} FD`;
+  dialRadioName.textContent = `${radio.name} FM`;
   radioTitle.textContent = radio.name;
-  radioNameTop.textContent = radio.name;
   dialSubtitle.textContent = radio.subtitle;
 
   radioLogoVideo.src = radio.logoVideo;
@@ -237,7 +253,9 @@ function changeRadio(direction) {
   loadRadio(currentRadio);
 }
 
+/* ========================= */
 /* PLAYER */
+/* ========================= */
 
 async function playRadio() {
   try {
@@ -269,7 +287,9 @@ playBtn.addEventListener("click", async () => {
   }
 });
 
-/* NAVIGATION RADIO */
+/* ========================= */
+/* RADIO NAVIGATION */
+/* ========================= */
 
 nextRadio.addEventListener("click", () => changeRadio(1));
 prevRadio.addEventListener("click", () => changeRadio(-1));
@@ -302,7 +322,9 @@ dialArea.addEventListener("mouseup", e => {
   }
 });
 
+/* ========================= */
 /* STREAMING */
+/* ========================= */
 
 function updateStreamingBox() {
   const radio = radios[currentRadio];
@@ -333,10 +355,12 @@ function setMode(mode) {
 
   if (mode === "streaming") {
     pauseRadio();
+
     radioModeBtn.classList.remove("active-mode");
     streamingModeBtn.classList.add("active-mode");
     radioModeBox.classList.add("hidden");
     streamingModeBox.classList.remove("hidden");
+
     updateStreamingBox();
   }
 }
@@ -344,7 +368,9 @@ function setMode(mode) {
 radioModeBtn.addEventListener("click", () => setMode("radio"));
 streamingModeBtn.addEventListener("click", () => setMode("streaming"));
 
+/* ========================= */
 /* BOTTOM NAV */
+/* ========================= */
 
 function showView(viewId) {
   views.forEach(view => view.classList.remove("active-view"));
@@ -377,7 +403,9 @@ bottomTabs.forEach(tab => {
   });
 });
 
+/* ========================= */
 /* DRAWER */
+/* ========================= */
 
 function openDrawer() {
   sideDrawer.classList.add("open");
@@ -393,10 +421,13 @@ menuBtn.addEventListener("click", openDrawer);
 closeDrawerBtn.addEventListener("click", closeDrawer);
 drawerOverlay.addEventListener("click", closeDrawer);
 
+/* ========================= */
 /* SHARE */
+/* ========================= */
 
 async function shareCurrentRadio() {
   const radio = radios[currentRadio];
+
   const shareData = {
     title: `Venevo Música - ${radio.name}`,
     text: `Escucha ${radio.name} en Venevo Música.`,
@@ -419,7 +450,9 @@ shareBtn.addEventListener("click", shareCurrentRadio);
 drawerShareBtn.addEventListener("click", shareCurrentRadio);
 moreShareBtn.addEventListener("click", shareCurrentRadio);
 
+/* ========================= */
 /* FAVORITES */
+/* ========================= */
 
 function getFavorites() {
   return JSON.parse(localStorage.getItem("venevoFavorites") || "[]");
@@ -478,7 +511,7 @@ function renderFavorites() {
     const item = document.createElement("button");
     item.className = "favorite-item";
     item.innerHTML = `
-      <h3>${radio.name}</h3>
+      <h3>${radio.name} FM</h3>
       <p>${radio.number.toFixed(1)} FD · ${radio.subtitle}</p>
     `;
 
@@ -493,17 +526,55 @@ function renderFavorites() {
   });
 }
 
-/* VOLUME */
+/* ========================= */
+/* VOLUME - CLEAN FINAL */
+/* ========================= */
 
-volumeBtn.addEventListener("click", () => {
-  volumePanel.classList.toggle("hidden");
-});
+function setupVolume() {
+  radioPlayer.volume = 1;
+  volumeSlider.value = "1";
 
-volumeSlider.addEventListener("input", e => {
-  radioPlayer.volume = Number(e.target.value);
-});
+  if (!document.querySelector(".volume-label")) {
+    const volumeInfo = document.createElement("div");
+    volumeInfo.className = "volume-label";
+    volumeInfo.innerHTML = `
+      Volumen interno de Venevo.<br>
+      Usa los botones del teléfono para el volumen general.
+    `;
+    volumePanel.prepend(volumeInfo);
+  }
 
+  volumeBtn.onclick = () => {
+    volumePanel.classList.toggle("hidden");
+  };
+
+  volumeSlider.oninput = () => {
+    const volume = Number(volumeSlider.value);
+    radioPlayer.volume = volume;
+  };
+
+  volumeSlider.addEventListener("touchstart", e => {
+    e.stopPropagation();
+  }, { passive: true });
+
+  volumeSlider.addEventListener("touchmove", e => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const rect = volumeSlider.getBoundingClientRect();
+    const touch = e.touches[0];
+
+    let percent = (touch.clientX - rect.left) / rect.width;
+    percent = Math.max(0, Math.min(1, percent));
+
+    volumeSlider.value = percent.toFixed(2);
+    radioPlayer.volume = percent;
+  }, { passive: false });
+}
+
+/* ========================= */
 /* LIVE ACTIVITY */
+/* ========================= */
 
 function updateListeners() {
   const variation = Math.floor(Math.random() * 420);
@@ -519,7 +590,9 @@ function updateListeners() {
 
 setInterval(updateListeners, 3500);
 
+/* ========================= */
 /* AUDIO VISUALIZER */
+/* ========================= */
 
 async function initAudioVisualizer() {
   if (analyserReady) return;
@@ -577,190 +650,13 @@ function startFakeVisualizer() {
   }, 180);
 }
 
+/* ========================= */
 /* INIT */
+/* ========================= */
+
+setupVolume();
 
 loadStreamingLinks().then(() => {
   loadRadio(currentRadio);
   renderFavorites();
 });
-/* ========================= */
-/* FINAL RADIO TEXT FIX */
-/* ========================= */
-
-function updateFinalRadioTexts(){
-
-  const radio =
-  radios[currentRadio];
-
-  /* HEADER */
-
-  radioNameTop.textContent =
-  `${radio.name} FD`;
-
-  /* DIAL */
-
-  dialRadioName.textContent =
-  `${radio.name} FM`;
-
-}
-
-/* AUTO UPDATE */
-
-const originalLoadRadio =
-loadRadio;
-
-loadRadio = function(index){
-
-  originalLoadRadio(index);
-
-  updateFinalRadioTexts();
-
-};
-
-/* FIRST INIT */
-
-updateFinalRadioTexts();
-/* ========================= */
-/* MOBILE VOLUME FIX */
-/* ========================= */
-
-volumeSlider.addEventListener("touchstart", function(e) {
-  e.stopPropagation();
-}, { passive: true });
-
-volumeSlider.addEventListener("touchmove", function(e) {
-  e.stopPropagation();
-
-  const rect = volumeSlider.getBoundingClientRect();
-  const touch = e.touches[0];
-  const percent = Math.min(Math.max((touch.clientX - rect.left) / rect.width, 0), 1);
-
-  volumeSlider.value = percent;
-  radioPlayer.volume = percent;
-}, { passive: true });
-
-volumeSlider.addEventListener("change", function() {
-  radioPlayer.volume = Number(volumeSlider.value);
-});
-/* ========================= */
-/* REAL INTERNAL VOLUME */
-/* ========================= */
-
-radioPlayer.volume = 1;
-volumeSlider.value = 1;
-
-/* PANEL INFO */
-
-if(!document.querySelector(".volume-label")){
-
-  const volumeInfo =
-  document.createElement("div");
-
-  volumeInfo.className =
-  "volume-label";
-
-  volumeInfo.innerHTML =
-  `
-  Volumen interno de Venevo.<br>
-  Usa los botones del teléfono para el volumen general.
-  `;
-
-  volumePanel.prepend(volumeInfo);
-
-}
-
-/* DESKTOP */
-
-volumeSlider.addEventListener("input", () => {
-
-  const volume =
-  parseFloat(volumeSlider.value);
-
-  radioPlayer.volume = volume;
-
-});
-
-/* MOBILE TOUCH */
-
-volumeSlider.addEventListener("touchmove", (e) => {
-
-  const rect =
-  volumeSlider.getBoundingClientRect();
-
-  const touch =
-  e.touches[0];
-
-  let percent =
-  (touch.clientX - rect.left) / rect.width;
-
-  percent =
-  Math.max(0, Math.min(1, percent));
-
-  volumeSlider.value = percent;
-
-  radioPlayer.volume = percent;
-
-}, { passive:true });
-
-/* OPEN PANEL */
-
-volumeBtn.addEventListener("click", () => {
-
-  volumePanel.classList.toggle("hidden");
-
-});
-/* ========================= */
-/* FINAL VOLUME FIX */
-/* ========================= */
-
-/* FORCE PANEL */
-
-volumeBtn.onclick = function(){
-
-  volumePanel.classList.toggle("hidden");
-
-};
-
-/* FORCE INTERNAL VOLUME */
-
-volumeSlider.oninput = function(){
-
-  radioPlayer.volume =
-  parseFloat(this.value);
-
-};
-
-/* MOBILE */
-
-volumeSlider.addEventListener("touchstart", function(e){
-
-  e.stopPropagation();
-
-}, { passive:true });
-
-volumeSlider.addEventListener("touchmove", function(e){
-
-  e.preventDefault();
-
-  const rect =
-  this.getBoundingClientRect();
-
-  const touch =
-  e.touches[0];
-
-  let percent =
-  (touch.clientX - rect.left) / rect.width;
-
-  percent =
-  Math.max(0, Math.min(1, percent));
-
-  this.value = percent;
-
-  radioPlayer.volume = percent;
-
-}, { passive:false });
-
-/* DEFAULT */
-
-radioPlayer.volume = 1;
-volumeSlider.value = 1;
