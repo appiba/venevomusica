@@ -1,81 +1,181 @@
+<!-- ========================= -->
+<!-- REEMPLAZA TODO TU INDEX -->
+<!-- ========================= -->
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Venevo Música</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VENEVO MÚSICA</title>
+
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body class="lafan-theme">
 
+<div class="app">
+
+  <!-- SPLASH -->
   <section id="splashScreen" class="splash-screen">
-    <video id="splashVideo" autoplay muted playsinline preload="auto">
+    <video autoplay muted playsinline id="splashVideo">
       <source src="venevologovideo.mp4" type="video/mp4">
     </video>
   </section>
 
-  <main class="app">
+  <!-- APP -->
+  <section id="mainApp" class="hidden">
 
-    <section class="hero">
+    <!-- HEADER -->
+    <header class="top-header">
 
-      <div class="brand">
-        <span>VENEVO MÚSICA</span>
-        <h1 id="mainTitle">LA FAN FM</h1>
-        <p id="mainSubtitle">Tu radio en vivo, música y energía en un solo lugar.</p>
+      <div>
+        <p class="mini-title">VENEVO MÚSICA</p>
+        <h1 id="radioNameTop">LA FAN</h1>
       </div>
 
-      <div id="playerCard" class="player-card">
+      <div class="live-box">
+        ● EN VIVO
+      </div>
 
-        <button id="prevRadioBtn" class="nav-arrow nav-left">‹</button>
-        <button id="nextRadioBtn" class="nav-arrow nav-right">›</button>
+    </header>
 
-        <div class="mode-tabs">
-          <button id="radioModeBtn" class="mode-btn active-mode">RADIO</button>
-          <button id="streamingModeBtn" class="mode-btn">STREAMING</button>
+    <!-- SWITCH -->
+    <div class="switch-container">
+
+      <button class="switch-btn active-switch" id="radioTab">
+        RADIO
+      </button>
+
+      <button class="switch-btn" id="streamingTab">
+        STREAMING
+      </button>
+
+    </div>
+
+    <!-- RADIO -->
+    <section id="radioSection">
+
+      <!-- DIAL -->
+      <div class="dial-container">
+
+        <button class="nav-arrow left-arrow" id="prevRadio">
+          ‹
+        </button>
+
+        <div class="dial-wrapper">
+
+          <div class="dial-ring"></div>
+
+          <div class="dial-ring second-ring"></div>
+
+          <div class="dial-center">
+
+            <span class="playing-text">
+              SONANDO AHORA
+            </span>
+
+            <h2 id="dialNumber">
+              90.5
+            </h2>
+
+            <h3 id="dialRadioName">
+              LA FAN
+            </h3>
+
+            <p id="dialSubtitle">
+              POP • TOP HITS
+            </p>
+
+            <div class="waveform">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+
+          </div>
+
         </div>
 
-        <div id="radioModeBox">
-          <div id="coverBox" class="cover">
-            <video id="coverMedia" autoplay muted loop playsinline src="introlafanlogo.mp4"></video>
-          </div>
-
-          <div class="radio-info">
-            <p class="live">● EN VIVO</p>
-            <h2 id="radioTitle">LA FAN FM</h2>
-            <p id="radioText">Escucha la radio online desde cualquier lugar.</p>
-          </div>
-
-          <button id="playBtn" class="play-btn">▶</button>
-
-          <div class="visualizer">
-            <span></span><span></span><span></span><span></span><span></span>
-          </div>
-
-          <div class="swipe-text">Desliza o usa las flechas para cambiar de radio</div>
-
-          <audio id="radioPlayer" src="https://radio.megahostec.com/listen/radio_la_fan_fm/stream"></audio>
-        </div>
-
-        <div id="streamingModeBox" class="streaming-box hidden">
-          <div id="streamingContent" class="streaming-content">
-            <p>Streaming no disponible por el momento.</p>
-          </div>
-        </div>
+        <button class="nav-arrow right-arrow" id="nextRadio">
+          ›
+        </button>
 
       </div>
 
-      <div class="dots">
-        <span class="dot active-dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
+      <!-- PLAYER -->
+      <div class="player-card">
+
+        <div class="song-box">
+
+          <video
+            id="radioLogoVideo"
+            autoplay
+            muted
+            loop
+            playsinline>
+          </video>
+
+          <div class="song-info">
+
+            <span class="song-live">
+              EN VIVO
+            </span>
+
+            <h3 id="radioTitle">
+              LA FAN
+            </h3>
+
+            <p>
+              Escucha la radio online desde cualquier lugar.
+            </p>
+
+          </div>
+
+        </div>
+
+        <!-- CONTROLS -->
+        <div class="controls">
+
+          <button class="control-btn">
+            ⏮
+          </button>
+
+          <button id="playBtn" class="play-btn">
+            ▶
+          </button>
+
+          <button class="control-btn">
+            ⏭
+          </button>
+
+        </div>
+
       </div>
 
     </section>
 
-  </main>
+    <!-- STREAMING -->
+    <section id="streamingSection" class="hidden">
 
-  <script src="script.js"></script>
+      <iframe
+        id="streamingFrame"
+        allowfullscreen
+        frameborder="0">
+      </iframe>
+
+    </section>
+
+  </section>
+
+</div>
+
+<audio id="radioPlayer"></audio>
+
+<script src="script.js"></script>
+
 </body>
 </html>
