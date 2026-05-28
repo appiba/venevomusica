@@ -799,3 +799,80 @@ body.pox-theme .play-btn { color: #d71920; }
     padding: 13px;
   }
 }
+/* ========================= */
+/* FINAL DIAL STRUCTURE FIX */
+/* ========================= */
+
+.playing-text{
+  display:none !important;
+}
+
+#dialNumber{
+  margin-top:10px;
+}
+
+#dialRadioName{
+  margin-top:12px;
+  font-size:24px !important;
+  letter-spacing:1px;
+}
+
+#dialSubtitle{
+  margin-top:6px;
+  font-size:12px;
+  opacity:0.72;
+}
+
+/* HEADER RADIO NAME */
+
+.brand-title h1{
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+/* SCROLL FIX */
+
+body{
+  overflow-x:hidden !important;
+  overflow-y:auto !important;
+}
+
+.app{
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  -webkit-overflow-scrolling:touch;
+  padding-bottom:120px !important;
+}
+
+/* RESPONSIVE DIAL */
+
+@media (max-height:820px){
+
+  .dial-container{
+    height:255px !important;
+  }
+
+  .dial-wrapper{
+    width:220px !important;
+    height:220px !important;
+  }
+
+  #dialNumber{
+    font-size:54px !important;
+  }
+
+  #dialRadioName{
+    font-size:21px !important;
+  }
+
+  .player-card{
+    margin-top:0px !important;
+  }
+
+}
+
+/* IPHONE SAFE AREA */
+
+.bottom-nav{
+  padding-bottom:env(safe-area-inset-bottom);
+}
