@@ -882,3 +882,28 @@ body.pox-theme .play-btn { color: #d71920; }
     padding: 13px;
   }
 }
+/* ========================= */
+/* LOGO SUPERIOR SOLO IMAGEN */
+/* ========================= */
+
+#radioNameTop{
+
+  position:relative;
+
+  font-size:0 !important;
+  color:transparent !important;
+
+  text-indent:-9999px;
+
+  width:220px;
+  height:85px;
+
+  overflow:hidden;
+
+  background-repeat:no-repeat;
+  background-position:left center;
+  background-size:contain;
+
+  mix-blend-mode:multiply;
+
+}
