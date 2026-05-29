@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Venevo Música</title>
-  <link rel="stylesheet" href="style.css?v=180" />
+  <link rel="stylesheet" href="style.css?v=190" />
 </head>
 
 <body class="lafan-theme">
@@ -87,19 +87,32 @@
       <!-- RADIO MODE -->
       <section id="radioModeBox">
 
-        <!-- LIVE ACTIVITY + MODE TABS -->
-        <div class="live-activity liquid-card">
-          <span class="activity-dot"></span>
+        <!-- TOP MINI LIVE + MODE TABS -->
+        <div class="radio-top-strip">
 
-          <div class="activity-info">
-            <p>ACTIVIDAD EN VIVO</p>
-            <h4 id="listenersCount">2.853 conectados</h4>
+          <!-- MINI LIVE STATUS -->
+          <div class="mini-live-box">
+            <div class="mini-live-label">EN VIVO</div>
+
+            <div class="mini-live-stats">
+              <span class="mini-stat-item">
+                <span class="mini-stat-icon">👥</span>
+                <span id="liveUsersCount">2.8K</span>
+              </span>
+
+              <span class="mini-stat-item">
+                <span class="mini-stat-icon">👂</span>
+                <span id="listenTime">00:00:00</span>
+              </span>
+            </div>
           </div>
 
+          <!-- MODE TABS -->
           <div class="mode-tabs">
             <button id="radioModeBtn" class="mode-tab active-mode">RADIO</button>
             <button id="streamingModeBtn" class="mode-tab">STREAMING</button>
           </div>
+
         </div>
 
         <!-- DIAL / CARRUSEL 3D -->
@@ -346,6 +359,6 @@
 
   <audio id="radioPlayer" crossorigin="anonymous"></audio>
 
-  <script src="script.js?v=180"></script>
+  <script src="script.js?v=190"></script>
 </body>
 </html>
