@@ -17,6 +17,8 @@ body {
   transition: 0.5s ease;
 }
 
+/* TEMAS */
+
 body.lafan-theme {
   background: radial-gradient(circle at top, #ff0099, #38002f 48%, #070006);
 }
@@ -25,8 +27,9 @@ body.clip-theme {
   background: radial-gradient(circle at top, #00ff88, #00351d 48%, #000);
 }
 
+/* OYE ahora usa el verde de CLIP */
 body.oye-theme {
-  background: radial-gradient(circle at top, #00cfff, #001e36 48%, #000);
+  background: radial-gradient(circle at top, #00ff88, #00351d 48%, #000);
 }
 
 body.pox-theme {
@@ -50,6 +53,52 @@ body.pox-theme {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* LIQUID GLASS BASE */
+
+.liquid-card,
+.liquid-btn,
+.liquid-nav,
+.mode-tabs,
+.live-status,
+.volume-panel {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.18), rgba(255,255,255,0.045)),
+    rgba(0,0,0,0.18);
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.22),
+    inset 0 -12px 22px rgba(0,0,0,0.18),
+    0 18px 38px rgba(0,0,0,0.22);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+}
+
+.liquid-card::before,
+.liquid-btn::before,
+.liquid-nav::before,
+.mode-tabs::before,
+.live-status::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 9%;
+  right: 9%;
+  height: 38%;
+  border-radius: inherit;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.22), transparent);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.liquid-btn:active,
+.mode-tab:active,
+.bottom-tab:active,
+.play-btn:active {
+  transform: scale(0.96);
 }
 
 /* APP */
@@ -81,11 +130,10 @@ body.pox-theme {
   height: 44px;
   border: none;
   border-radius: 16px;
-  background: rgba(255,255,255,0.12);
-  backdrop-filter: blur(12px);
   display: grid;
   place-items: center;
   flex-shrink: 0;
+  color: white;
 }
 
 .icon-btn svg {
@@ -143,7 +191,7 @@ body.lafan-theme #radioNameTop {
   color: transparent !important;
   text-indent: -9999px;
   overflow: hidden;
-  background-image: url("logosuperiolafan.png?v=40");
+  background-image: url("logosuperiolafan.png?v=90");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
@@ -157,7 +205,7 @@ body.oye-theme #radioNameTop {
   color: transparent !important;
   text-indent: -9999px;
   overflow: hidden;
-  background-image: url("logosuperioroye.svg?v=40");
+  background-image: url("logosuperioroye.svg?v=90");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
@@ -214,8 +262,6 @@ body.pox-theme #radioNameTop {
   min-width: 92px;
   padding: 9px 10px;
   border-radius: 30px;
-  background: rgba(255,255,255,0.12);
-  backdrop-filter: blur(12px);
   font-size: 11px;
   font-weight: 900;
   display: flex;
@@ -297,8 +343,6 @@ body.pox-theme #radioNameTop {
   padding: 18px 14px;
   min-height: 112px;
   border-radius: 24px;
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(14px);
   flex-shrink: 0;
 }
 
@@ -329,6 +373,8 @@ body.pox-theme #radioNameTop {
   font-weight: 900;
 }
 
+/* RADIO / STREAMING */
+
 .mode-tabs {
   position: absolute;
   top: 16px;
@@ -338,8 +384,6 @@ body.pox-theme #radioNameTop {
   display: flex;
   padding: 4px;
   border-radius: 22px;
-  background: rgba(255,255,255,0.12);
-  backdrop-filter: blur(18px);
   margin: 0 !important;
   flex-shrink: 0;
 }
@@ -359,6 +403,17 @@ body.pox-theme #radioNameTop {
 .active-mode {
   background: rgba(255,255,255,0.94) !important;
   color: #000 !important;
+}
+
+.streaming-top-tabs {
+  position: relative;
+  height: 52px;
+  flex-shrink: 0;
+}
+
+.streaming-tabs {
+  top: 0;
+  right: 0;
 }
 
 @keyframes pulseLive {
@@ -406,7 +461,7 @@ body.pox-theme #radioNameTop {
 
 .lafan-theme .dial-glow { background: #ffec00; }
 .clip-theme .dial-glow { background: #00ff88; }
-.oye-theme .dial-glow { background: #00cfff; }
+.oye-theme .dial-glow { background: #00ff88; }
 .pox-theme .dial-glow { background: #ff4b4b; }
 
 .dial-ring {
@@ -447,6 +502,7 @@ body.pox-theme #radioNameTop {
   border-radius: 50%;
   background: rgba(0,0,0,0.50);
   backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -476,6 +532,8 @@ body.pox-theme #radioNameTop {
   opacity: 0.72;
 }
 
+/* VISUALIZER */
+
 .waveform {
   margin-top: 12px;
   display: flex;
@@ -486,10 +544,15 @@ body.pox-theme #radioNameTop {
 
 .waveform span {
   width: 5px;
-  height: 10px;
+  height: 8px;
   background: white;
   border-radius: 20px;
-  transition: height .08s linear;
+  transition: height .10s linear, opacity .10s linear;
+  opacity: .72;
+}
+
+.waveform.playing span {
+  opacity: 1;
 }
 
 /* ARROWS */
@@ -503,8 +566,6 @@ body.pox-theme #radioNameTop {
   height: 56px;
   border: none;
   border-radius: 24px;
-  background: rgba(255,255,255,0.16);
-  backdrop-filter: blur(12px);
   color: white;
   font-size: 42px;
   font-weight: bold;
@@ -523,10 +584,8 @@ body.pox-theme #radioNameTop {
 .player-card {
   margin-top: 8px;
   margin-bottom: 120px;
-  background: rgba(255,255,255,0.08);
   border-radius: 28px;
   padding: 15px;
-  backdrop-filter: blur(22px);
   flex-shrink: 0;
 }
 
@@ -552,17 +611,28 @@ body.pox-theme #radioNameTop {
 
 .song-cover-main img,
 .song-cover-main video {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.song-cover-main video {
+  display: block;
+  z-index: 1;
+}
+
+.song-cover-main img {
+  display: none;
+  z-index: 2;
+}
+
+.song-cover-main.has-cover img {
   display: block;
 }
 
 .song-cover-main.has-cover video {
-  display: none;
-}
-
-.song-cover-main:not(.has-cover) img {
   display: none;
 }
 
@@ -578,17 +648,48 @@ body.pox-theme #radioNameTop {
   flex: 1;
 }
 
-.song-info h3 {
-  font-size: 22px;
-  line-height: 1.1;
+/* TÍTULO CON MARQUEE */
+
+.now-title-mask {
+  position: relative;
+  width: 100%;
+  height: 30px;
   margin-top: 5px;
-  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.now-title-text {
+  display: inline-block;
+  font-size: 22px;
+  line-height: 30px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  transform: translateX(0);
+}
+
+.now-title-mask.marquee .now-title-text {
+  animation: titleMarquee 9s linear infinite;
+}
+
+@keyframes titleMarquee {
+  0% {
+    transform: translateX(0);
+  }
+  16% {
+    transform: translateX(0);
+  }
+  82% {
+    transform: translateX(calc(-1 * var(--marquee-distance, 120px)));
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .song-info p {
-  margin-top: 6px;
+  margin-top: 3px;
   font-size: 13px;
   opacity: 0.76;
   white-space: nowrap;
@@ -623,7 +724,7 @@ body.clip-theme .song-progress-fill {
 }
 
 body.oye-theme .song-progress-fill {
-  background: #00cfff;
+  background: #00ff88;
 }
 
 body.pox-theme .song-progress-fill {
@@ -657,7 +758,6 @@ body.pox-theme .song-progress-fill {
   height: 42px;
   border: none;
   border-radius: 15px;
-  background: rgba(255,255,255,0.12);
   display: grid;
   place-items: center;
 }
@@ -683,12 +783,9 @@ body.pox-theme .song-progress-fill {
   margin-top: 14px;
   padding: 14px;
   border-radius: 18px;
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(20px);
   display: flex;
   flex-direction: column;
   gap: 10px;
-  position: relative;
   z-index: 99999;
   touch-action: none;
 }
@@ -761,7 +858,6 @@ body.pox-theme .song-progress-fill {
   height: 50px;
   border-radius: 50%;
   border: none;
-  background: rgba(255,255,255,0.12);
   color: white;
   font-size: 35px;
   font-weight: bold;
@@ -778,9 +874,16 @@ body.pox-theme .song-progress-fill {
   color: black;
 }
 
+.liquid-play {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.9),
+    inset 0 -15px 24px rgba(0,0,0,0.12),
+    0 18px 45px rgba(0,0,0,0.35);
+}
+
 body.lafan-theme .play-btn { color: #e61b82; }
 body.clip-theme .play-btn { color: #006b35; }
-body.oye-theme .play-btn { color: #00a5d6; }
+body.oye-theme .play-btn { color: #006b35; }
 body.pox-theme .play-btn { color: #d71920; }
 
 .swipe-hint {
@@ -799,7 +902,7 @@ body.pox-theme .play-btn { color: #d71920; }
 
 .streaming-content {
   width: 100%;
-  height: calc(100dvh - 205px);
+  height: calc(100dvh - 260px);
   border-radius: 28px;
   background: black;
   overflow: hidden;
@@ -846,10 +949,8 @@ body.pox-theme .play-btn { color: #d71920; }
   border: none;
   border-radius: 22px;
   padding: 18px;
-  background: rgba(255,255,255,0.09);
   color: white;
   text-align: left;
-  backdrop-filter: blur(18px);
 }
 
 .favorite-item h3 {
@@ -908,6 +1009,7 @@ body.pox-theme .play-btn { color: #d71920; }
   z-index: 9000;
   background: rgba(5,5,15,.92);
   backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border-right: 1px solid rgba(255,255,255,.12);
   padding: 22px;
   transition: .35s ease;
@@ -994,13 +1096,10 @@ body.pox-theme .play-btn { color: #d71920; }
   max-width: 420px;
   height: 72px;
   border-radius: 28px;
-  background: rgba(0,0,0,0.55);
-  backdrop-filter: blur(24px);
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   padding: 8px;
   z-index: 7000;
-  border: 1px solid rgba(255,255,255,.12);
 }
 
 .bottom-tab {
@@ -1032,7 +1131,7 @@ body.pox-theme .play-btn { color: #d71920; }
 
 .lafan-theme .bottom-tab.active-tab { color: #ffec00; }
 .clip-theme .bottom-tab.active-tab { color: #00ff88; }
-.oye-theme .bottom-tab.active-tab { color: #00cfff; }
+.oye-theme .bottom-tab.active-tab { color: #00ff88; }
 .pox-theme .bottom-tab.active-tab { color: #ff4b4b; }
 
 /* RESPONSIVE GENERAL */
@@ -1067,5 +1166,9 @@ body.pox-theme .play-btn { color: #d71920; }
 
   .player-card {
     padding: 13px;
+  }
+
+  .now-title-text {
+    font-size: 20px;
   }
 }
