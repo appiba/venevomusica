@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Venevo Música</title>
-  <link rel="stylesheet" href="style.css?v=160" />
+  <link rel="stylesheet" href="style.css?v=170" />
 </head>
 
 <body class="lafan-theme">
@@ -102,56 +102,70 @@
           </div>
         </div>
 
-        <!-- DIAL / CAROUSEL RADIO -->
-        <section id="dialArea" class="dial-container dial-carousel-container">
+        <!-- DIAL / CARRUSEL 3D -->
+        <section id="dialArea" class="dial-container dial-stage">
           <button id="prevRadio" class="nav-arrow left-arrow liquid-btn" aria-label="Radio anterior">‹</button>
 
-          <div class="dial-carousel">
+          <div class="radio-3d-carousel">
 
-            <!-- RADIO ANTERIOR PREVIEW -->
-            <div id="prevRadioPreview" class="radio-preview-card radio-preview-left">
-              <div class="radio-preview-glow"></div>
-              <div class="radio-preview-cover">
-                <span id="prevPreviewNumber">100.5</span>
-              </div>
-              <div class="radio-preview-info">
-                <strong id="prevPreviewName">POX</strong>
-                <small id="prevPreviewSubtitle">ENTRETENIMIENTO · LIVE</small>
-              </div>
-            </div>
+            <!-- TARJETA IZQUIERDA / RADIO ANTERIOR -->
+            <article id="radioCardPrev" class="radio-3d-card card-left">
+              <div class="radio-card-glow"></div>
 
-            <!-- RADIO ACTUAL / DIAL CENTRAL -->
-            <div id="dialWrapper" class="dial-wrapper dial-current-card">
-              <div class="dial-glow"></div>
-              <div class="dial-ring"></div>
-              <div class="dial-ring second-ring"></div>
-              <div id="signalRing" class="signal-ring"></div>
+              <div class="radio-card-inner">
+                <span class="radio-card-label">ANTERIOR</span>
 
-              <div class="dial-center">
-                <span class="playing-text">FD · FRECUENCIA DIGITAL</span>
-                <h2 id="dialNumber">90.5</h2>
-                <h3 id="dialRadioName">LA FAN</h3>
-                <p id="dialSubtitle">POP · TOP HITS</p>
+                <div class="radio-card-frequency">
+                  <span id="prevCardNumber">100.5</span>
+                </div>
 
-                <div id="audioBars" class="waveform">
-                  <span></span><span></span><span></span>
-                  <span></span><span></span><span></span>
-                  <span></span><span></span>
+                <div class="radio-card-text">
+                  <h3 id="prevCardName">POX</h3>
+                  <p id="prevCardSubtitle">ENTRETENIMIENTO · LIVE</p>
                 </div>
               </div>
-            </div>
+            </article>
 
-            <!-- RADIO SIGUIENTE PREVIEW -->
-            <div id="nextRadioPreview" class="radio-preview-card radio-preview-right">
-              <div class="radio-preview-glow"></div>
-              <div class="radio-preview-cover">
-                <span id="nextPreviewNumber">80.5</span>
+            <!-- TARJETA CENTRAL / RADIO ACTUAL -->
+            <article id="radioCardCurrent" class="radio-3d-card card-center">
+              <div id="dialWrapper" class="dial-wrapper">
+                <div class="dial-glow"></div>
+                <div class="dial-ring"></div>
+                <div class="dial-ring second-ring"></div>
+                <div id="signalRing" class="signal-ring"></div>
+
+                <div class="dial-center">
+                  <span class="playing-text">FD · FRECUENCIA DIGITAL</span>
+                  <h2 id="dialNumber">90.5</h2>
+                  <h3 id="dialRadioName">LA FAN</h3>
+                  <p id="dialSubtitle">POP · TOP HITS</p>
+
+                  <div id="audioBars" class="waveform">
+                    <span></span><span></span><span></span>
+                    <span></span><span></span><span></span>
+                    <span></span><span></span>
+                  </div>
+                </div>
               </div>
-              <div class="radio-preview-info">
-                <strong id="nextPreviewName">CLIP</strong>
-                <small id="nextPreviewSubtitle">MÚSICA · HITS</small>
+            </article>
+
+            <!-- TARJETA DERECHA / RADIO SIGUIENTE -->
+            <article id="radioCardNext" class="radio-3d-card card-right">
+              <div class="radio-card-glow"></div>
+
+              <div class="radio-card-inner">
+                <span class="radio-card-label">SIGUIENTE</span>
+
+                <div class="radio-card-frequency">
+                  <span id="nextCardNumber">80.5</span>
+                </div>
+
+                <div class="radio-card-text">
+                  <h3 id="nextCardName">CLIP</h3>
+                  <p id="nextCardSubtitle">MÚSICA · HITS</p>
+                </div>
               </div>
-            </div>
+            </article>
 
           </div>
 
@@ -329,6 +343,6 @@
 
   <audio id="radioPlayer" crossorigin="anonymous"></audio>
 
-  <script src="script.js?v=160"></script>
+  <script src="script.js?v=170"></script>
 </body>
 </html>
