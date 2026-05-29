@@ -57,8 +57,13 @@ let audioContext = null;
 let analyser = null;
 let sourceNode = null;
 let analyserReady = false;
+
+let visualizerMode = "idle";
+let realVisualizerFrame = null;
 let fakeVisualizerInterval = null;
+
 let nowPlayingInterval = null;
+let currentCoverUrl = "";
 
 const splashScreen = document.getElementById("splashScreen");
 const splashVideo = document.getElementById("splashVideo");
@@ -73,7 +78,6 @@ const listenersCount = document.getElementById("listenersCount");
 
 const dialNumber = document.getElementById("dialNumber");
 const dialRadioName = document.getElementById("dialRadioName");
-const radioTitle = document.getElementById("radioTitle");
 const radioNameTop = document.getElementById("radioNameTop");
 const dialSubtitle = document.getElementById("dialSubtitle");
 const dialWrapper = document.getElementById("dialWrapper");
@@ -90,6 +94,9 @@ const nextRadioBottom = document.getElementById("nextRadioBottom");
 
 const radioModeBtn = document.getElementById("radioModeBtn");
 const streamingModeBtn = document.getElementById("streamingModeBtn");
+const streamingRadioModeBtn = document.getElementById("streamingRadioModeBtn");
+const streamingStreamingModeBtn = document.getElementById("streamingStreamingModeBtn");
+
 const radioModeBox = document.getElementById("radioModeBox");
 const streamingModeBox = document.getElementById("streamingModeBox");
 const streamingContent = document.getElementById("streamingContent");
@@ -106,13 +113,15 @@ const volumePanel = document.getElementById("volumePanel");
 const volumeSlider = document.getElementById("volumeSlider");
 
 const nowCover = document.getElementById("nowCover");
+const nowTitleBox = document.getElementById("nowTitleBox");
 const nowTitle = document.getElementById("nowTitle");
 const nowArtist = document.getElementById("nowArtist");
 const songProgressFill = document.getElementById("songProgressFill");
 const songElapsed = document.getElementById("songElapsed");
 const songDuration = document.getElementById("songDuration");
-const songCoverMain = document.querySelector(".song-cover-main");
+const songCoverMain = document.getElementById("songCoverMain");
 
+const audioBarsContainer = document.getElementById("audioBars");
 const audioBars = document.querySelectorAll("#audioBars span");
 const bottomTabs = document.querySelectorAll(".bottom-tab");
 const views = document.querySelectorAll(".view");
@@ -236,6 +245,18 @@ function updateTopIdentity(radio) {
   }
 }
 
+function resetSongCoverToVideo() {
+  currentCoverUrl = "";
+
+  if (nowCover) {
+    nowCover.removeAttribute("src");
+  }
+
+  if (songCoverMain) {
+    songCoverMain.classList.remove("has-cover");
+  }
+}
+
 function loadRadio(index) {
   const radio = radios[index];
 
@@ -248,6 +269,8 @@ function loadRadio(index) {
 
   dialRadioName.textContent = `${radio.name} FM`;
   dialSubtitle.textContent = radio.subtitle;
+
+  resetSongCoverToVideo();
 
   radioLogoVideo.src = radio.logoVideo;
   radioLogoVideo.load();
@@ -262,7 +285,11 @@ function loadRadio(index) {
   startNowPlayingUpdater();
 
   if (isPlaying) {
-    radioPlayer.play().catch(() => {});
+    radioPlayer.play().then(() => {
+      startVisualizer();
+    }).catch(() => {});
+  } else {
+    stopVisualizer();
   }
 }
 
@@ -281,10 +308,12 @@ async function playRadio() {
     isPlaying = true;
     playBtn.innerHTML = "❚❚";
     setLiveStatus("playing", "EN VIVO");
+    startVisualizer();
   } catch (error) {
     isPlaying = false;
     playBtn.innerHTML = "▶";
     setLiveStatus("error", "SIN SEÑAL");
+    stopVisualizer();
   }
 }
 
@@ -293,6 +322,7 @@ function pauseRadio() {
   isPlaying = false;
   playBtn.innerHTML = "▶";
   setLiveStatus("paused", "PAUSADO");
+  stopVisualizer();
 }
 
 playBtn.addEventListener("click", async () => {
@@ -361,6 +391,10 @@ function setMode(mode) {
   if (mode === "radio") {
     streamingModeBtn.classList.remove("active-mode");
     radioModeBtn.classList.add("active-mode");
+
+    if (streamingRadioModeBtn) streamingRadioModeBtn.classList.add("active-mode");
+    if (streamingStreamingModeBtn) streamingStreamingModeBtn.classList.remove("active-mode");
+
     streamingModeBox.classList.add("hidden");
     radioModeBox.classList.remove("hidden");
   }
@@ -370,6 +404,10 @@ function setMode(mode) {
 
     radioModeBtn.classList.remove("active-mode");
     streamingModeBtn.classList.add("active-mode");
+
+    if (streamingRadioModeBtn) streamingRadioModeBtn.classList.remove("active-mode");
+    if (streamingStreamingModeBtn) streamingStreamingModeBtn.classList.add("active-mode");
+
     radioModeBox.classList.add("hidden");
     streamingModeBox.classList.remove("hidden");
 
@@ -379,6 +417,14 @@ function setMode(mode) {
 
 radioModeBtn.addEventListener("click", () => setMode("radio"));
 streamingModeBtn.addEventListener("click", () => setMode("streaming"));
+
+if (streamingRadioModeBtn) {
+  streamingRadioModeBtn.addEventListener("click", () => setMode("radio"));
+}
+
+if (streamingStreamingModeBtn) {
+  streamingStreamingModeBtn.addEventListener("click", () => setMode("streaming"));
+}
 
 /* BOTTOM NAV */
 
@@ -500,7 +546,7 @@ function renderFavorites() {
 
   if (favorites.length === 0) {
     favoritesList.innerHTML = `
-      <div class="news-card">
+      <div class="news-card liquid-card">
         <h3>No tienes favoritos todavía</h3>
         <p>Agrega una radio tocando el corazón en el reproductor.</p>
       </div>
@@ -513,7 +559,7 @@ function renderFavorites() {
     if (!radio) return;
 
     const item = document.createElement("button");
-    item.className = "favorite-item";
+    item.className = "favorite-item liquid-card";
     item.innerHTML = `
       <h3>${radio.name} FM</h3>
       <p>${radio.number.toFixed(1)} FD · ${radio.subtitle}</p>
@@ -576,27 +622,74 @@ function setupVolume() {
 
 /* NOW PLAYING */
 
+function cleanSongTitle(title) {
+  if (!title) return "Canción no disponible";
+
+  return String(title)
+    .replace(/^(now|nov)\s*on\s*air\s*[:\-–—]?\s*/i, "")
+    .replace(/^on\s*air\s*[:\-–—]?\s*/i, "")
+    .replace(/^en\s*vivo\s*[:\-–—]?\s*/i, "")
+    .trim();
+}
+
+function setTitleMarquee(text) {
+  if (!nowTitle || !nowTitleBox) return;
+
+  nowTitle.textContent = text || "Canción no disponible";
+  nowTitleBox.classList.remove("marquee");
+  nowTitleBox.style.removeProperty("--marquee-distance");
+
+  requestAnimationFrame(() => {
+    const overflow = nowTitle.scrollWidth - nowTitleBox.clientWidth;
+
+    if (overflow > 12) {
+      nowTitleBox.style.setProperty("--marquee-distance", `${overflow + 32}px`);
+      nowTitleBox.classList.add("marquee");
+    }
+  });
+}
+
+function setSongCover(artUrl) {
+  if (!nowCover || !songCoverMain) return;
+
+  if (!artUrl) {
+    currentCoverUrl = "";
+    nowCover.removeAttribute("src");
+    songCoverMain.classList.remove("has-cover");
+    return;
+  }
+
+  if (currentCoverUrl === artUrl && songCoverMain.classList.contains("has-cover")) {
+    return;
+  }
+
+  const tempImage = new Image();
+
+  tempImage.onload = function () {
+    currentCoverUrl = artUrl;
+    nowCover.src = artUrl;
+    songCoverMain.classList.add("has-cover");
+  };
+
+  tempImage.onerror = function () {
+    currentCoverUrl = "";
+    nowCover.removeAttribute("src");
+    songCoverMain.classList.remove("has-cover");
+  };
+
+  tempImage.src = artUrl;
+}
+
 async function loadNowPlaying() {
   const radio = radios[currentRadio];
 
-  if (!nowTitle || !nowArtist || !nowCover) return;
-
-  nowTitle.textContent = "Cargando canción...";
-  nowArtist.textContent = radio.name;
-
-  if (songProgressFill) songProgressFill.style.width = "0%";
-  if (songElapsed) songElapsed.textContent = "0:00";
-  if (songDuration) songDuration.textContent = "EN VIVO";
-
-  if (songCoverMain) {
-    songCoverMain.classList.remove("has-cover");
-  }
-
-  nowCover.src = "";
+  if (!nowTitle || !nowArtist || !nowCover || !songCoverMain) return;
 
   if (!radio.metadataApi) {
-    nowTitle.textContent = radio.name;
+    setTitleMarquee(radio.name);
     nowArtist.textContent = radio.subtitle;
+    setSongCover("");
+    updateSongProgress(0, 0);
     return;
   }
 
@@ -609,10 +702,12 @@ async function loadNowPlaying() {
 
     const song = data?.now_playing?.song || null;
 
-    const title =
+    const rawTitle =
       song?.title ||
       song?.text ||
       "Canción no disponible";
+
+    const title = cleanSongTitle(rawTitle);
 
     const artist =
       song?.artist ||
@@ -628,34 +723,17 @@ async function loadNowPlaying() {
     const duration =
       Number(data?.now_playing?.duration || 0);
 
-    nowTitle.textContent = title;
+    setTitleMarquee(title);
     nowArtist.textContent = artist;
 
-    if (art) {
-      nowCover.src = art;
-      if (songCoverMain) {
-        songCoverMain.classList.add("has-cover");
-      }
-    } else {
-      nowCover.src = "";
-      if (songCoverMain) {
-        songCoverMain.classList.remove("has-cover");
-      }
-    }
-
     updateSongProgress(elapsed, duration);
+    setSongCover(art);
 
   } catch (error) {
-    nowTitle.textContent = radio.name;
+    setTitleMarquee(radio.name);
     nowArtist.textContent = "Información no disponible";
-
-    if (songProgressFill) songProgressFill.style.width = "0%";
-    if (songElapsed) songElapsed.textContent = "0:00";
-    if (songDuration) songDuration.textContent = "EN VIVO";
-
-    if (songCoverMain) {
-      songCoverMain.classList.remove("has-cover");
-    }
+    updateSongProgress(0, 0);
+    setSongCover("");
   }
 }
 
@@ -715,8 +793,19 @@ setInterval(updateListeners, 3500);
 
 /* AUDIO VISUALIZER */
 
+function setBarsIdle() {
+  audioBars.forEach((bar, index) => {
+    const base = index % 2 === 0 ? 8 : 11;
+    bar.style.height = `${base}px`;
+  });
+
+  if (audioBarsContainer) {
+    audioBarsContainer.classList.remove("playing");
+  }
+}
+
 async function initAudioVisualizer() {
-  if (analyserReady) return;
+  if (analyserReady || visualizerMode === "fake") return;
 
   try {
     audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -733,28 +822,65 @@ async function initAudioVisualizer() {
     analyser.connect(audioContext.destination);
 
     analyserReady = true;
-    animateRealVisualizer();
-
+    visualizerMode = "real";
   } catch (error) {
+    visualizerMode = "fake";
+  }
+}
+
+function startVisualizer() {
+  stopVisualizer(false);
+
+  if (audioBarsContainer) {
+    audioBarsContainer.classList.add("playing");
+  }
+
+  if (analyserReady && analyser) {
+    animateRealVisualizer();
+  } else {
     startFakeVisualizer();
   }
 }
 
+function stopVisualizer(reset = true) {
+  if (realVisualizerFrame) {
+    cancelAnimationFrame(realVisualizerFrame);
+    realVisualizerFrame = null;
+  }
+
+  if (fakeVisualizerInterval) {
+    clearInterval(fakeVisualizerInterval);
+    fakeVisualizerInterval = null;
+  }
+
+  if (reset) {
+    setBarsIdle();
+  }
+}
+
 function animateRealVisualizer() {
-  if (!analyser) return;
+  if (!analyser || !isPlaying) {
+    setBarsIdle();
+    return;
+  }
 
   const dataArray = new Uint8Array(analyser.frequencyBinCount);
 
   function draw() {
+    if (!isPlaying) {
+      setBarsIdle();
+      return;
+    }
+
     analyser.getByteFrequencyData(dataArray);
 
     audioBars.forEach((bar, index) => {
       const value = dataArray[index * 4] || 8;
-      const height = Math.max(8, Math.min(32, value / 4));
+      const height = Math.max(8, Math.min(34, value / 3.8));
       bar.style.height = `${height}px`;
     });
 
-    requestAnimationFrame(draw);
+    realVisualizerFrame = requestAnimationFrame(draw);
   }
 
   draw();
@@ -764,16 +890,24 @@ function startFakeVisualizer() {
   if (fakeVisualizerInterval) return;
 
   fakeVisualizerInterval = setInterval(() => {
-    audioBars.forEach(bar => {
-      const height = Math.floor(Math.random() * 28) + 8;
+    if (!isPlaying) {
+      setBarsIdle();
+      return;
+    }
+
+    audioBars.forEach((bar, index) => {
+      const wave = Math.sin(Date.now() / 160 + index) * 10;
+      const random = Math.random() * 18;
+      const height = Math.max(8, Math.min(34, 14 + wave + random));
       bar.style.height = `${height}px`;
     });
-  }, 180);
+  }, 120);
 }
 
 /* INIT */
 
 setupVolume();
+setBarsIdle();
 
 loadStreamingLinks().then(() => {
   loadRadio(currentRadio);
