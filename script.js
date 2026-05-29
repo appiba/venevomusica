@@ -11,6 +11,7 @@ const radios = [
     metadataApi: "https://radio.megahostec.com/api/nowplaying/radio_la_fan_fm",
     logoVideo: "introlafanlogo.mp4",
     logoCarro: "logolafancarro.png",
+    dialVideo: "diallafan.mp4",
     streaming: ""
   },
   {
@@ -23,6 +24,7 @@ const radios = [
     metadataApi: "https://radio.megahostec.com/api/nowplaying/radio_clipfm",
     logoVideo: "introcliplogo.mp4",
     logoCarro: "logoclipcarro.png",
+    dialVideo: "",
     streaming: ""
   },
   {
@@ -35,6 +37,7 @@ const radios = [
     metadataApi: "https://radio.megahostec.com/api/nowplaying/radio_oyefm",
     logoVideo: "introoyelogo.mp4",
     logoCarro: "logooyecarro.png",
+    dialVideo: "",
     streaming: ""
   },
   {
@@ -47,6 +50,7 @@ const radios = [
     metadataApi: "https://radio.megahostec.com/api/nowplaying/radio_pox_edmo",
     logoVideo: "poxvideo.mp4",
     logoCarro: "logopoxcarro.png",
+    dialVideo: "",
     streaming: ""
   }
 ];
@@ -85,8 +89,9 @@ const radioNameTop = document.getElementById("radioNameTop");
 const dialSubtitle = document.getElementById("dialSubtitle");
 const dialWrapper = document.getElementById("dialWrapper");
 const dialArea = document.getElementById("dialArea");
+const dialVideo = document.getElementById("dialVideo");
 
-/* NUEVO CARRUSEL 3D */
+/* CARRUSEL 3D */
 const radioCardPrev = document.getElementById("radioCardPrev");
 const radioCardCurrent = document.getElementById("radioCardCurrent");
 const radioCardNext = document.getElementById("radioCardNext");
@@ -233,12 +238,17 @@ function animateNumber(from, to) {
     const progress = Math.min((time - start) / duration, 1);
     const value = from + (to - from) * progress;
 
-    dialNumber.textContent = value.toFixed(1);
+    if (dialNumber) {
+      dialNumber.textContent = value.toFixed(1);
+    }
 
     if (progress < 1) {
       requestAnimationFrame(step);
     } else {
-      dialNumber.textContent = to.toFixed(1);
+      if (dialNumber) {
+        dialNumber.textContent = to.toFixed(1);
+      }
+
       currentNumber = to;
     }
   }
@@ -278,7 +288,6 @@ function formatPreviewNumber(number) {
   return String(number || "");
 }
 
-/* NUEVA FUNCIÓN PARA EL CARRUSEL 3D */
 function updateRadioCarousel() {
   const prevIndex = (currentRadio - 1 + radios.length) % radios.length;
   const nextIndex = (currentRadio + 1) % radios.length;
@@ -324,6 +333,36 @@ function updateRadioCarousel() {
   }
 }
 
+/* VIDEO DENTRO DEL DIAL */
+
+function updateDialVideo(radio) {
+  if (!dialVideo || !dialWrapper) return;
+
+  if (radio.dialVideo) {
+    if (dialVideo.getAttribute("src") !== radio.dialVideo) {
+      dialVideo.src = radio.dialVideo;
+      dialVideo.load();
+    }
+
+    dialWrapper.classList.add("has-dial-video");
+
+    dialVideo.play().catch(() => {
+      console.log("El video del dial no pudo reproducirse automáticamente.");
+    });
+
+    return;
+  }
+
+  dialWrapper.classList.remove("has-dial-video");
+
+  try {
+    dialVideo.pause();
+  } catch (error) {}
+
+  dialVideo.removeAttribute("src");
+  dialVideo.load();
+}
+
 function resetSongCoverToVideo() {
   currentCoverUrl = "";
 
@@ -346,14 +385,22 @@ function loadRadio(index) {
 
   updateTopIdentity(radio);
   updateRadioCarousel();
+  updateDialVideo(radio);
 
-  dialRadioName.textContent = `${radio.name} FM`;
-  dialSubtitle.textContent = radio.subtitle;
+  if (dialRadioName) {
+    dialRadioName.textContent = `${radio.name} FM`;
+  }
+
+  if (dialSubtitle) {
+    dialSubtitle.textContent = radio.subtitle;
+  }
 
   resetSongCoverToVideo();
 
-  radioLogoVideo.src = radio.logoVideo;
-  radioLogoVideo.load();
+  if (radioLogoVideo) {
+    radioLogoVideo.src = radio.logoVideo;
+    radioLogoVideo.load();
+  }
 
   radioPlayer.src = radio.stream;
   radioPlayer.load();
@@ -399,6 +446,9 @@ async function playRadio() {
     startVisualizer();
 
     const radio = radios[currentRadio];
+
+    updateDialVideo(radio);
+
     updateMediaSession(
       `${radio.name} FM`,
       "Venevo Música",
