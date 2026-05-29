@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Venevo Música</title>
-  <link rel="stylesheet" href="style.css?v=150" />
+  <link rel="stylesheet" href="style.css?v=160" />
 </head>
 
 <body class="lafan-theme">
@@ -102,28 +102,57 @@
           </div>
         </div>
 
-        <!-- DIAL -->
-        <section id="dialArea" class="dial-container">
+        <!-- DIAL / CAROUSEL RADIO -->
+        <section id="dialArea" class="dial-container dial-carousel-container">
           <button id="prevRadio" class="nav-arrow left-arrow liquid-btn" aria-label="Radio anterior">‹</button>
 
-          <div id="dialWrapper" class="dial-wrapper">
-            <div class="dial-glow"></div>
-            <div class="dial-ring"></div>
-            <div class="dial-ring second-ring"></div>
-            <div id="signalRing" class="signal-ring"></div>
+          <div class="dial-carousel">
 
-            <div class="dial-center">
-              <span class="playing-text">FD · FRECUENCIA DIGITAL</span>
-              <h2 id="dialNumber">90.5</h2>
-              <h3 id="dialRadioName">LA FAN</h3>
-              <p id="dialSubtitle">POP · TOP HITS</p>
-
-              <div id="audioBars" class="waveform">
-                <span></span><span></span><span></span>
-                <span></span><span></span><span></span>
-                <span></span><span></span>
+            <!-- RADIO ANTERIOR PREVIEW -->
+            <div id="prevRadioPreview" class="radio-preview-card radio-preview-left">
+              <div class="radio-preview-glow"></div>
+              <div class="radio-preview-cover">
+                <span id="prevPreviewNumber">100.5</span>
+              </div>
+              <div class="radio-preview-info">
+                <strong id="prevPreviewName">POX</strong>
+                <small id="prevPreviewSubtitle">ENTRETENIMIENTO · LIVE</small>
               </div>
             </div>
+
+            <!-- RADIO ACTUAL / DIAL CENTRAL -->
+            <div id="dialWrapper" class="dial-wrapper dial-current-card">
+              <div class="dial-glow"></div>
+              <div class="dial-ring"></div>
+              <div class="dial-ring second-ring"></div>
+              <div id="signalRing" class="signal-ring"></div>
+
+              <div class="dial-center">
+                <span class="playing-text">FD · FRECUENCIA DIGITAL</span>
+                <h2 id="dialNumber">90.5</h2>
+                <h3 id="dialRadioName">LA FAN</h3>
+                <p id="dialSubtitle">POP · TOP HITS</p>
+
+                <div id="audioBars" class="waveform">
+                  <span></span><span></span><span></span>
+                  <span></span><span></span><span></span>
+                  <span></span><span></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- RADIO SIGUIENTE PREVIEW -->
+            <div id="nextRadioPreview" class="radio-preview-card radio-preview-right">
+              <div class="radio-preview-glow"></div>
+              <div class="radio-preview-cover">
+                <span id="nextPreviewNumber">80.5</span>
+              </div>
+              <div class="radio-preview-info">
+                <strong id="nextPreviewName">CLIP</strong>
+                <small id="nextPreviewSubtitle">MÚSICA · HITS</small>
+              </div>
+            </div>
+
           </div>
 
           <button id="nextRadio" class="nav-arrow right-arrow liquid-btn" aria-label="Siguiente radio">›</button>
