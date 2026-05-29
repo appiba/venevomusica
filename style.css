@@ -59,7 +59,8 @@ body.pox-theme {
 .liquid-nav,
 .mode-tabs,
 .live-status,
-.volume-panel {
+.volume-panel,
+.mini-live-box {
   position: relative;
   overflow: hidden;
   background:
@@ -78,7 +79,8 @@ body.pox-theme {
 .liquid-btn::before,
 .liquid-nav::before,
 .mode-tabs::before,
-.live-status::before {
+.live-status::before,
+.mini-live-box::before {
   content: "";
   position: absolute;
   top: 0;
@@ -195,7 +197,7 @@ body.lafan-theme #radioNameTop {
   text-indent: -9999px;
   overflow: hidden;
 
-  background-image: url("logosuperiorlafan.svg?v=180");
+  background-image: url("logosuperiorlafan.svg?v=190");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
@@ -211,7 +213,7 @@ body.clip-theme #radioNameTop {
   text-indent: -9999px;
   overflow: hidden;
 
-  background-image: url("logosuperiorclip.svg?v=180");
+  background-image: url("logosuperiorclip.svg?v=190");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
@@ -227,7 +229,7 @@ body.oye-theme #radioNameTop {
   text-indent: -9999px;
   overflow: hidden;
 
-  background-image: url("logosuperioroye.svg?v=180");
+  background-image: url("logosuperioroye.svg?v=190");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
@@ -243,7 +245,7 @@ body.pox-theme #radioNameTop {
   text-indent: -9999px;
   overflow: hidden;
 
-  background-image: url("logosuperiorpox.svg?v=180");
+  background-image: url("logosuperiorpox.svg?v=190");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
@@ -345,64 +347,103 @@ body.pox-theme #radioNameTop {
   display: none;
 }
 
-/* ACTIVIDAD + TABS */
+/* ========================= */
+/* MINI LIVE + RADIO / STREAMING */
+/* ========================= */
 
-.live-activity {
+.radio-top-strip {
   position: relative;
+  width: 100%;
+  min-height: 64px;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+
+/* BLOQUE PEQUEÑO EN VIVO */
+
+.mini-live-box {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  min-width: 158px;
+  height: 42px;
+
+  padding: 7px 10px;
+  border-radius: 18px;
+
   display: flex;
-  align-items: flex-start;
-  gap: 11px;
-  margin-bottom: 10px;
-  padding: 18px 14px;
-  min-height: 112px;
-  border-radius: 24px;
-  flex-shrink: 0;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+
+  z-index: 5;
 }
 
-.activity-dot {
-  width: 12px;
-  height: 12px;
-  margin-top: 34px;
-  border-radius: 50%;
-  background: #00ff88;
-  box-shadow: 0 0 18px #00ff88;
-  animation: pulseLive 1.4s infinite;
-  flex-shrink: 0;
-}
+.mini-live-label {
+  position: relative;
+  z-index: 2;
 
-.activity-info {
-  margin-top: 20px;
-}
-
-.live-activity p {
   font-size: 10px;
+  line-height: 1;
+  font-weight: 900;
   letter-spacing: 2px;
-  opacity: 0.7;
+  opacity: 0.9;
 }
 
-.live-activity h4 {
-  margin-top: 4px;
-  font-size: 16px;
-  font-weight: 900;
+.mini-live-stats {
+  position: relative;
+  z-index: 2;
+
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+
+  font-size: 8px;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  opacity: 0.72;
+  white-space: nowrap;
 }
+
+.mini-stat-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.mini-stat-icon {
+  font-size: 8px;
+  line-height: 1;
+  opacity: 0.82;
+}
+
+/* RADIO / STREAMING SEPARADO */
 
 .mode-tabs {
   position: absolute;
-  top: 16px;
-  right: 14px;
+  right: 0;
+  bottom: 0;
+
   width: 188px;
-  height: 38px;
+  height: 36px;
+
   display: flex;
   padding: 4px;
   border-radius: 22px;
   margin: 0 !important;
   flex-shrink: 0;
+
+  z-index: 4;
 }
 
 .mode-tab {
   flex: 1;
   border: none;
-  height: 30px;
+  height: 28px;
   border-radius: 18px;
   background: transparent;
   color: white;
@@ -425,12 +466,7 @@ body.pox-theme #radioNameTop {
 .streaming-tabs {
   top: 0;
   right: 0;
-}
-
-@keyframes pulseLive {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.35); opacity: .55; }
-  100% { transform: scale(1); opacity: 1; }
+  bottom: auto;
 }
 
 /* ========================= */
@@ -759,8 +795,6 @@ body.pox-theme #radioNameTop {
   background: #000;
 }
 
-/* CUANDO EL DIAL TIENE VIDEO */
-
 .dial-wrapper.has-dial-video .dial-video {
   display: block;
 }
@@ -773,7 +807,6 @@ body.pox-theme #radioNameTop {
   display: none !important;
 }
 
-/* opcional: baja un poco el centro negro cuando hay video */
 .dial-wrapper.has-dial-video .dial-center {
   background: rgba(0,0,0,0.18);
   backdrop-filter: none;
@@ -1442,6 +1475,36 @@ body.pox-theme .play-btn { color: #d71920; }
 /* RESPONSIVE */
 
 @media (max-height: 760px) {
+  .radio-top-strip {
+    min-height: 58px;
+    margin-bottom: 6px;
+  }
+
+  .mini-live-box {
+    min-width: 150px;
+    height: 40px;
+    padding: 6px 9px;
+  }
+
+  .mini-live-label {
+    font-size: 10px;
+  }
+
+  .mini-live-stats {
+    font-size: 8px;
+    gap: 7px;
+  }
+
+  .mode-tabs {
+    width: 176px;
+    height: 34px;
+  }
+
+  .mode-tab {
+    height: 26px;
+    font-size: 9px;
+  }
+
   .dial-container {
     height: 258px;
   }
@@ -1539,5 +1602,20 @@ body.pox-theme .play-btn { color: #d71920; }
 
   .quick-actions {
     margin-top: 13px;
+  }
+}
+
+@media (max-width: 390px) {
+  .mini-live-box {
+    min-width: 144px;
+  }
+
+  .mode-tabs {
+    width: 168px;
+  }
+
+  .mini-live-stats {
+    font-size: 7.5px;
+    gap: 6px;
   }
 }
