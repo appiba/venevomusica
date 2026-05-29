@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Venevo Música</title>
-  <link rel="stylesheet" href="style.css?v=90" />
+  <link rel="stylesheet" href="style.css?v=120" />
 </head>
 
 <body class="lafan-theme">
@@ -141,23 +141,33 @@
             <div class="song-info">
               <span id="songStatus" class="song-live">SONANDO AHORA</span>
 
-              <h3 id="nowTitleBox" class="now-title-mask">
-                <span id="nowTitle" class="now-title-text">Cargando canción...</span>
+              <h3 id="nowArtistBox" class="now-artist-mask">
+                <span id="nowArtistMain" class="now-artist-text">Venevo Música</span>
               </h3>
 
-              <p id="nowArtist">Venevo Música</p>
+              <p id="nowTitleBox" class="now-title-mask">
+                <span id="nowTitle" class="now-title-text">Cargando canción...</span>
+              </p>
 
-              <div class="song-progress">
+              <div class="song-signal-line">
                 <div id="songProgressFill" class="song-progress-fill"></div>
               </div>
 
               <div class="song-times">
-                <small id="songElapsed">0:00</small>
-                <small id="songDuration">EN VIVO</small>
+                <small id="songElapsed">EN VIVO</small>
+                <small id="songDuration">LIVE</small>
               </div>
             </div>
           </div>
 
+          <!-- CONTROLES PRINCIPALES ARRIBA -->
+          <div class="main-controls">
+            <button id="prevRadioBottom" class="control-btn liquid-btn" aria-label="Anterior">‹</button>
+            <button id="playBtn" class="play-btn liquid-play" aria-label="Reproducir">▶</button>
+            <button id="nextRadioBottom" class="control-btn liquid-btn" aria-label="Siguiente">›</button>
+          </div>
+
+          <!-- ACCIONES ABAJO -->
           <div class="quick-actions">
             <button id="shareBtn" class="quick-btn liquid-btn" aria-label="Compartir">
               <svg viewBox="0 0 24 24">
@@ -181,12 +191,6 @@
 
           <div id="volumePanel" class="volume-panel hidden">
             <input id="volumeSlider" type="range" min="0" max="1" step="0.01" value="1">
-          </div>
-
-          <div class="controls">
-            <button id="prevRadioBottom" class="control-btn liquid-btn" aria-label="Anterior">‹</button>
-            <button id="playBtn" class="play-btn liquid-play" aria-label="Reproducir">▶</button>
-            <button id="nextRadioBottom" class="control-btn liquid-btn" aria-label="Siguiente">›</button>
           </div>
 
           <p class="swipe-hint">Desliza o usa las flechas para cambiar de radio</p>
@@ -296,6 +300,6 @@
 
   <audio id="radioPlayer" crossorigin="anonymous"></audio>
 
-  <script src="script.js?v=90"></script>
+  <script src="script.js?v=120"></script>
 </body>
 </html>
