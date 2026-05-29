@@ -86,14 +86,18 @@ const dialSubtitle = document.getElementById("dialSubtitle");
 const dialWrapper = document.getElementById("dialWrapper");
 const dialArea = document.getElementById("dialArea");
 
-const prevPreviewNumber = document.getElementById("prevPreviewNumber");
-const prevPreviewName = document.getElementById("prevPreviewName");
-const prevPreviewSubtitle = document.getElementById("prevPreviewSubtitle");
-const nextPreviewNumber = document.getElementById("nextPreviewNumber");
-const nextPreviewName = document.getElementById("nextPreviewName");
-const nextPreviewSubtitle = document.getElementById("nextPreviewSubtitle");
-const prevRadioPreview = document.getElementById("prevRadioPreview");
-const nextRadioPreview = document.getElementById("nextRadioPreview");
+/* NUEVO CARRUSEL 3D */
+const radioCardPrev = document.getElementById("radioCardPrev");
+const radioCardCurrent = document.getElementById("radioCardCurrent");
+const radioCardNext = document.getElementById("radioCardNext");
+
+const prevCardNumber = document.getElementById("prevCardNumber");
+const prevCardName = document.getElementById("prevCardName");
+const prevCardSubtitle = document.getElementById("prevCardSubtitle");
+
+const nextCardNumber = document.getElementById("nextCardNumber");
+const nextCardName = document.getElementById("nextCardName");
+const nextCardSubtitle = document.getElementById("nextCardSubtitle");
 
 const radioLogoVideo = document.getElementById("radioLogoVideo");
 const radioPlayer = document.getElementById("radioPlayer");
@@ -243,12 +247,16 @@ function animateNumber(from, to) {
 }
 
 function spinDial() {
+  if (!dialWrapper) return;
+
   dialWrapper.classList.remove("spin");
   void dialWrapper.offsetWidth;
   dialWrapper.classList.add("spin");
 }
 
 function updateTopIdentity(radio) {
+  if (!radioNameTop) return;
+
   if (radio.id === "lafan") {
     radioNameTop.textContent = "LA FAN";
   } else if (radio.id === "clip") {
@@ -270,43 +278,49 @@ function formatPreviewNumber(number) {
   return String(number || "");
 }
 
-function updateRadioPreviews() {
+/* NUEVA FUNCIÓN PARA EL CARRUSEL 3D */
+function updateRadioCarousel() {
   const prevIndex = (currentRadio - 1 + radios.length) % radios.length;
   const nextIndex = (currentRadio + 1) % radios.length;
 
   const prev = radios[prevIndex];
   const next = radios[nextIndex];
+  const current = radios[currentRadio];
 
-  if (prevPreviewNumber) {
-    prevPreviewNumber.textContent = formatPreviewNumber(prev.number);
+  if (prevCardNumber) {
+    prevCardNumber.textContent = formatPreviewNumber(prev.number);
   }
 
-  if (prevPreviewName) {
-    prevPreviewName.textContent = prev.name;
+  if (prevCardName) {
+    prevCardName.textContent = prev.name;
   }
 
-  if (prevPreviewSubtitle) {
-    prevPreviewSubtitle.textContent = prev.subtitle;
+  if (prevCardSubtitle) {
+    prevCardSubtitle.textContent = prev.subtitle;
   }
 
-  if (nextPreviewNumber) {
-    nextPreviewNumber.textContent = formatPreviewNumber(next.number);
+  if (nextCardNumber) {
+    nextCardNumber.textContent = formatPreviewNumber(next.number);
   }
 
-  if (nextPreviewName) {
-    nextPreviewName.textContent = next.name;
+  if (nextCardName) {
+    nextCardName.textContent = next.name;
   }
 
-  if (nextPreviewSubtitle) {
-    nextPreviewSubtitle.textContent = next.subtitle;
+  if (nextCardSubtitle) {
+    nextCardSubtitle.textContent = next.subtitle;
   }
 
-  if (prevRadioPreview) {
-    prevRadioPreview.dataset.radio = prev.id;
+  if (radioCardPrev) {
+    radioCardPrev.dataset.radio = prev.id;
   }
 
-  if (nextRadioPreview) {
-    nextRadioPreview.dataset.radio = next.id;
+  if (radioCardCurrent) {
+    radioCardCurrent.dataset.radio = current.id;
+  }
+
+  if (radioCardNext) {
+    radioCardNext.dataset.radio = next.id;
   }
 }
 
@@ -331,7 +345,7 @@ function loadRadio(index) {
   animateNumber(currentNumber, radio.number);
 
   updateTopIdentity(radio);
-  updateRadioPreviews();
+  updateRadioCarousel();
 
   dialRadioName.textContent = `${radio.name} FM`;
   dialSubtitle.textContent = radio.subtitle;
@@ -1268,7 +1282,7 @@ function startFakeVisualizer() {
 
 setupVolume();
 setBarsIdle();
-updateRadioPreviews();
+updateRadioCarousel();
 
 loadStreamingLinks().then(() => {
   loadRadio(currentRadio);
