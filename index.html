@@ -75,9 +75,33 @@
         <h1 id="radioNameTop">LA FAN</h1>
       </div>
 
-      <div id="liveStatus" class="live-status paused">
-        <span></span>
-        <b>PAUSADO</b>
+      <!-- ESTADO + MÉTRICAS FIJAS EN HEADER -->
+      <div class="header-live-stack">
+        <div id="liveStatus" class="live-status paused">
+          <span></span>
+          <b>PAUSADO</b>
+        </div>
+
+        <div class="header-live-metrics">
+          <span class="header-metric-item">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M16.5 10.2a3.7 3.7 0 1 0-7.4 0a3.7 3.7 0 0 0 7.4 0Z"/>
+              <path d="M5.4 20.2c.8-3.7 3.6-6.1 6.9-6.1s6.1 2.4 6.9 6.1"/>
+              <path d="M18.1 12.4c1.7.5 3 1.8 3.5 3.7"/>
+              <path d="M5.9 12.4c-1.7.5-3 1.8-3.5 3.7"/>
+            </svg>
+            <span id="liveUsersCount">2.8K</span>
+          </span>
+
+          <span class="header-metric-item">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8.5 11.2c0-2.6 1.6-4.7 3.9-4.7s4 2 4 4.8c0 3.7-3.7 4.4-3.7 7.1a2.4 2.4 0 0 1-4.8 0"/>
+              <path d="M10.9 11.2c0-1.2.6-2.2 1.5-2.2s1.6 1 1.6 2.2"/>
+              <path d="M6 9.6c.4-3.8 2.9-6.6 6.3-6.6s6 2.9 6.4 6.7"/>
+            </svg>
+            <span id="listenTime">00:00:00</span>
+          </span>
+        </div>
       </div>
     </header>
 
@@ -87,32 +111,12 @@
       <!-- RADIO MODE -->
       <section id="radioModeBox">
 
-        <!-- TOP MINI LIVE + MODE TABS -->
+        <!-- RADIO / STREAMING -->
         <div class="radio-top-strip">
-
-          <!-- MINI LIVE STATUS -->
-          <div class="mini-live-box">
-            <div class="mini-live-label">EN VIVO</div>
-
-            <div class="mini-live-stats">
-              <span class="mini-stat-item">
-                <span class="mini-stat-icon">👥</span>
-                <span id="liveUsersCount">2.8K</span>
-              </span>
-
-              <span class="mini-stat-item">
-                <span class="mini-stat-icon">👂</span>
-                <span id="listenTime">00:00:00</span>
-              </span>
-            </div>
-          </div>
-
-          <!-- MODE TABS -->
           <div class="mode-tabs">
             <button id="radioModeBtn" class="mode-tab active-mode">RADIO</button>
             <button id="streamingModeBtn" class="mode-tab">STREAMING</button>
           </div>
-
         </div>
 
         <!-- DIAL / CARRUSEL 3D -->
