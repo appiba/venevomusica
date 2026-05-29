@@ -10,6 +10,7 @@ const radios = [
     stream: "https://radio.megahostec.com/listen/radio_la_fan_fm/stream",
     metadataApi: "https://radio.megahostec.com/api/nowplaying/radio_la_fan_fm",
     logoVideo: "introlafanlogo.mp4",
+    logoCarro: "logolafancarro.png",
     streaming: ""
   },
   {
@@ -21,6 +22,7 @@ const radios = [
     stream: "https://radio.megahostec.com/listen/radio_clipfm/stream",
     metadataApi: "https://radio.megahostec.com/api/nowplaying/radio_clipfm",
     logoVideo: "introcliplogo.mp4",
+    logoCarro: "logoclipcarro.png",
     streaming: ""
   },
   {
@@ -32,6 +34,7 @@ const radios = [
     stream: "https://radio.megahostec.com/listen/radio_oyefm/stream",
     metadataApi: "https://radio.megahostec.com/api/nowplaying/radio_oyefm",
     logoVideo: "introoyelogo.mp4",
+    logoCarro: "logooyecarro.png",
     streaming: ""
   },
   {
@@ -43,6 +46,7 @@ const radios = [
     stream: "https://radio.megahostec.com/listen/radio_pox_edmo/stream",
     metadataApi: "https://radio.megahostec.com/api/nowplaying/radio_pox_edmo",
     logoVideo: "poxvideo.mp4",
+    logoCarro: "logopoxcarro.png",
     streaming: ""
   }
 ];
@@ -281,6 +285,12 @@ function loadRadio(index) {
   updateFavoriteButton();
   updateStreamingBox();
 
+  updateMediaSession(
+    `${radio.name} FM`,
+    "Venevo Música",
+    radio.logoCarro
+  );
+
   loadNowPlaying();
   startNowPlayingUpdater();
 
@@ -311,6 +321,16 @@ async function playRadio() {
     playBtn.innerHTML = "❚❚";
     setLiveStatus("playing", "EN VIVO");
     startVisualizer();
+
+    const radio = radios[currentRadio];
+    updateMediaSession(
+      `${radio.name} FM`,
+      "Venevo Música",
+      radio.logoCarro
+    );
+
+    loadNowPlaying();
+
   } catch (error) {
     isPlaying = true;
     playBtn.innerHTML = "❚❚";
@@ -816,6 +836,38 @@ function setMarquee(box, textElement, text) {
   });
 }
 
+function getArtworkType(url) {
+  if (!url) return "image/png";
+
+  const cleanUrl = url.toLowerCase().split("?")[0];
+
+  if (cleanUrl.endsWith(".jpg") || cleanUrl.endsWith(".jpeg")) {
+    return "image/jpeg";
+  }
+
+  if (cleanUrl.endsWith(".webp")) {
+    return "image/webp";
+  }
+
+  if (cleanUrl.endsWith(".png")) {
+    return "image/png";
+  }
+
+  return "image/png";
+}
+
+function getBestLogoCarro(songArt, radio) {
+  if (songArt && !songArt.includes("album_art.1772211647.png")) {
+    return songArt;
+  }
+
+  if (radio && radio.logoCarro) {
+    return radio.logoCarro;
+  }
+
+  return "logovenevocarro.png";
+}
+
 function setSongCover(artUrl) {
   if (!nowCover || !songCoverMain) return;
 
@@ -847,6 +899,81 @@ function setSongCover(artUrl) {
   tempImage.src = artUrl;
 }
 
+function updateMediaSession(title, artist, logoCarroUrl) {
+  if (!("mediaSession" in navigator)) {
+    return;
+  }
+
+  const radio = radios[currentRadio];
+
+  const finalTitle =
+    title && title.trim()
+      ? title.trim()
+      : `${radio.name} FM`;
+
+  const finalArtist =
+    artist && artist.trim()
+      ? artist.trim()
+      : "Venevo Música";
+
+  const finalLogoCarro =
+    logoCarroUrl || radio.logoCarro || "logovenevocarro.png";
+
+  try {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: finalTitle,
+      artist: finalArtist,
+      album: "Venevo Música",
+      artwork: [
+        {
+          src: finalLogoCarro,
+          sizes: "96x96",
+          type: getArtworkType(finalLogoCarro)
+        },
+        {
+          src: finalLogoCarro,
+          sizes: "128x128",
+          type: getArtworkType(finalLogoCarro)
+        },
+        {
+          src: finalLogoCarro,
+          sizes: "192x192",
+          type: getArtworkType(finalLogoCarro)
+        },
+        {
+          src: finalLogoCarro,
+          sizes: "256x256",
+          type: getArtworkType(finalLogoCarro)
+        },
+        {
+          src: finalLogoCarro,
+          sizes: "512x512",
+          type: getArtworkType(finalLogoCarro)
+        }
+      ]
+    });
+
+    navigator.mediaSession.setActionHandler("play", async () => {
+      await playRadio();
+    });
+
+    navigator.mediaSession.setActionHandler("pause", () => {
+      pauseRadio();
+    });
+
+    navigator.mediaSession.setActionHandler("previoustrack", () => {
+      changeRadio(-1);
+    });
+
+    navigator.mediaSession.setActionHandler("nexttrack", () => {
+      changeRadio(1);
+    });
+
+  } catch (error) {
+    console.log("Media Session no disponible completamente.");
+  }
+}
+
 async function loadNowPlaying() {
   const radio = radios[currentRadio];
 
@@ -855,8 +982,9 @@ async function loadNowPlaying() {
   if (!radio.metadataApi) {
     setMarquee(nowArtistBox, nowArtistMain, `${radio.name} FM`);
     setMarquee(nowTitleBox, nowTitle, "Transmitiendo en vivo");
-    setSongCover("");
+    setSongCover(radio.logoCarro);
     updateSongProgress(0, 0);
+    updateMediaSession(`${radio.name} FM`, "Venevo Música", radio.logoCarro);
     return;
   }
 
@@ -870,11 +998,13 @@ async function loadNowPlaying() {
     const song = getBestSongFromApi(data);
     const normalized = normalizeSongData(song, radio);
 
-    const art =
+    const rawArt =
       song?.art ||
       song?.album_art ||
       song?.cover ||
       "";
+
+    const logoCarro = getBestLogoCarro(rawArt, radio);
 
     const elapsed = Number(data?.now_playing?.elapsed || 0);
     const duration = Number(data?.now_playing?.duration || 0);
@@ -883,13 +1013,25 @@ async function loadNowPlaying() {
     setMarquee(nowTitleBox, nowTitle, normalized.title);
 
     updateSongProgress(elapsed, duration);
-    setSongCover(art);
+    setSongCover(logoCarro);
+
+    updateMediaSession(
+      normalized.title,
+      normalized.artist,
+      logoCarro
+    );
 
   } catch (error) {
     setMarquee(nowArtistBox, nowArtistMain, `${radio.name} FM`);
     setMarquee(nowTitleBox, nowTitle, "Transmitiendo en vivo");
     updateSongProgress(0, 0);
-    setSongCover("");
+    setSongCover(radio.logoCarro);
+
+    updateMediaSession(
+      `${radio.name} FM`,
+      "Venevo Música",
+      radio.logoCarro
+    );
   }
 }
 
