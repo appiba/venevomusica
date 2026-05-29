@@ -59,7 +59,7 @@ let currentRadio = 0;
 let isPlaying = false;
 let currentNumber = 90.5;
 let startX = 0;
-let listeners = 2853;
+let listeners = 2800;
 
 let audioContext = null;
 let analyser = null;
@@ -81,7 +81,8 @@ const drawerOverlay = document.getElementById("drawerOverlay");
 const closeDrawerBtn = document.getElementById("closeDrawerBtn");
 
 const liveStatus = document.getElementById("liveStatus");
-const listenersCount = document.getElementById("listenersCount");
+const liveUsersCount = document.getElementById("liveUsersCount");
+const listenTime = document.getElementById("listenTime");
 
 const dialNumber = document.getElementById("dialNumber");
 const dialRadioName = document.getElementById("dialRadioName");
@@ -227,6 +228,60 @@ radioPlayer.addEventListener("loadstart", () => setLiveStatus("connecting", "CAR
 radioPlayer.addEventListener("playing", () => setLiveStatus("playing", "EN VIVO"));
 radioPlayer.addEventListener("pause", () => setLiveStatus("paused", "PAUSADO"));
 radioPlayer.addEventListener("error", () => setLiveStatus("error", "SIN SEÑAL"));
+
+/* MINI LIVE USERS + LISTEN TIME */
+
+function formatUsersToK(value) {
+  if (!value || isNaN(value)) return "2.8K";
+
+  const kValue = value / 1000;
+  return `${kValue.toFixed(1)}K`;
+}
+
+function updateLiveUsers() {
+  const variation = Math.floor(Math.random() * 180) + 35;
+  const up = Math.random() > 0.48;
+
+  listeners = up ? listeners + variation : listeners - variation;
+
+  if (listeners < 1500) listeners = 1650 + Math.floor(Math.random() * 280);
+  if (listeners > 4000) listeners = 3650 - Math.floor(Math.random() * 250);
+
+  if (liveUsersCount) {
+    liveUsersCount.textContent = formatUsersToK(listeners);
+  }
+}
+
+function setupListenTime() {
+  const storageKey = "venevoListenStartTime";
+  let startTime = localStorage.getItem(storageKey);
+
+  if (!startTime) {
+    startTime = String(Date.now());
+    localStorage.setItem(storageKey, startTime);
+  }
+
+  function updateListenTime() {
+    const savedStart = Number(localStorage.getItem(storageKey) || Date.now());
+    const elapsedSeconds = Math.floor((Date.now() - savedStart) / 1000);
+
+    const hours = Math.floor(elapsedSeconds / 3600);
+    const minutes = Math.floor((elapsedSeconds % 3600) / 60);
+    const seconds = elapsedSeconds % 60;
+
+    const formatted =
+      `${String(hours).padStart(2, "0")}:` +
+      `${String(minutes).padStart(2, "0")}:` +
+      `${String(seconds).padStart(2, "0")}`;
+
+    if (listenTime) {
+      listenTime.textContent = formatted;
+    }
+  }
+
+  updateListenTime();
+  setInterval(updateListenTime, 1000);
+}
 
 /* DIAL */
 
@@ -1199,22 +1254,6 @@ function startNowPlayingUpdater() {
   }, 10000);
 }
 
-/* LIVE ACTIVITY */
-
-function updateListeners() {
-  const variation = Math.floor(Math.random() * 420);
-  const up = Math.random() > 0.5;
-
-  listeners = up ? listeners + variation : listeners - variation;
-
-  if (listeners < 1200) listeners = 1200;
-  if (listeners > 5200) listeners = 3600;
-
-  listenersCount.textContent = `${listeners.toLocaleString("es-ES")} conectados`;
-}
-
-setInterval(updateListeners, 3500);
-
 /* AUDIO VISUALIZER */
 
 function setBarsIdle() {
@@ -1332,6 +1371,11 @@ function startFakeVisualizer() {
 
 setupVolume();
 setBarsIdle();
+setupListenTime();
+
+updateLiveUsers();
+setInterval(updateLiveUsers, 4500);
+
 updateRadioCarousel();
 
 loadStreamingLinks().then(() => {
