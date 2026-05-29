@@ -185,7 +185,6 @@ body.pox-theme {
   overflow: visible;
 }
 
-/* LA FAN - LOGO SUPERIOR SVG */
 body.lafan-theme #radioNameTop {
   width: 255px;
   height: 92px;
@@ -196,13 +195,12 @@ body.lafan-theme #radioNameTop {
   text-indent: -9999px;
   overflow: hidden;
 
-  background-image: url("logosuperiorlafan.svg?v=160");
+  background-image: url("logosuperiorlafan.svg?v=170");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
 }
 
-/* CLIP - LOGO SUPERIOR SVG */
 body.clip-theme #radioNameTop {
   width: 255px;
   height: 92px;
@@ -213,13 +211,12 @@ body.clip-theme #radioNameTop {
   text-indent: -9999px;
   overflow: hidden;
 
-  background-image: url("logosuperiorclip.svg?v=160");
+  background-image: url("logosuperiorclip.svg?v=170");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
 }
 
-/* OYE - LOGO SUPERIOR SVG */
 body.oye-theme #radioNameTop {
   width: 255px;
   height: 92px;
@@ -230,13 +227,12 @@ body.oye-theme #radioNameTop {
   text-indent: -9999px;
   overflow: hidden;
 
-  background-image: url("logosuperioroye.svg?v=160");
+  background-image: url("logosuperioroye.svg?v=170");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
 }
 
-/* POX - LOGO SUPERIOR SVG */
 body.pox-theme #radioNameTop {
   width: 255px;
   height: 92px;
@@ -247,13 +243,11 @@ body.pox-theme #radioNameTop {
   text-indent: -9999px;
   overflow: hidden;
 
-  background-image: url("logosuperiorpox.svg?v=160");
+  background-image: url("logosuperiorpox.svg?v=170");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
 }
-
-/* RESPONSIVE LOGOS */
 
 @media (max-width: 420px) {
   body.lafan-theme #radioNameTop,
@@ -440,7 +434,7 @@ body.pox-theme #radioNameTop {
 }
 
 /* ========================= */
-/* DIAL + CARRUSEL PREMIUM */
+/* DIAL / CARRUSEL 3D REAL */
 /* ========================= */
 
 .dial-container {
@@ -454,19 +448,221 @@ body.pox-theme #radioNameTop {
   overflow: visible;
 }
 
-.dial-carousel-container {
-  perspective: 900px;
+.dial-stage {
+  perspective: 1000px;
+  perspective-origin: center center;
 }
 
-.dial-carousel {
+.radio-3d-carousel {
   position: relative;
   width: 100%;
   height: 292px;
   display: flex;
   align-items: center;
   justify-content: center;
+  transform-style: preserve-3d;
   overflow: visible;
 }
+
+/* TARJETAS 3D */
+
+.radio-3d-card {
+  position: absolute;
+  top: 50%;
+  width: 176px;
+  height: 224px;
+  border-radius: 34px;
+  overflow: hidden;
+
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.18), rgba(255,255,255,0.045)),
+    rgba(0,0,0,0.23);
+
+  border: 1px solid rgba(255,255,255,0.18);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.22),
+    inset 0 -18px 28px rgba(0,0,0,0.25),
+    0 20px 48px rgba(0,0,0,0.34);
+
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+
+  transform-style: preserve-3d;
+  transition:
+    transform 0.72s cubic-bezier(.2,.85,.25,1),
+    opacity 0.45s ease,
+    filter 0.45s ease;
+
+  pointer-events: none;
+}
+
+.radio-3d-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 42%;
+  border-radius: inherit;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.24), transparent);
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.radio-3d-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,0.16), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(255,255,255,0.08), transparent 38%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* IZQUIERDA */
+
+.card-left {
+  left: 0;
+  opacity: 0.44;
+  filter: blur(0.35px) saturate(0.9);
+  transform:
+    translateY(-50%)
+    translateX(-22px)
+    rotateY(44deg)
+    scale(0.88);
+  z-index: 3;
+}
+
+/* CENTRO */
+
+.card-center {
+  width: 264px;
+  height: 264px;
+  border-radius: 50%;
+  opacity: 1;
+  filter: none;
+  transform:
+    translateY(-50%)
+    translateZ(90px)
+    rotateY(0deg)
+    scale(1.04);
+  z-index: 12;
+
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  overflow: visible;
+}
+
+.card-center::before,
+.card-center::after {
+  display: none;
+}
+
+/* DERECHA */
+
+.card-right {
+  right: 0;
+  opacity: 0.44;
+  filter: blur(0.35px) saturate(0.9);
+  transform:
+    translateY(-50%)
+    translateX(22px)
+    rotateY(-44deg)
+    scale(0.88);
+  z-index: 3;
+}
+
+/* CONTENIDO TARJETAS LATERALES */
+
+.radio-card-glow {
+  position: absolute;
+  inset: 18px;
+  border-radius: 28px;
+  opacity: 0.35;
+  filter: blur(20px);
+  z-index: 0;
+}
+
+.lafan-theme .radio-card-glow { background: #ffec00; }
+.clip-theme .radio-card-glow { background: #00ff88; }
+.oye-theme .radio-card-glow { background: #00ff88; }
+.pox-theme .radio-card-glow { background: #ff4b4b; }
+
+.radio-card-inner {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 13px;
+  text-align: center;
+}
+
+.radio-card-label {
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  opacity: 0.58;
+}
+
+.radio-card-frequency {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at top, rgba(255,255,255,0.18), rgba(0,0,0,0.42)),
+    rgba(0,0,0,0.32);
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.18),
+    0 12px 25px rgba(0,0,0,0.22);
+}
+
+.radio-card-frequency span {
+  font-size: 28px;
+  line-height: 1;
+  font-weight: 900;
+  color: rgba(255,255,255,0.96);
+}
+
+.radio-card-text {
+  width: 100%;
+  min-width: 0;
+}
+
+.radio-card-text h3 {
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.radio-card-text p {
+  margin-top: 7px;
+  font-size: 9px;
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: 1px;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+
+/* DIAL CENTRAL */
 
 .dial-wrapper {
   width: 250px;
@@ -477,10 +673,6 @@ body.pox-theme #radioNameTop {
     opacity 0.45s ease,
     filter 0.45s ease;
   z-index: 10;
-}
-
-.dial-current-card {
-  transform: translateZ(0) scale(1);
 }
 
 .dial-wrapper.spin {
@@ -572,146 +764,6 @@ body.pox-theme #radioNameTop {
   margin-top: 6px;
   font-size: 12px;
   opacity: 0.72;
-}
-
-/* PREVIEWS LATERALES DEL DIAL */
-
-.radio-preview-card {
-  position: absolute;
-  top: 50%;
-  width: 128px;
-  min-height: 164px;
-  padding: 12px 10px;
-  border-radius: 28px;
-  transform: translateY(-50%);
-  opacity: 0.42;
-  z-index: 3;
-  overflow: hidden;
-
-  background:
-    linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.035)),
-    rgba(0,0,0,0.22);
-  border: 1px solid rgba(255,255,255,0.12);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.18),
-    inset 0 -16px 28px rgba(0,0,0,0.22),
-    0 16px 36px rgba(0,0,0,0.24);
-  backdrop-filter: blur(22px) saturate(150%);
-  -webkit-backdrop-filter: blur(22px) saturate(150%);
-
-  filter: blur(0.25px) saturate(0.9);
-  transition:
-    opacity 0.45s ease,
-    transform 0.65s ease,
-    filter 0.45s ease;
-  pointer-events: none;
-}
-
-.radio-preview-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 12%;
-  right: 12%;
-  height: 40%;
-  border-radius: inherit;
-  background: linear-gradient(to bottom, rgba(255,255,255,0.20), transparent);
-  opacity: 0.45;
-  pointer-events: none;
-}
-
-.radio-preview-left {
-  left: -8px;
-  transform: translateY(-50%) translateX(-34px) rotateY(18deg) scale(0.82);
-}
-
-.radio-preview-right {
-  right: -8px;
-  transform: translateY(-50%) translateX(34px) rotateY(-18deg) scale(0.82);
-}
-
-.radio-preview-glow {
-  position: absolute;
-  inset: 10px;
-  border-radius: 28px;
-  opacity: 0.32;
-  filter: blur(18px);
-}
-
-.lafan-theme .radio-preview-glow { background: #ffec00; }
-.clip-theme .radio-preview-glow { background: #00ff88; }
-.oye-theme .radio-preview-glow { background: #00ff88; }
-.pox-theme .radio-preview-glow { background: #ff4b4b; }
-
-.radio-preview-cover {
-  position: relative;
-  width: 74px;
-  height: 74px;
-  margin: 0 auto 10px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background:
-    radial-gradient(circle at top, rgba(255,255,255,0.18), rgba(0,0,0,0.42)),
-    rgba(0,0,0,0.35);
-  border: 1px solid rgba(255,255,255,0.16);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
-}
-
-.radio-preview-cover span {
-  font-size: 23px;
-  font-weight: 900;
-  letter-spacing: 1px;
-  color: rgba(255,255,255,0.92);
-}
-
-.radio-preview-info {
-  position: relative;
-  text-align: center;
-}
-
-.radio-preview-info strong {
-  display: block;
-  font-size: 17px;
-  font-weight: 900;
-  letter-spacing: 1px;
-  line-height: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.radio-preview-info small {
-  display: block;
-  margin-top: 6px;
-  font-size: 8px;
-  line-height: 1.2;
-  letter-spacing: 1px;
-  opacity: 0.7;
-  text-transform: uppercase;
-}
-
-/* GRADIENTES DE BORDE PARA QUE SE VEA MÁS PREMIUM */
-
-.dial-carousel::before,
-.dial-carousel::after {
-  content: "";
-  position: absolute;
-  top: 12px;
-  bottom: 12px;
-  width: 72px;
-  z-index: 6;
-  pointer-events: none;
-}
-
-.dial-carousel::before {
-  left: 0;
-  background: linear-gradient(to right, rgba(0,0,0,0.12), transparent);
-}
-
-.dial-carousel::after {
-  right: 0;
-  background: linear-gradient(to left, rgba(0,0,0,0.12), transparent);
 }
 
 /* RAYITAS DEL DIAL */
@@ -1358,7 +1410,7 @@ body.pox-theme .play-btn { color: #d71920; }
     height: 258px;
   }
 
-  .dial-carousel {
+  .radio-3d-carousel {
     height: 258px;
   }
 
@@ -1367,35 +1419,60 @@ body.pox-theme .play-btn { color: #d71920; }
     height: 225px;
   }
 
+  .card-center {
+    width: 238px;
+    height: 238px;
+    transform:
+      translateY(-50%)
+      translateZ(80px)
+      rotateY(0deg)
+      scale(1.02);
+  }
+
+  .radio-3d-card {
+    width: 154px;
+    height: 198px;
+  }
+
+  .card-left {
+    transform:
+      translateY(-50%)
+      translateX(-26px)
+      rotateY(44deg)
+      scale(0.82);
+  }
+
+  .card-right {
+    transform:
+      translateY(-50%)
+      translateX(26px)
+      rotateY(-44deg)
+      scale(0.82);
+  }
+
+  .radio-card-frequency {
+    width: 78px;
+    height: 78px;
+  }
+
+  .radio-card-frequency span {
+    font-size: 23px;
+  }
+
+  .radio-card-text h3 {
+    font-size: 19px;
+  }
+
+  .radio-card-text p {
+    font-size: 8px;
+  }
+
   #dialNumber {
     font-size: 50px;
   }
 
   #dialRadioName {
     font-size: 21px;
-  }
-
-  .radio-preview-card {
-    width: 116px;
-    min-height: 148px;
-    padding: 10px 8px;
-  }
-
-  .radio-preview-left {
-    transform: translateY(-50%) translateX(-38px) rotateY(18deg) scale(0.78);
-  }
-
-  .radio-preview-right {
-    transform: translateY(-50%) translateX(38px) rotateY(-18deg) scale(0.78);
-  }
-
-  .radio-preview-cover {
-    width: 64px;
-    height: 64px;
-  }
-
-  .radio-preview-cover span {
-    font-size: 20px;
   }
 
   .song-cover-main {
