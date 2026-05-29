@@ -161,98 +161,120 @@ body.pox-theme {
   letter-spacing: 1px;
 }
 
-/* LOGOS SUPERIORES */
+/* ========================= */
+/* LOGOS / TÍTULOS SUPERIORES */
+/* ========================= */
 
 #radioNameTop {
   display: block;
+
   font-size: 38px;
   line-height: 0.9;
   text-transform: uppercase;
   letter-spacing: 1px;
   color: white;
+
   width: auto;
   height: auto;
+
   background-image: none;
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
+
   text-indent: 0;
   overflow: visible;
 }
 
+/* LA FAN - LOGO SUPERIOR SVG */
 body.lafan-theme #radioNameTop {
   width: 255px;
   height: 92px;
+
   font-size: 0 !important;
   line-height: 0 !important;
   color: transparent !important;
   text-indent: -9999px;
   overflow: hidden;
-  background-image: url("logosuperiolafan.png?v=120");
+
+  background-image: url("logosuperiorlafan.svg?v=150");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
 }
 
+/* CLIP - LOGO SUPERIOR SVG */
+body.clip-theme #radioNameTop {
+  width: 255px;
+  height: 92px;
+
+  font-size: 0 !important;
+  line-height: 0 !important;
+  color: transparent !important;
+  text-indent: -9999px;
+  overflow: hidden;
+
+  background-image: url("logosuperiorclip.svg?v=150");
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: contain;
+}
+
+/* OYE - LOGO SUPERIOR SVG */
 body.oye-theme #radioNameTop {
-  width: 155px;
-  height: 55px;
+  width: 255px;
+  height: 92px;
+
   font-size: 0 !important;
   line-height: 0 !important;
   color: transparent !important;
   text-indent: -9999px;
   overflow: hidden;
-  background-image: url("logosuperioroye.svg?v=120");
+
+  background-image: url("logosuperioroye.svg?v=150");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
 }
 
-body.clip-theme #radioNameTop,
+/* POX - LOGO SUPERIOR SVG */
 body.pox-theme #radioNameTop {
-  font-size: 38px;
-  line-height: 0.9;
-  height: 46px;
-  display: flex;
-  align-items: center;
+  width: 255px;
+  height: 92px;
+
+  font-size: 0 !important;
+  line-height: 0 !important;
+  color: transparent !important;
+  text-indent: -9999px;
+  overflow: hidden;
+
+  background-image: url("logosuperiorpox.svg?v=150");
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: contain;
 }
+
+/* RESPONSIVE LOGOS */
 
 @media (max-width: 420px) {
-  body.lafan-theme #radioNameTop {
+  body.lafan-theme #radioNameTop,
+  body.clip-theme #radioNameTop,
+  body.oye-theme #radioNameTop,
+  body.pox-theme #radioNameTop {
     width: 245px;
     height: 88px;
-  }
-
-  body.oye-theme #radioNameTop {
-    width: 300px;
-    height: 105px;
-  }
-
-  body.clip-theme #radioNameTop,
-  body.pox-theme #radioNameTop {
-    font-size: 36px;
-    height: 44px;
   }
 }
 
 @media (max-height: 760px) {
-  body.lafan-theme #radioNameTop {
+  body.lafan-theme #radioNameTop,
+  body.clip-theme #radioNameTop,
+  body.oye-theme #radioNameTop,
+  body.pox-theme #radioNameTop {
     width: 230px;
     height: 82px;
   }
-
-  body.oye-theme #radioNameTop {
-    width: 285px;
-    height: 100px;
-  }
-
-  body.clip-theme #radioNameTop,
-  body.pox-theme #radioNameTop {
-    font-size: 34px;
-    height: 42px;
-  }
 }
-
 /* LIVE STATUS */
 
 .live-status {
