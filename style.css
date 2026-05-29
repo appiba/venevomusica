@@ -195,7 +195,7 @@ body.lafan-theme #radioNameTop {
   text-indent: -9999px;
   overflow: hidden;
 
-  background-image: url("logosuperiorlafan.svg?v=170");
+  background-image: url("logosuperiorlafan.svg?v=180");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
@@ -211,7 +211,7 @@ body.clip-theme #radioNameTop {
   text-indent: -9999px;
   overflow: hidden;
 
-  background-image: url("logosuperiorclip.svg?v=170");
+  background-image: url("logosuperiorclip.svg?v=180");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
@@ -227,7 +227,7 @@ body.oye-theme #radioNameTop {
   text-indent: -9999px;
   overflow: hidden;
 
-  background-image: url("logosuperioroye.svg?v=170");
+  background-image: url("logosuperioroye.svg?v=180");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
@@ -243,7 +243,7 @@ body.pox-theme #radioNameTop {
   text-indent: -9999px;
   overflow: hidden;
 
-  background-image: url("logosuperiorpox.svg?v=170");
+  background-image: url("logosuperiorpox.svg?v=180");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
@@ -742,6 +742,42 @@ body.pox-theme #radioNameTop {
   justify-content: center;
   align-items: center;
   text-align: center;
+  overflow: hidden;
+}
+
+/* VIDEO INTERNO DEL DIAL */
+
+.dial-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: none;
+  z-index: 5;
+  background: #000;
+}
+
+/* CUANDO EL DIAL TIENE VIDEO */
+
+.dial-wrapper.has-dial-video .dial-video {
+  display: block;
+}
+
+.dial-wrapper.has-dial-video .playing-text,
+.dial-wrapper.has-dial-video #dialNumber,
+.dial-wrapper.has-dial-video #dialRadioName,
+.dial-wrapper.has-dial-video #dialSubtitle,
+.dial-wrapper.has-dial-video #audioBars {
+  display: none !important;
+}
+
+/* opcional: baja un poco el centro negro cuando hay video */
+.dial-wrapper.has-dial-video .dial-center {
+  background: rgba(0,0,0,0.18);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .playing-text {
