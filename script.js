@@ -86,6 +86,15 @@ const dialSubtitle = document.getElementById("dialSubtitle");
 const dialWrapper = document.getElementById("dialWrapper");
 const dialArea = document.getElementById("dialArea");
 
+const prevPreviewNumber = document.getElementById("prevPreviewNumber");
+const prevPreviewName = document.getElementById("prevPreviewName");
+const prevPreviewSubtitle = document.getElementById("prevPreviewSubtitle");
+const nextPreviewNumber = document.getElementById("nextPreviewNumber");
+const nextPreviewName = document.getElementById("nextPreviewName");
+const nextPreviewSubtitle = document.getElementById("nextPreviewSubtitle");
+const prevRadioPreview = document.getElementById("prevRadioPreview");
+const nextRadioPreview = document.getElementById("nextRadioPreview");
+
 const radioLogoVideo = document.getElementById("radioLogoVideo");
 const radioPlayer = document.getElementById("radioPlayer");
 const playBtn = document.getElementById("playBtn");
@@ -242,10 +251,62 @@ function spinDial() {
 function updateTopIdentity(radio) {
   if (radio.id === "lafan") {
     radioNameTop.textContent = "LA FAN";
+  } else if (radio.id === "clip") {
+    radioNameTop.textContent = "CLIP";
   } else if (radio.id === "oye") {
     radioNameTop.textContent = "OYE";
+  } else if (radio.id === "pox") {
+    radioNameTop.textContent = "POX";
   } else {
     radioNameTop.textContent = `${radio.name} FD`;
+  }
+}
+
+function formatPreviewNumber(number) {
+  if (typeof number === "number") {
+    return number.toFixed(1);
+  }
+
+  return String(number || "");
+}
+
+function updateRadioPreviews() {
+  const prevIndex = (currentRadio - 1 + radios.length) % radios.length;
+  const nextIndex = (currentRadio + 1) % radios.length;
+
+  const prev = radios[prevIndex];
+  const next = radios[nextIndex];
+
+  if (prevPreviewNumber) {
+    prevPreviewNumber.textContent = formatPreviewNumber(prev.number);
+  }
+
+  if (prevPreviewName) {
+    prevPreviewName.textContent = prev.name;
+  }
+
+  if (prevPreviewSubtitle) {
+    prevPreviewSubtitle.textContent = prev.subtitle;
+  }
+
+  if (nextPreviewNumber) {
+    nextPreviewNumber.textContent = formatPreviewNumber(next.number);
+  }
+
+  if (nextPreviewName) {
+    nextPreviewName.textContent = next.name;
+  }
+
+  if (nextPreviewSubtitle) {
+    nextPreviewSubtitle.textContent = next.subtitle;
+  }
+
+  if (prevRadioPreview) {
+    prevRadioPreview.dataset.radio = prev.id;
+  }
+
+  if (nextRadioPreview) {
+    nextRadioPreview.dataset.radio = next.id;
   }
 }
 
@@ -270,6 +331,7 @@ function loadRadio(index) {
   animateNumber(currentNumber, radio.number);
 
   updateTopIdentity(radio);
+  updateRadioPreviews();
 
   dialRadioName.textContent = `${radio.name} FM`;
   dialSubtitle.textContent = radio.subtitle;
@@ -1206,6 +1268,7 @@ function startFakeVisualizer() {
 
 setupVolume();
 setBarsIdle();
+updateRadioPreviews();
 
 loadStreamingLinks().then(() => {
   loadRadio(currentRadio);
