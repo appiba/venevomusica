@@ -59,8 +59,7 @@ body.pox-theme {
 .liquid-nav,
 .mode-tabs,
 .live-status,
-.volume-panel,
-.mini-live-box {
+.volume-panel {
   position: relative;
   overflow: hidden;
   background:
@@ -79,8 +78,7 @@ body.pox-theme {
 .liquid-btn::before,
 .liquid-nav::before,
 .mode-tabs::before,
-.live-status::before,
-.mini-live-box::before {
+.live-status::before {
   content: "";
   position: absolute;
   top: 0;
@@ -122,6 +120,8 @@ body.pox-theme {
   margin-bottom: 4px;
   gap: 12px;
   flex-shrink: 0;
+  position: relative;
+  z-index: 100;
 }
 
 .icon-btn {
@@ -161,6 +161,49 @@ body.pox-theme {
   line-height: 0.9;
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+/* HEADER LIVE STACK */
+
+.header-live-stack {
+  flex-shrink: 0;
+  min-width: 104px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+  position: relative;
+  z-index: 999;
+}
+
+.header-live-metrics {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7px;
+  padding-right: 4px;
+
+  font-size: 8px;
+  line-height: 1;
+  font-weight: 800;
+  color: rgba(255,255,255,0.74);
+  white-space: nowrap;
+}
+
+.header-metric-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.header-metric-item svg {
+  width: 10px;
+  height: 10px;
+  fill: none;
+  stroke: rgba(255,255,255,0.82);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* ========================= */
@@ -348,85 +391,30 @@ body.pox-theme #radioNameTop {
 }
 
 /* ========================= */
-/* MINI LIVE + RADIO / STREAMING */
+/* RADIO / STREAMING */
 /* ========================= */
 
 .radio-top-strip {
   position: relative;
   width: 100%;
-  min-height: 64px;
+  min-height: 42px;
   margin-bottom: 8px;
   flex-shrink: 0;
 }
 
-/* BLOQUE PEQUEÑO EN VIVO */
-
-.mini-live-box {
-  position: absolute;
-  top: 0;
-  right: 0;
-
-  min-width: 158px;
-  height: 42px;
-
-  padding: 7px 10px;
-  border-radius: 18px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: center;
-
-  z-index: 5;
-}
-
-.mini-live-label {
-  position: relative;
-  z-index: 2;
-
-  font-size: 10px;
-  line-height: 1;
-  font-weight: 900;
-  letter-spacing: 2px;
-  opacity: 0.9;
-}
-
-.mini-live-stats {
-  position: relative;
-  z-index: 2;
-
-  margin-top: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 8px;
-
-  font-size: 8px;
-  line-height: 1;
-  font-weight: 800;
-  letter-spacing: 0.2px;
-  opacity: 0.72;
-  white-space: nowrap;
-}
-
-.mini-stat-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-}
-
+/* Bloque viejo oculto por seguridad si queda cacheado */
+.mini-live-box,
+.mini-live-label,
+.mini-live-stats,
+.mini-stat-item,
 .mini-stat-icon {
-  font-size: 8px;
-  line-height: 1;
-  opacity: 0.82;
+  display: none !important;
 }
-
-/* RADIO / STREAMING SEPARADO */
 
 .mode-tabs {
   position: absolute;
   right: 0;
-  bottom: 0;
+  top: 0;
 
   width: 188px;
   height: 36px;
@@ -1476,23 +1464,8 @@ body.pox-theme .play-btn { color: #d71920; }
 
 @media (max-height: 760px) {
   .radio-top-strip {
-    min-height: 58px;
+    min-height: 38px;
     margin-bottom: 6px;
-  }
-
-  .mini-live-box {
-    min-width: 150px;
-    height: 40px;
-    padding: 6px 9px;
-  }
-
-  .mini-live-label {
-    font-size: 10px;
-  }
-
-  .mini-live-stats {
-    font-size: 8px;
-    gap: 7px;
   }
 
   .mode-tabs {
@@ -1606,16 +1579,21 @@ body.pox-theme .play-btn { color: #d71920; }
 }
 
 @media (max-width: 390px) {
-  .mini-live-box {
-    min-width: 144px;
+  .header-live-stack {
+    min-width: 96px;
+  }
+
+  .header-live-metrics {
+    font-size: 7px;
+    gap: 5px;
+  }
+
+  .header-metric-item svg {
+    width: 9px;
+    height: 9px;
   }
 
   .mode-tabs {
     width: 168px;
-  }
-
-  .mini-live-stats {
-    font-size: 7.5px;
-    gap: 6px;
   }
 }
