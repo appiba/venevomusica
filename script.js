@@ -58,7 +58,6 @@ let analyser = null;
 let sourceNode = null;
 let analyserReady = false;
 
-let visualizerMode = "idle";
 let realVisualizerFrame = null;
 let fakeVisualizerInterval = null;
 
@@ -113,9 +112,10 @@ const volumePanel = document.getElementById("volumePanel");
 const volumeSlider = document.getElementById("volumeSlider");
 
 const nowCover = document.getElementById("nowCover");
+const nowArtistBox = document.getElementById("nowArtistBox");
+const nowArtistMain = document.getElementById("nowArtistMain");
 const nowTitleBox = document.getElementById("nowTitleBox");
 const nowTitle = document.getElementById("nowTitle");
-const nowArtist = document.getElementById("nowArtist");
 const songProgressFill = document.getElementById("songProgressFill");
 const songElapsed = document.getElementById("songElapsed");
 const songDuration = document.getElementById("songDuration");
@@ -287,7 +287,9 @@ function loadRadio(index) {
   if (isPlaying) {
     radioPlayer.play().then(() => {
       startVisualizer();
-    }).catch(() => {});
+    }).catch(() => {
+      startVisualizer();
+    });
   } else {
     stopVisualizer();
   }
@@ -310,10 +312,17 @@ async function playRadio() {
     setLiveStatus("playing", "EN VIVO");
     startVisualizer();
   } catch (error) {
-    isPlaying = false;
-    playBtn.innerHTML = "▶";
-    setLiveStatus("error", "SIN SEÑAL");
-    stopVisualizer();
+    isPlaying = true;
+    playBtn.innerHTML = "❚❚";
+    setLiveStatus("connecting", "CARGANDO");
+    startVisualizer();
+
+    radioPlayer.play().catch(() => {
+      isPlaying = false;
+      playBtn.innerHTML = "▶";
+      setLiveStatus("error", "SIN SEÑAL");
+      stopVisualizer();
+    });
   }
 }
 
@@ -622,29 +631,70 @@ function setupVolume() {
 
 /* NOW PLAYING */
 
-function cleanSongTitle(title) {
-  if (!title) return "Canción no disponible";
+function cleanNowAirText(value) {
+  if (!value) return "";
 
-  return String(title)
+  return String(value)
     .replace(/^(now|nov)\s*on\s*air\s*[:\-–—]?\s*/i, "")
     .replace(/^on\s*air\s*[:\-–—]?\s*/i, "")
     .replace(/^en\s*vivo\s*[:\-–—]?\s*/i, "")
+    .replace(/^live\s*[:\-–—]?\s*/i, "")
     .trim();
 }
 
-function setTitleMarquee(text) {
-  if (!nowTitle || !nowTitleBox) return;
+function normalizeSongData(song) {
+  let titleRaw = song?.title || "";
+  let artistRaw = song?.artist || "";
+  let textRaw = song?.text || "";
 
-  nowTitle.textContent = text || "Canción no disponible";
-  nowTitleBox.classList.remove("marquee");
-  nowTitleBox.style.removeProperty("--marquee-distance");
+  titleRaw = String(titleRaw || "").trim();
+  artistRaw = String(artistRaw || "").trim();
+  textRaw = String(textRaw || "").trim();
+
+  let artist = "";
+  let title = "";
+
+  if (/now\s*on\s*air/i.test(artistRaw) || /nov\s*on\s*air/i.test(artistRaw)) {
+    artist = cleanNowAirText(titleRaw);
+    title = cleanNowAirText(artistRaw);
+  } else {
+    artist = cleanNowAirText(artistRaw);
+    title = cleanNowAirText(titleRaw);
+  }
+
+  if ((!artist || !title) && textRaw.includes(" - ")) {
+    const parts = textRaw.split(" - ");
+    if (!artist) artist = cleanNowAirText(parts[0]);
+    if (!title) title = cleanNowAirText(parts.slice(1).join(" - "));
+  }
+
+  if (!artist && titleRaw && artistRaw) {
+    artist = cleanNowAirText(titleRaw);
+  }
+
+  if (!title && artistRaw) {
+    title = cleanNowAirText(artistRaw);
+  }
+
+  if (!artist) artist = "Venevo Música";
+  if (!title) title = "Canción en vivo";
+
+  return { artist, title };
+}
+
+function setMarquee(box, textElement, text) {
+  if (!box || !textElement) return;
+
+  textElement.textContent = text || "";
+  box.classList.remove("marquee");
+  box.style.removeProperty("--marquee-distance");
 
   requestAnimationFrame(() => {
-    const overflow = nowTitle.scrollWidth - nowTitleBox.clientWidth;
+    const overflow = textElement.scrollWidth - box.clientWidth;
 
     if (overflow > 12) {
-      nowTitleBox.style.setProperty("--marquee-distance", `${overflow + 32}px`);
-      nowTitleBox.classList.add("marquee");
+      box.style.setProperty("--marquee-distance", `${overflow + 32}px`);
+      box.classList.add("marquee");
     }
   });
 }
@@ -683,11 +733,11 @@ function setSongCover(artUrl) {
 async function loadNowPlaying() {
   const radio = radios[currentRadio];
 
-  if (!nowTitle || !nowArtist || !nowCover || !songCoverMain) return;
+  if (!nowArtistMain || !nowTitle || !nowCover || !songCoverMain) return;
 
   if (!radio.metadataApi) {
-    setTitleMarquee(radio.name);
-    nowArtist.textContent = radio.subtitle;
+    setMarquee(nowArtistBox, nowArtistMain, radio.name);
+    setMarquee(nowTitleBox, nowTitle, radio.subtitle);
     setSongCover("");
     updateSongProgress(0, 0);
     return;
@@ -699,39 +749,24 @@ async function loadNowPlaying() {
     });
 
     const data = await response.json();
-
     const song = data?.now_playing?.song || null;
 
-    const rawTitle =
-      song?.title ||
-      song?.text ||
-      "Canción no disponible";
+    const normalized = normalizeSongData(song);
 
-    const title = cleanSongTitle(rawTitle);
+    const art = song?.art || "";
 
-    const artist =
-      song?.artist ||
-      "Artista no disponible";
+    const elapsed = Number(data?.now_playing?.elapsed || 0);
+    const duration = Number(data?.now_playing?.duration || 0);
 
-    const art =
-      song?.art ||
-      "";
-
-    const elapsed =
-      Number(data?.now_playing?.elapsed || 0);
-
-    const duration =
-      Number(data?.now_playing?.duration || 0);
-
-    setTitleMarquee(title);
-    nowArtist.textContent = artist;
+    setMarquee(nowArtistBox, nowArtistMain, normalized.artist);
+    setMarquee(nowTitleBox, nowTitle, normalized.title);
 
     updateSongProgress(elapsed, duration);
     setSongCover(art);
 
   } catch (error) {
-    setTitleMarquee(radio.name);
-    nowArtist.textContent = "Información no disponible";
+    setMarquee(nowArtistBox, nowArtistMain, radio.name);
+    setMarquee(nowTitleBox, nowTitle, "Información no disponible");
     updateSongProgress(0, 0);
     setSongCover("");
   }
@@ -805,7 +840,7 @@ function setBarsIdle() {
 }
 
 async function initAudioVisualizer() {
-  if (analyserReady || visualizerMode === "fake") return;
+  if (analyserReady) return;
 
   try {
     audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -817,14 +852,14 @@ async function initAudioVisualizer() {
     sourceNode = audioContext.createMediaElementSource(radioPlayer);
     analyser = audioContext.createAnalyser();
     analyser.fftSize = 128;
+    analyser.smoothingTimeConstant = 0.72;
 
     sourceNode.connect(analyser);
     analyser.connect(audioContext.destination);
 
     analyserReady = true;
-    visualizerMode = "real";
   } catch (error) {
-    visualizerMode = "fake";
+    analyserReady = false;
   }
 }
 
@@ -896,12 +931,12 @@ function startFakeVisualizer() {
     }
 
     audioBars.forEach((bar, index) => {
-      const wave = Math.sin(Date.now() / 160 + index) * 10;
-      const random = Math.random() * 18;
+      const wave = Math.sin(Date.now() / 150 + index * 0.75) * 10;
+      const random = Math.random() * 17;
       const height = Math.max(8, Math.min(34, 14 + wave + random));
       bar.style.height = `${height}px`;
     });
-  }, 120);
+  }, 90);
 }
 
 /* INIT */
