@@ -639,45 +639,162 @@ function cleanNowAirText(value) {
     .replace(/^on\s*air\s*[:\-–—]?\s*/i, "")
     .replace(/^en\s*vivo\s*[:\-–—]?\s*/i, "")
     .replace(/^live\s*[:\-–—]?\s*/i, "")
+    .replace(/\s+/g, " ")
     .trim();
 }
 
-function normalizeSongData(song) {
-  let titleRaw = song?.title || "";
-  let artistRaw = song?.artist || "";
-  let textRaw = song?.text || "";
+function cleanBadText(value) {
+  if (!value) return "";
 
-  titleRaw = String(titleRaw || "").trim();
-  artistRaw = String(artistRaw || "").trim();
-  textRaw = String(textRaw || "").trim();
+  const text = cleanNowAirText(value);
+
+  const badValues = [
+    "hi-fi",
+    "hifi",
+    "hi fi",
+    "hi-fi internet stream",
+    "hifi internet stream",
+    "internet stream",
+    "venevo música",
+    "venevo musica",
+    "radio",
+    "online radio",
+    "now on air",
+    "nov on air"
+  ];
+
+  if (badValues.includes(text.toLowerCase())) {
+    return "";
+  }
+
+  return text;
+}
+
+function isGenericSong(song) {
+  if (!song) return true;
+
+  const artist = cleanBadText(song.artist || "");
+  const title = cleanBadText(song.title || "");
+  const text = cleanBadText(song.text || "");
+
+  if (!artist && !title && !text) return true;
+
+  const rawArtist = String(song.artist || "").toLowerCase().trim();
+  const rawTitle = String(song.title || "").toLowerCase().trim();
+  const rawText = String(song.text || "").toLowerCase().trim();
+
+  const genericValues = [
+    "hi-fi",
+    "hifi",
+    "hi fi",
+    "internet stream",
+    "hi-fi internet stream",
+    "hifi internet stream"
+  ];
+
+  if (genericValues.includes(rawArtist)) return true;
+  if (genericValues.includes(rawTitle)) return true;
+  if (genericValues.includes(rawText)) return true;
+
+  if (!artist && genericValues.includes(rawTitle)) return true;
+  if (!artist && genericValues.includes(rawText)) return true;
+
+  return false;
+}
+
+function getBestSongFromApi(data) {
+  const nowSong = data?.now_playing?.song || null;
+
+  if (nowSong && !isGenericSong(nowSong)) {
+    return nowSong;
+  }
+
+  const history = Array.isArray(data?.song_history) ? data.song_history : [];
+
+  const firstRealHistory = history.find(item => {
+    const historySong = item?.song || null;
+    return historySong && !isGenericSong(historySong);
+  });
+
+  if (firstRealHistory?.song) {
+    return firstRealHistory.song;
+  }
+
+  return nowSong;
+}
+
+function splitArtistAndTitle(text) {
+  if (!text) return { artist: "", title: "" };
+
+  let clean = cleanNowAirText(text);
+
+  clean = clean
+    .replace(/\s+\|\s+/g, " - ")
+    .replace(/\s+\/\s+/g, " - ")
+    .replace(/\s+–\s+/g, " - ")
+    .replace(/\s+—\s+/g, " - ");
+
+  if (clean.includes(" - ")) {
+    const parts = clean.split(" - ").map(item => item.trim()).filter(Boolean);
+
+    if (parts.length >= 2) {
+      return {
+        artist: cleanBadText(parts[0]),
+        title: cleanBadText(parts.slice(1).join(" - "))
+      };
+    }
+  }
+
+  return {
+    artist: "",
+    title: cleanBadText(clean)
+  };
+}
+
+function normalizeSongData(song, radio) {
+  const rawArtist = cleanBadText(song?.artist || "");
+  const rawTitle = cleanBadText(song?.title || "");
+  const rawText = cleanNowAirText(song?.text || "");
 
   let artist = "";
   let title = "";
 
-  if (/now\s*on\s*air/i.test(artistRaw) || /nov\s*on\s*air/i.test(artistRaw)) {
-    artist = cleanNowAirText(titleRaw);
-    title = cleanNowAirText(artistRaw);
+  const fromText = splitArtistAndTitle(rawText);
+  const fromTitle = splitArtistAndTitle(rawTitle);
+  const fromArtist = splitArtistAndTitle(rawArtist);
+
+  if (fromText.artist && fromText.title) {
+    artist = fromText.artist;
+    title = fromText.title;
+  } else if (rawArtist && rawTitle) {
+    artist = rawArtist;
+    title = rawTitle;
+  } else if (fromTitle.artist && fromTitle.title) {
+    artist = fromTitle.artist;
+    title = fromTitle.title;
+  } else if (fromArtist.artist && fromArtist.title) {
+    artist = fromArtist.artist;
+    title = fromArtist.title;
   } else {
-    artist = cleanNowAirText(artistRaw);
-    title = cleanNowAirText(titleRaw);
+    artist = rawArtist || fromText.artist || fromTitle.artist || "";
+    title = rawTitle || fromText.title || fromTitle.title || cleanBadText(rawText) || "";
   }
 
-  if ((!artist || !title) && textRaw.includes(" - ")) {
-    const parts = textRaw.split(" - ");
-    if (!artist) artist = cleanNowAirText(parts[0]);
-    if (!title) title = cleanNowAirText(parts.slice(1).join(" - "));
+  artist = cleanBadText(artist);
+  title = cleanBadText(title);
+
+  if (!artist && !title) {
+    artist = `${radio.name} FM`;
+    title = "Transmitiendo en vivo";
   }
 
-  if (!artist && titleRaw && artistRaw) {
-    artist = cleanNowAirText(titleRaw);
+  if (!artist && title) {
+    artist = `${radio.name} FM`;
   }
 
-  if (!title && artistRaw) {
-    title = cleanNowAirText(artistRaw);
+  if (!title) {
+    title = "Transmitiendo en vivo";
   }
-
-  if (!artist) artist = "Venevo Música";
-  if (!title) title = "Canción en vivo";
 
   return { artist, title };
 }
@@ -736,8 +853,8 @@ async function loadNowPlaying() {
   if (!nowArtistMain || !nowTitle || !nowCover || !songCoverMain) return;
 
   if (!radio.metadataApi) {
-    setMarquee(nowArtistBox, nowArtistMain, radio.name);
-    setMarquee(nowTitleBox, nowTitle, radio.subtitle);
+    setMarquee(nowArtistBox, nowArtistMain, `${radio.name} FM`);
+    setMarquee(nowTitleBox, nowTitle, "Transmitiendo en vivo");
     setSongCover("");
     updateSongProgress(0, 0);
     return;
@@ -749,11 +866,15 @@ async function loadNowPlaying() {
     });
 
     const data = await response.json();
-    const song = data?.now_playing?.song || null;
 
-    const normalized = normalizeSongData(song);
+    const song = getBestSongFromApi(data);
+    const normalized = normalizeSongData(song, radio);
 
-    const art = song?.art || "";
+    const art =
+      song?.art ||
+      song?.album_art ||
+      song?.cover ||
+      "";
 
     const elapsed = Number(data?.now_playing?.elapsed || 0);
     const duration = Number(data?.now_playing?.duration || 0);
@@ -765,8 +886,8 @@ async function loadNowPlaying() {
     setSongCover(art);
 
   } catch (error) {
-    setMarquee(nowArtistBox, nowArtistMain, radio.name);
-    setMarquee(nowTitleBox, nowTitle, "Información no disponible");
+    setMarquee(nowArtistBox, nowArtistMain, `${radio.name} FM`);
+    setMarquee(nowTitleBox, nowTitle, "Transmitiendo en vivo");
     updateSongProgress(0, 0);
     setSongCover("");
   }
@@ -807,7 +928,7 @@ function startNowPlayingUpdater() {
 
   nowPlayingInterval = setInterval(() => {
     loadNowPlaying();
-  }, 15000);
+  }, 10000);
 }
 
 /* LIVE ACTIVITY */
