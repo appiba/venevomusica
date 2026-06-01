@@ -118,7 +118,7 @@ body.pox-theme {
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 4px;
-  gap: 12px;
+  gap: 10px;
   flex-shrink: 0;
   position: relative;
   z-index: 100;
@@ -167,7 +167,7 @@ body.pox-theme {
 
 .header-live-stack {
   flex-shrink: 0;
-  min-width: 104px;
+  width: 138px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -231,8 +231,8 @@ body.pox-theme {
 }
 
 body.lafan-theme #radioNameTop {
-  width: 255px;
-  height: 92px;
+  width: 210px;
+  height: 82px;
 
   font-size: 0 !important;
   line-height: 0 !important;
@@ -247,8 +247,8 @@ body.lafan-theme #radioNameTop {
 }
 
 body.clip-theme #radioNameTop {
-  width: 255px;
-  height: 92px;
+  width: 210px;
+  height: 82px;
 
   font-size: 0 !important;
   line-height: 0 !important;
@@ -263,8 +263,8 @@ body.clip-theme #radioNameTop {
 }
 
 body.oye-theme #radioNameTop {
-  width: 255px;
-  height: 92px;
+  width: 210px;
+  height: 82px;
 
   font-size: 0 !important;
   line-height: 0 !important;
@@ -279,8 +279,8 @@ body.oye-theme #radioNameTop {
 }
 
 body.pox-theme #radioNameTop {
-  width: 255px;
-  height: 92px;
+  width: 210px;
+  height: 82px;
 
   font-size: 0 !important;
   line-height: 0 !important;
@@ -299,8 +299,8 @@ body.pox-theme #radioNameTop {
   body.clip-theme #radioNameTop,
   body.oye-theme #radioNameTop,
   body.pox-theme #radioNameTop {
-    width: 245px;
-    height: 88px;
+    width: 190px;
+    height: 76px;
   }
 }
 
@@ -309,8 +309,8 @@ body.pox-theme #radioNameTop {
   body.clip-theme #radioNameTop,
   body.oye-theme #radioNameTop,
   body.pox-theme #radioNameTop {
-    width: 230px;
-    height: 82px;
+    width: 180px;
+    height: 72px;
   }
 }
 
@@ -394,12 +394,9 @@ body.pox-theme #radioNameTop {
 /* RADIO / STREAMING */
 /* ========================= */
 
+/* Ya no se usa dentro del scroll porque RADIO / STREAMING ahora va fijo en header */
 .radio-top-strip {
-  position: relative;
-  width: 100%;
-  min-height: 42px;
-  margin-bottom: 8px;
-  flex-shrink: 0;
+  display: none !important;
 }
 
 /* Bloque viejo oculto por seguridad si queda cacheado */
@@ -411,20 +408,16 @@ body.pox-theme #radioNameTop {
   display: none !important;
 }
 
+/* Estilo base visual de las pestañas */
 .mode-tabs {
-  position: absolute;
-  right: 0;
-  top: 0;
-
+  position: relative;
   width: 188px;
   height: 36px;
-
   display: flex;
   padding: 4px;
   border-radius: 22px;
   margin: 0 !important;
   flex-shrink: 0;
-
   z-index: 4;
 }
 
@@ -445,6 +438,22 @@ body.pox-theme #radioNameTop {
   color: #000 !important;
 }
 
+/* RADIO / STREAMING fijo en header */
+.header-mode-tabs {
+  width: 138px;
+  height: 32px;
+  margin-top: 2px !important;
+  align-self: flex-end;
+  z-index: 1000;
+}
+
+.header-mode-tabs .mode-tab {
+  height: 24px;
+  font-size: 8px;
+  letter-spacing: 0.7px;
+}
+
+/* RADIO / STREAMING dentro del modo streaming */
 .streaming-top-tabs {
   position: relative;
   height: 52px;
@@ -452,9 +461,11 @@ body.pox-theme #radioNameTop {
 }
 
 .streaming-tabs {
+  position: absolute;
   top: 0;
   right: 0;
-  bottom: auto;
+  width: 188px;
+  height: 36px;
 }
 
 /* ========================= */
@@ -1463,19 +1474,25 @@ body.pox-theme .play-btn { color: #d71920; }
 /* RESPONSIVE */
 
 @media (max-height: 760px) {
-  .radio-top-strip {
-    min-height: 38px;
-    margin-bottom: 6px;
-  }
-
-  .mode-tabs {
+  .streaming-tabs {
     width: 176px;
     height: 34px;
   }
 
-  .mode-tab {
+  .streaming-tabs .mode-tab {
     height: 26px;
     font-size: 9px;
+  }
+
+  .header-mode-tabs {
+    width: 128px;
+    height: 31px;
+  }
+
+  .header-mode-tabs .mode-tab {
+    height: 23px;
+    font-size: 7.4px;
+    letter-spacing: 0.4px;
   }
 
   .dial-container {
@@ -1580,7 +1597,7 @@ body.pox-theme .play-btn { color: #d71920; }
 
 @media (max-width: 390px) {
   .header-live-stack {
-    min-width: 96px;
+    width: 126px;
   }
 
   .header-live-metrics {
@@ -1593,7 +1610,14 @@ body.pox-theme .play-btn { color: #d71920; }
     height: 9px;
   }
 
-  .mode-tabs {
-    width: 168px;
+  .header-mode-tabs {
+    width: 124px;
+    height: 30px;
+  }
+
+  .header-mode-tabs .mode-tab {
+    height: 22px;
+    font-size: 7px;
+    letter-spacing: 0.3px;
   }
 }
