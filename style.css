@@ -1268,10 +1268,7 @@ body.pox-theme .song-progress-fill {
 }
 
 .swipe-hint {
-  text-align: center;
-  margin-top: 14px;
-  font-size: 11px;
-  opacity: 0.62;
+  display: none !important;
 }
 
 /* STREAMING */
