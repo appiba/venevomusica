@@ -37,7 +37,7 @@ const radios = [
     metadataApi: "https://radio.megahostec.com/api/nowplaying/radio_oyefm",
     logoVideo: "introoyelogo.mp4",
     logoCarro: "logooyecarro.png",
-    dialVideo: "",
+    dialVideo: "dialoye.mp4",
     streaming: ""
   },
   {
