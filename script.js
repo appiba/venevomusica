@@ -50,7 +50,7 @@ const radios = [
     metadataApi: "https://radio.megahostec.com/api/nowplaying/radio_pox_edmo",
     logoVideo: "poxvideo.mp4",
     logoCarro: "logopoxcarro.png",
-    dialVideo: "",
+    dialVideo: "diapox.mp4",
     streaming: ""
   }
 ];
