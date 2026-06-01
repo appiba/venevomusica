@@ -182,7 +182,6 @@ body.pox-theme {
   justify-content: flex-end;
   gap: 7px;
   padding-right: 4px;
-
   font-size: 8px;
   line-height: 1;
   font-weight: 800;
@@ -217,15 +216,12 @@ body.pox-theme {
   text-transform: uppercase;
   letter-spacing: 1px;
   color: white;
-
   width: auto;
   height: auto;
-
   background-image: none;
   background-repeat: no-repeat;
   background-position: left center;
   background-size: contain;
-
   text-indent: 0;
   overflow: visible;
 }
@@ -233,13 +229,11 @@ body.pox-theme {
 body.lafan-theme #radioNameTop {
   width: 210px;
   height: 82px;
-
   font-size: 0 !important;
   line-height: 0 !important;
   color: transparent !important;
   text-indent: -9999px;
   overflow: hidden;
-
   background-image: url("logosuperiorlafan.svg?v=190");
   background-repeat: no-repeat;
   background-position: left center;
@@ -249,13 +243,11 @@ body.lafan-theme #radioNameTop {
 body.clip-theme #radioNameTop {
   width: 210px;
   height: 82px;
-
   font-size: 0 !important;
   line-height: 0 !important;
   color: transparent !important;
   text-indent: -9999px;
   overflow: hidden;
-
   background-image: url("logosuperiorclip.svg?v=190");
   background-repeat: no-repeat;
   background-position: left center;
@@ -265,13 +257,11 @@ body.clip-theme #radioNameTop {
 body.oye-theme #radioNameTop {
   width: 210px;
   height: 82px;
-
   font-size: 0 !important;
   line-height: 0 !important;
   color: transparent !important;
   text-indent: -9999px;
   overflow: hidden;
-
   background-image: url("logosuperioroye.svg?v=190");
   background-repeat: no-repeat;
   background-position: left center;
@@ -281,13 +271,11 @@ body.oye-theme #radioNameTop {
 body.pox-theme #radioNameTop {
   width: 210px;
   height: 82px;
-
   font-size: 0 !important;
   line-height: 0 !important;
   color: transparent !important;
   text-indent: -9999px;
   overflow: hidden;
-
   background-image: url("logosuperiorpox.svg?v=190");
   background-repeat: no-repeat;
   background-position: left center;
@@ -394,12 +382,10 @@ body.pox-theme #radioNameTop {
 /* RADIO / STREAMING */
 /* ========================= */
 
-/* Ya no se usa dentro del scroll porque RADIO / STREAMING ahora va fijo en header */
 .radio-top-strip {
   display: none !important;
 }
 
-/* Bloque viejo oculto por seguridad si queda cacheado */
 .mini-live-box,
 .mini-live-label,
 .mini-live-stats,
@@ -408,7 +394,6 @@ body.pox-theme #radioNameTop {
   display: none !important;
 }
 
-/* Estilo base visual de las pestañas */
 .mode-tabs {
   position: relative;
   width: 188px;
@@ -438,7 +423,6 @@ body.pox-theme #radioNameTop {
   color: #000 !important;
 }
 
-/* RADIO / STREAMING fijo en header */
 .header-mode-tabs {
   width: 138px;
   height: 32px;
@@ -453,7 +437,6 @@ body.pox-theme #radioNameTop {
   letter-spacing: 0.7px;
 }
 
-/* RADIO / STREAMING dentro del modo streaming */
 .streaming-top-tabs {
   position: relative;
   height: 52px;
@@ -508,27 +491,21 @@ body.pox-theme #radioNameTop {
   height: 224px;
   border-radius: 34px;
   overflow: hidden;
-
   background:
     linear-gradient(145deg, rgba(255,255,255,0.18), rgba(255,255,255,0.045)),
     rgba(0,0,0,0.23);
-
   border: 1px solid rgba(255,255,255,0.18);
-
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.22),
     inset 0 -18px 28px rgba(0,0,0,0.25),
     0 20px 48px rgba(0,0,0,0.34);
-
   backdrop-filter: blur(18px) saturate(180%);
   -webkit-backdrop-filter: blur(18px) saturate(180%);
-
   transform-style: preserve-3d;
   transition:
     transform 0.72s cubic-bezier(.2,.85,.25,1),
     opacity 0.45s ease,
     filter 0.45s ease;
-
   pointer-events: none;
 }
 
@@ -557,8 +534,6 @@ body.pox-theme #radioNameTop {
   z-index: 1;
 }
 
-/* IZQUIERDA */
-
 .card-left {
   left: 0;
   opacity: 0.44;
@@ -570,8 +545,6 @@ body.pox-theme #radioNameTop {
     scale(0.88);
   z-index: 3;
 }
-
-/* CENTRO */
 
 .card-center {
   width: 264px;
@@ -585,7 +558,6 @@ body.pox-theme #radioNameTop {
     rotateY(0deg)
     scale(1.04);
   z-index: 12;
-
   background: transparent;
   border: none;
   box-shadow: none;
@@ -598,8 +570,6 @@ body.pox-theme #radioNameTop {
 .card-center::after {
   display: none;
 }
-
-/* DERECHA */
 
 .card-right {
   right: 0;
@@ -1082,14 +1052,10 @@ body.pox-theme .song-progress-fill {
   font-weight: 800;
 }
 
-/* CONTROLES PRINCIPALES ARRIBA */
+/* CONTROLES PRINCIPALES ANTIGUOS - YA NO SE USAN EN INDEX NUEVO */
 
 .main-controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 22px;
-  margin-top: 16px;
+  display: none !important;
 }
 
 .control-btn {
@@ -1102,36 +1068,23 @@ body.pox-theme .song-progress-fill {
   font-weight: bold;
 }
 
-.play-btn {
-  width: 82px;
-  height: 82px;
-  border-radius: 50%;
-  border: none;
-  font-size: 31px;
-  font-weight: 900;
-  background: white;
-  color: black;
-}
-
-.liquid-play {
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.9),
-    inset 0 -15px 24px rgba(0,0,0,0.12),
-    0 18px 45px rgba(0,0,0,0.35);
-}
-
-body.lafan-theme .play-btn { color: #e61b82; }
-body.clip-theme .play-btn { color: #006b35; }
-body.oye-theme .play-btn { color: #006b35; }
-body.pox-theme .play-btn { color: #d71920; }
-
-/* ACCIONES ABAJO */
+/* ACCIONES DEL REPRODUCTOR */
 
 .quick-actions {
   display: flex;
   justify-content: center;
-  gap: 12px;
+  align-items: center;
+  gap: 11px;
   margin-top: 16px;
+}
+
+.player-actions {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 42px 42px 56px 42px 42px;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
 }
 
 .quick-btn {
@@ -1141,6 +1094,7 @@ body.pox-theme .play-btn { color: #d71920; }
   border-radius: 15px;
   display: grid;
   place-items: center;
+  color: white;
 }
 
 .quick-btn svg {
@@ -1156,6 +1110,41 @@ body.pox-theme .play-btn { color: #d71920; }
 .quick-btn.favorite-active svg {
   fill: #ff4b4b;
   stroke: #ff4b4b;
+}
+
+/* PLAY CENTRAL PEQUEÑO E INTEGRADO */
+
+.play-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  font-size: 23px;
+  font-weight: 900;
+  background: white;
+  color: black;
+  display: grid;
+  place-items: center;
+  padding-left: 2px;
+}
+
+.liquid-play {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.9),
+    inset 0 -12px 20px rgba(0,0,0,0.12),
+    0 14px 34px rgba(0,0,0,0.30);
+}
+
+body.lafan-theme .play-btn { color: #e61b82; }
+body.clip-theme .play-btn { color: #006b35; }
+body.oye-theme .play-btn { color: #006b35; }
+body.pox-theme .play-btn { color: #d71920; }
+
+/* BOTÓN DE COMENTARIOS - MAQUETA */
+
+#commentsBtn svg {
+  width: 21px;
+  height: 21px;
 }
 
 /* VOLUME */
@@ -1570,11 +1559,6 @@ body.pox-theme .play-btn { color: #d71920; }
     height: 66px;
   }
 
-  .play-btn {
-    width: 70px;
-    height: 70px;
-  }
-
   .player-card {
     padding: 13px;
   }
@@ -1587,12 +1571,30 @@ body.pox-theme .play-btn { color: #d71920; }
     font-size: 15px;
   }
 
-  .main-controls {
+  .quick-actions {
     margin-top: 13px;
   }
 
-  .quick-actions {
-    margin-top: 13px;
+  .player-actions {
+    grid-template-columns: 39px 39px 52px 39px 39px;
+    gap: 10px;
+  }
+
+  .quick-btn {
+    width: 39px;
+    height: 39px;
+    border-radius: 14px;
+  }
+
+  .quick-btn svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .play-btn {
+    width: 52px;
+    height: 52px;
+    font-size: 21px;
   }
 }
 
@@ -1620,5 +1622,27 @@ body.pox-theme .play-btn { color: #d71920; }
     height: 22px;
     font-size: 7px;
     letter-spacing: 0.3px;
+  }
+
+  .player-actions {
+    grid-template-columns: 38px 38px 50px 38px 38px;
+    gap: 9px;
+  }
+
+  .quick-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 14px;
+  }
+
+  .quick-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .play-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
   }
 }
