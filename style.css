@@ -857,20 +857,56 @@ body.pox-theme #radioNameTop {
 .player-card {
   margin-top: 8px;
   margin-bottom: 120px;
-  border-radius: 28px;
-  padding: 15px;
+  padding: 0 !important;
   flex-shrink: 0;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  overflow: visible !important;
+}
+
+.player-card::before {
+  display: none !important;
 }
 
 .song-box {
   display: flex;
-  gap: 12px;
+  gap: 14px;
   align-items: center;
-  margin-top: 16px;
+  margin-top: 0;
 }
 
 .song-box-now {
   align-items: center;
+  position: relative;
+  padding: 18px 18px 16px;
+  border-radius: 28px;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.11), rgba(255,255,255,0.025)),
+    rgba(255,255,255,0.035);
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.12),
+    0 12px 28px rgba(0,0,0,0.14);
+  backdrop-filter: blur(14px) saturate(130%);
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  overflow: hidden;
+}
+
+.song-box-now::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 38%;
+  border-radius: inherit;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.12), transparent);
+  opacity: 0.45;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .song-cover-main {
@@ -879,8 +915,10 @@ body.pox-theme #radioNameTop {
   border-radius: 22px;
   overflow: hidden;
   flex-shrink: 0;
-  background: rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.08);
   position: relative;
+  border: 1px solid rgba(255,255,255,0.08);
+  z-index: 2;
 }
 
 .song-cover-main img,
@@ -913,6 +951,8 @@ body.pox-theme #radioNameTop {
 .song-info {
   min-width: 0;
   flex: 1;
+  position: relative;
+  z-index: 2;
 }
 
 .song-live {
@@ -1077,7 +1117,12 @@ body.pox-theme .song-progress-fill {
   align-items: center;
   gap: 11px;
   margin-top: 0;
-  margin-bottom: 4px;
+  margin-bottom: 18px;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 .player-actions {
@@ -1087,6 +1132,11 @@ body.pox-theme .song-progress-fill {
   justify-content: center;
   align-items: center;
   gap: 12px;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 .quick-btn {
@@ -1217,7 +1267,7 @@ body.pox-theme .play-btn { color: #d71920; }
 
 .swipe-hint {
   text-align: center;
-  margin-top: 12px;
+  margin-top: 14px;
   font-size: 11px;
   opacity: 0.62;
 }
@@ -1562,7 +1612,7 @@ body.pox-theme .play-btn { color: #d71920; }
   }
 
   .player-card {
-    padding: 13px;
+    padding: 0 !important;
   }
 
   .now-artist-text {
@@ -1575,7 +1625,7 @@ body.pox-theme .play-btn { color: #d71920; }
 
   .quick-actions {
     margin-top: 0;
-    margin-bottom: 4px;
+    margin-bottom: 18px;
   }
 
   .player-actions {
