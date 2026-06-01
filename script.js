@@ -59,7 +59,12 @@ let currentRadio = 0;
 let isPlaying = false;
 let currentNumber = 90.5;
 let startX = 0;
+let startY = 0;
 let listeners = 2800;
+
+let dialTouchStartX = 0;
+let dialTouchStartY = 0;
+let dialTouchMoved = false;
 
 let audioContext = null;
 let analyser = null;
@@ -133,6 +138,8 @@ const favoritesList = document.getElementById("favoritesList");
 const volumeBtn = document.getElementById("volumeBtn");
 const volumePanel = document.getElementById("volumePanel");
 const volumeSlider = document.getElementById("volumeSlider");
+
+const commentsBtn = document.getElementById("commentsBtn");
 
 const nowCover = document.getElementById("nowCover");
 const nowArtistBox = document.getElementById("nowArtistBox");
@@ -535,52 +542,135 @@ function pauseRadio() {
   stopVisualizer();
 }
 
-playBtn.addEventListener("click", async () => {
+async function togglePlayPause() {
   if (!isPlaying) {
     await playRadio();
   } else {
     pauseRadio();
   }
-});
+}
+
+if (playBtn) {
+  playBtn.addEventListener("click", async event => {
+    event.stopPropagation();
+    await togglePlayPause();
+  });
+}
+
+/* PLAY / PAUSA TOCANDO TODO EL DIAL */
+
+function setupDialPlayPause() {
+  if (!dialWrapper) return;
+
+  dialWrapper.setAttribute("role", "button");
+  dialWrapper.setAttribute("tabindex", "0");
+  dialWrapper.setAttribute("aria-label", "Reproducir o pausar radio");
+
+  dialWrapper.addEventListener("touchstart", event => {
+    if (!event.touches || !event.touches[0]) return;
+
+    dialTouchMoved = false;
+    dialTouchStartX = event.touches[0].clientX;
+    dialTouchStartY = event.touches[0].clientY;
+  }, { passive: true });
+
+  dialWrapper.addEventListener("touchmove", event => {
+    if (!event.touches || !event.touches[0]) return;
+
+    const moveX = Math.abs(event.touches[0].clientX - dialTouchStartX);
+    const moveY = Math.abs(event.touches[0].clientY - dialTouchStartY);
+
+    if (moveX > 18 || moveY > 18) {
+      dialTouchMoved = true;
+    }
+  }, { passive: true });
+
+  dialWrapper.addEventListener("click", async event => {
+    event.stopPropagation();
+
+    if (dialTouchMoved) {
+      dialTouchMoved = false;
+      return;
+    }
+
+    await togglePlayPause();
+  });
+
+  dialWrapper.addEventListener("keydown", async event => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      await togglePlayPause();
+    }
+  });
+}
 
 /* RADIO NAVIGATION */
 
-nextRadio.addEventListener("click", () => changeRadio(1));
-prevRadio.addEventListener("click", () => changeRadio(-1));
-nextRadioBottom.addEventListener("click", () => changeRadio(1));
-prevRadioBottom.addEventListener("click", () => changeRadio(-1));
+if (nextRadio) {
+  nextRadio.addEventListener("click", () => changeRadio(1));
+}
 
-dialArea.addEventListener("touchstart", e => {
-  startX = e.touches[0].clientX;
-});
+if (prevRadio) {
+  prevRadio.addEventListener("click", () => changeRadio(-1));
+}
 
-dialArea.addEventListener("touchend", e => {
-  const endX = e.changedTouches[0].clientX;
-  const diff = startX - endX;
+/* Estos dos botones ya fueron eliminados del nuevo diseño.
+   Se dejan protegidos para no romper si no existen en el HTML. */
+if (nextRadioBottom) {
+  nextRadioBottom.addEventListener("click", () => changeRadio(1));
+}
 
-  if (Math.abs(diff) > 45) {
-    diff > 0 ? changeRadio(1) : changeRadio(-1);
-  }
-});
+if (prevRadioBottom) {
+  prevRadioBottom.addEventListener("click", () => changeRadio(-1));
+}
 
-dialArea.addEventListener("mousedown", e => {
-  startX = e.clientX;
-});
+if (dialArea) {
+  dialArea.addEventListener("touchstart", e => {
+    if (!e.touches || !e.touches[0]) return;
 
-dialArea.addEventListener("mouseup", e => {
-  const endX = e.clientX;
-  const diff = startX - endX;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, { passive: true });
 
-  if (Math.abs(diff) > 45) {
-    diff > 0 ? changeRadio(1) : changeRadio(-1);
-  }
-});
+  dialArea.addEventListener("touchend", e => {
+    if (!e.changedTouches || !e.changedTouches[0]) return;
+
+    const endX = e.changedTouches[0].clientX;
+    const endY = e.changedTouches[0].clientY;
+
+    const diffX = startX - endX;
+    const diffY = startY - endY;
+
+    if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY)) {
+      diffX > 0 ? changeRadio(1) : changeRadio(-1);
+    }
+  }, { passive: true });
+
+  dialArea.addEventListener("mousedown", e => {
+    startX = e.clientX;
+    startY = e.clientY;
+  });
+
+  dialArea.addEventListener("mouseup", e => {
+    const endX = e.clientX;
+    const endY = e.clientY;
+
+    const diffX = startX - endX;
+    const diffY = startY - endY;
+
+    if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY)) {
+      diffX > 0 ? changeRadio(1) : changeRadio(-1);
+    }
+  });
+}
 
 /* STREAMING */
 
 function updateStreamingBox() {
   const radio = radios[currentRadio];
   const url = convertToEmbedUrl(radio.streaming);
+
+  if (!streamingContent) return;
 
   if (!url) {
     streamingContent.innerHTML = `<p>Streaming no disponible por el momento.</p>`;
@@ -599,34 +689,39 @@ function updateStreamingBox() {
 
 function setMode(mode) {
   if (mode === "radio") {
-    streamingModeBtn.classList.remove("active-mode");
-    radioModeBtn.classList.add("active-mode");
+    if (streamingModeBtn) streamingModeBtn.classList.remove("active-mode");
+    if (radioModeBtn) radioModeBtn.classList.add("active-mode");
 
     if (streamingRadioModeBtn) streamingRadioModeBtn.classList.add("active-mode");
     if (streamingStreamingModeBtn) streamingStreamingModeBtn.classList.remove("active-mode");
 
-    streamingModeBox.classList.add("hidden");
-    radioModeBox.classList.remove("hidden");
+    if (streamingModeBox) streamingModeBox.classList.add("hidden");
+    if (radioModeBox) radioModeBox.classList.remove("hidden");
   }
 
   if (mode === "streaming") {
     pauseRadio();
 
-    radioModeBtn.classList.remove("active-mode");
-    streamingModeBtn.classList.add("active-mode");
+    if (radioModeBtn) radioModeBtn.classList.remove("active-mode");
+    if (streamingModeBtn) streamingModeBtn.classList.add("active-mode");
 
     if (streamingRadioModeBtn) streamingRadioModeBtn.classList.remove("active-mode");
     if (streamingStreamingModeBtn) streamingStreamingModeBtn.classList.add("active-mode");
 
-    radioModeBox.classList.add("hidden");
-    streamingModeBox.classList.remove("hidden");
+    if (radioModeBox) radioModeBox.classList.add("hidden");
+    if (streamingModeBox) streamingModeBox.classList.remove("hidden");
 
     updateStreamingBox();
   }
 }
 
-radioModeBtn.addEventListener("click", () => setMode("radio"));
-streamingModeBtn.addEventListener("click", () => setMode("streaming"));
+if (radioModeBtn) {
+  radioModeBtn.addEventListener("click", () => setMode("radio"));
+}
+
+if (streamingModeBtn) {
+  streamingModeBtn.addEventListener("click", () => setMode("streaming"));
+}
 
 if (streamingRadioModeBtn) {
   streamingRadioModeBtn.addEventListener("click", () => setMode("radio"));
@@ -634,6 +729,14 @@ if (streamingRadioModeBtn) {
 
 if (streamingStreamingModeBtn) {
   streamingStreamingModeBtn.addEventListener("click", () => setMode("streaming"));
+}
+
+/* COMENTARIOS - MAQUETA INICIAL */
+
+if (commentsBtn) {
+  commentsBtn.addEventListener("click", () => {
+    alert("Comentarios próximamente.");
+  });
 }
 
 /* BOTTOM NAV */
@@ -681,9 +784,9 @@ function closeDrawer() {
   drawerOverlay.classList.remove("show");
 }
 
-menuBtn.addEventListener("click", openDrawer);
-closeDrawerBtn.addEventListener("click", closeDrawer);
-drawerOverlay.addEventListener("click", closeDrawer);
+if (menuBtn) menuBtn.addEventListener("click", openDrawer);
+if (closeDrawerBtn) closeDrawerBtn.addEventListener("click", closeDrawer);
+if (drawerOverlay) drawerOverlay.addEventListener("click", closeDrawer);
 
 /* SHARE */
 
@@ -708,9 +811,9 @@ async function shareCurrentRadio() {
   }
 }
 
-shareBtn.addEventListener("click", shareCurrentRadio);
-drawerShareBtn.addEventListener("click", shareCurrentRadio);
-moreShareBtn.addEventListener("click", shareCurrentRadio);
+if (shareBtn) shareBtn.addEventListener("click", shareCurrentRadio);
+if (drawerShareBtn) drawerShareBtn.addEventListener("click", shareCurrentRadio);
+if (moreShareBtn) moreShareBtn.addEventListener("click", shareCurrentRadio);
 
 /* FAVORITES */
 
@@ -727,6 +830,8 @@ function isFavorite(id) {
 }
 
 function updateFavoriteButton() {
+  if (!favoriteBtn) return;
+
   const radio = radios[currentRadio];
 
   if (isFavorite(radio.id)) {
@@ -736,21 +841,25 @@ function updateFavoriteButton() {
   }
 }
 
-favoriteBtn.addEventListener("click", () => {
-  const radio = radios[currentRadio];
-  let favorites = getFavorites();
+if (favoriteBtn) {
+  favoriteBtn.addEventListener("click", () => {
+    const radio = radios[currentRadio];
+    let favorites = getFavorites();
 
-  if (favorites.includes(radio.id)) {
-    favorites = favorites.filter(id => id !== radio.id);
-  } else {
-    favorites.push(radio.id);
-  }
+    if (favorites.includes(radio.id)) {
+      favorites = favorites.filter(id => id !== radio.id);
+    } else {
+      favorites.push(radio.id);
+    }
 
-  saveFavorites(favorites);
-  updateFavoriteButton();
-});
+    saveFavorites(favorites);
+    updateFavoriteButton();
+  });
+}
 
 function renderFavorites() {
+  if (!favoritesList) return;
+
   const favorites = getFavorites();
   favoritesList.innerHTML = "";
 
@@ -789,6 +898,8 @@ function renderFavorites() {
 /* VOLUME */
 
 function setupVolume() {
+  if (!radioPlayer || !volumeSlider || !volumePanel || !volumeBtn) return;
+
   radioPlayer.volume = 1;
   volumeSlider.value = "1";
 
@@ -1370,6 +1481,7 @@ function startFakeVisualizer() {
 /* INIT */
 
 setupVolume();
+setupDialPlayPause();
 setBarsIdle();
 setupListenTime();
 
