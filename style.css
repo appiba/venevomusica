@@ -866,6 +866,7 @@ body.pox-theme #radioNameTop {
   display: flex;
   gap: 12px;
   align-items: center;
+  margin-top: 16px;
 }
 
 .song-box-now {
@@ -1075,7 +1076,8 @@ body.pox-theme .song-progress-fill {
   justify-content: center;
   align-items: center;
   gap: 11px;
-  margin-top: 16px;
+  margin-top: 0;
+  margin-bottom: 4px;
 }
 
 .player-actions {
@@ -1572,7 +1574,8 @@ body.pox-theme .play-btn { color: #d71920; }
   }
 
   .quick-actions {
-    margin-top: 13px;
+    margin-top: 0;
+    margin-bottom: 4px;
   }
 
   .player-actions {
