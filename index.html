@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Venevo Música</title>
-  <link rel="stylesheet" href="style.css?v=191" />
+  <link rel="stylesheet" href="style.css?v=192" />
 </head>
 
 <body class="lafan-theme">
@@ -75,7 +75,7 @@
         <h1 id="radioNameTop">LA FAN</h1>
       </div>
 
-      <!-- ESTADO + MÉTRICAS FIJAS EN HEADER -->
+      <!-- ESTADO + MÉTRICAS + RADIO/STREAMING FIJO EN HEADER -->
       <div class="header-live-stack">
         <div id="liveStatus" class="live-status paused">
           <span></span>
@@ -102,6 +102,11 @@
             <span id="listenTime">00:00:00</span>
           </span>
         </div>
+
+        <div class="header-mode-tabs mode-tabs">
+          <button id="radioModeBtn" class="mode-tab active-mode">RADIO</button>
+          <button id="streamingModeBtn" class="mode-tab">STREAMING</button>
+        </div>
       </div>
     </header>
 
@@ -110,14 +115,6 @@
 
       <!-- RADIO MODE -->
       <section id="radioModeBox">
-
-        <!-- RADIO / STREAMING -->
-        <div class="radio-top-strip">
-          <div class="mode-tabs">
-            <button id="radioModeBtn" class="mode-tab active-mode">RADIO</button>
-            <button id="streamingModeBtn" class="mode-tab">STREAMING</button>
-          </div>
-        </div>
 
         <!-- DIAL / CARRUSEL 3D -->
         <section id="dialArea" class="dial-container dial-stage">
