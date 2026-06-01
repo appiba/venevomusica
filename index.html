@@ -192,35 +192,7 @@
         <!-- PLAYER -->
         <section class="player-card liquid-card">
 
-          <div class="song-box song-box-now">
-            <div class="song-cover-main" id="songCoverMain">
-              <img id="nowCover" alt="Cover canción actual">
-              <video id="radioLogoVideo" autoplay muted loop playsinline></video>
-            </div>
-
-            <div class="song-info">
-              <span id="songStatus" class="song-live">SONANDO AHORA</span>
-
-              <h3 id="nowArtistBox" class="now-artist-mask">
-                <span id="nowArtistMain" class="now-artist-text">Venevo Música</span>
-              </h3>
-
-              <p id="nowTitleBox" class="now-title-mask">
-                <span id="nowTitle" class="now-title-text">Cargando canción...</span>
-              </p>
-
-              <div class="song-signal-line">
-                <div id="songProgressFill" class="song-progress-fill"></div>
-              </div>
-
-              <div class="song-times">
-                <small id="songElapsed">EN VIVO</small>
-                <small id="songDuration">LIVE</small>
-              </div>
-            </div>
-          </div>
-
-          <!-- ACCIONES DEL REPRODUCTOR -->
+          <!-- ACCIONES DEL REPRODUCTOR ARRIBA -->
           <div class="quick-actions player-actions">
             <button id="shareBtn" class="quick-btn liquid-btn" aria-label="Compartir">
               <svg viewBox="0 0 24 24">
@@ -249,6 +221,35 @@
                 <path d="M8 9h8M8 13h5"/>
               </svg>
             </button>
+          </div>
+
+          <!-- CANCIÓN ABAJO -->
+          <div class="song-box song-box-now">
+            <div class="song-cover-main" id="songCoverMain">
+              <img id="nowCover" alt="Cover canción actual">
+              <video id="radioLogoVideo" autoplay muted loop playsinline></video>
+            </div>
+
+            <div class="song-info">
+              <span id="songStatus" class="song-live">SONANDO AHORA</span>
+
+              <h3 id="nowArtistBox" class="now-artist-mask">
+                <span id="nowArtistMain" class="now-artist-text">Venevo Música</span>
+              </h3>
+
+              <p id="nowTitleBox" class="now-title-mask">
+                <span id="nowTitle" class="now-title-text">Cargando canción...</span>
+              </p>
+
+              <div class="song-signal-line">
+                <div id="songProgressFill" class="song-progress-fill"></div>
+              </div>
+
+              <div class="song-times">
+                <small id="songElapsed">EN VIVO</small>
+                <small id="songDuration">LIVE</small>
+              </div>
+            </div>
           </div>
 
           <div id="volumePanel" class="volume-panel hidden">
