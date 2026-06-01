@@ -703,6 +703,7 @@ body.pox-theme #radioNameTop {
   width: 250px;
   height: 250px;
   position: relative;
+  cursor: pointer;
   transition:
     transform 0.65s ease,
     opacity 0.45s ease,
