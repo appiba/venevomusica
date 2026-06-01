@@ -852,7 +852,7 @@ body.pox-theme #radioNameTop {
   right: 0;
 }
 
-/* PLAYER */
+/* PLAYER FLOTANTE */
 
 .player-card {
   margin-top: 8px;
@@ -870,6 +870,98 @@ body.pox-theme #radioNameTop {
 .player-card::before {
   display: none !important;
 }
+
+/* ACCIONES DEL REPRODUCTOR FLOTANTES */
+
+.quick-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 11px;
+  margin-top: 0;
+  margin-bottom: 18px;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.player-actions {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 42px 42px 56px 42px 42px;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.quick-btn {
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 15px;
+  display: grid;
+  place-items: center;
+  color: white;
+}
+
+.quick-btn svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: white;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.quick-btn.favorite-active svg {
+  fill: #ff4b4b;
+  stroke: #ff4b4b;
+}
+
+/* PLAY CENTRAL PEQUEÑO E INTEGRADO */
+
+.play-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  font-size: 23px;
+  font-weight: 900;
+  background: white;
+  color: black;
+  display: grid;
+  place-items: center;
+  padding-left: 2px;
+}
+
+.liquid-play {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.9),
+    inset 0 -12px 20px rgba(0,0,0,0.12),
+    0 14px 34px rgba(0,0,0,0.30);
+}
+
+body.lafan-theme .play-btn { color: #e61b82; }
+body.clip-theme .play-btn { color: #006b35; }
+body.oye-theme .play-btn { color: #006b35; }
+body.pox-theme .play-btn { color: #d71920; }
+
+/* BOTÓN DE COMENTARIOS - MAQUETA */
+
+#commentsBtn svg {
+  width: 21px;
+  height: 21px;
+}
+
+/* CAJA DE CANCIÓN SÚPER TRANSPARENTE */
 
 .song-box {
   display: flex;
@@ -1107,96 +1199,6 @@ body.pox-theme .song-progress-fill {
   color: white;
   font-size: 36px;
   font-weight: bold;
-}
-
-/* ACCIONES DEL REPRODUCTOR */
-
-.quick-actions {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 11px;
-  margin-top: 0;
-  margin-bottom: 18px;
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-.player-actions {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 42px 42px 56px 42px 42px;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-.quick-btn {
-  width: 42px;
-  height: 42px;
-  border: none;
-  border-radius: 15px;
-  display: grid;
-  place-items: center;
-  color: white;
-}
-
-.quick-btn svg {
-  width: 21px;
-  height: 21px;
-  fill: none;
-  stroke: white;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.quick-btn.favorite-active svg {
-  fill: #ff4b4b;
-  stroke: #ff4b4b;
-}
-
-/* PLAY CENTRAL PEQUEÑO E INTEGRADO */
-
-.play-btn {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  border: none;
-  font-size: 23px;
-  font-weight: 900;
-  background: white;
-  color: black;
-  display: grid;
-  place-items: center;
-  padding-left: 2px;
-}
-
-.liquid-play {
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.9),
-    inset 0 -12px 20px rgba(0,0,0,0.12),
-    0 14px 34px rgba(0,0,0,0.30);
-}
-
-body.lafan-theme .play-btn { color: #e61b82; }
-body.clip-theme .play-btn { color: #006b35; }
-body.oye-theme .play-btn { color: #006b35; }
-body.pox-theme .play-btn { color: #d71920; }
-
-/* BOTÓN DE COMENTARIOS - MAQUETA */
-
-#commentsBtn svg {
-  width: 21px;
-  height: 21px;
 }
 
 /* VOLUME */
