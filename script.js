@@ -24,7 +24,7 @@ const radios = [
     metadataApi: "https://radio.megahostec.com/api/nowplaying/radio_clipfm",
     logoVideo: "introcliplogo.mp4",
     logoCarro: "logoclipcarro.png",
-    dialVideo: "",
+    dialVideo: "dialclip.mp4",
     streaming: ""
   },
   {
