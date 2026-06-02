@@ -371,6 +371,9 @@ body.pox-theme #radioNameTop {
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+
+  /* Espacio superior para que el dial y su brillo no se corten al hacer scroll */
+  padding-top: 32px;
   padding-bottom: 150px;
 }
 
@@ -457,7 +460,8 @@ body.pox-theme #radioNameTop {
 
 .dial-container {
   position: relative;
-  height: 292px;
+  height: 320px;
+  margin-top: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -474,7 +478,7 @@ body.pox-theme #radioNameTop {
 .radio-3d-carousel {
   position: relative;
   width: 100%;
-  height: 292px;
+  height: 320px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -679,6 +683,7 @@ body.pox-theme #radioNameTop {
     opacity 0.45s ease,
     filter 0.45s ease;
   z-index: 10;
+  overflow: visible;
 }
 
 .dial-wrapper.spin {
@@ -1563,12 +1568,16 @@ body.pox-theme .song-progress-fill {
     letter-spacing: 0.4px;
   }
 
+  #radioModeBox {
+    padding-top: 26px;
+  }
+
   .dial-container {
-    height: 258px;
+    height: 286px;
   }
 
   .radio-3d-carousel {
-    height: 258px;
+    height: 286px;
   }
 
   .dial-wrapper {
