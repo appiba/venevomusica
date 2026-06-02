@@ -1201,17 +1201,17 @@ body.pox-theme .song-progress-fill {
   font-weight: bold;
 }
 
-/* VOLUME - MINI IPHONE VERTICAL */
+/* VOLUME - MINI IPHONE VERTICAL MÁS FLACO */
 
 .volume-panel {
   position: fixed;
-  left: 24px;
+  left: 26px;
   top: 46%;
   transform: translateY(-50%);
-  width: 40px;
-  height: 128px;
-  padding: 7px 5px;
-  border-radius: 24px;
+  width: 28px;
+  height: 126px;
+  padding: 6px 3px;
+  border-radius: 22px;
   z-index: 99999;
 
   display: flex;
@@ -1244,13 +1244,12 @@ body.pox-theme .song-progress-fill {
   display: none !important;
 }
 
-/* Slider vertical pequeño */
 .volume-panel input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
 
-  width: 104px;
-  height: 24px;
+  width: 102px;
+  height: 18px;
 
   transform: rotate(-90deg);
   transform-origin: center;
@@ -1261,20 +1260,18 @@ body.pox-theme .song-progress-fill {
   pointer-events: auto;
 }
 
-/* Pista tipo iPhone */
 .volume-panel input[type="range"]::-webkit-slider-runnable-track {
-  height: 24px;
+  height: 18px;
   border-radius: 999px;
   background: rgba(255,255,255,0.24);
 }
 
-/* Botón blanco pequeño */
 .volume-panel input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
 
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
   margin-top: 0;
 
   border-radius: 50%;
@@ -1286,16 +1283,15 @@ body.pox-theme .song-progress-fill {
     0 4px 10px rgba(0,0,0,0.28);
 }
 
-/* Firefox */
 .volume-panel input[type="range"]::-moz-range-track {
-  height: 24px;
+  height: 18px;
   border-radius: 999px;
   background: rgba(255,255,255,0.24);
 }
 
 .volume-panel input[type="range"]::-moz-range-thumb {
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
   border: none;
   border-radius: 50%;
   background: white;
