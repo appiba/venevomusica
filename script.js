@@ -614,8 +614,6 @@ if (prevRadio) {
   prevRadio.addEventListener("click", () => changeRadio(-1));
 }
 
-/* Estos dos botones ya fueron eliminados del nuevo diseño.
-   Se dejan protegidos para no romper si no existen en el HTML. */
 if (nextRadioBottom) {
   nextRadioBottom.addEventListener("click", () => changeRadio(1));
 }
@@ -900,6 +898,8 @@ function renderFavorites() {
 function setupVolume() {
   if (!radioPlayer || !volumeSlider || !volumePanel || !volumeBtn) return;
 
+  let volumeHideTimer = null;
+
   radioPlayer.volume = 1;
   volumeSlider.value = "1";
 
@@ -913,17 +913,49 @@ function setupVolume() {
     volumePanel.prepend(volumeInfo);
   }
 
+  function hideVolumePanel() {
+    volumePanel.classList.add("volume-fading");
+
+    setTimeout(() => {
+      volumePanel.classList.add("hidden");
+      volumePanel.classList.remove("volume-fading");
+    }, 250);
+  }
+
+  function showVolumePanel() {
+    volumePanel.classList.remove("hidden");
+    volumePanel.classList.remove("volume-fading");
+
+    if (volumeHideTimer) {
+      clearTimeout(volumeHideTimer);
+    }
+
+    volumeHideTimer = setTimeout(() => {
+      hideVolumePanel();
+    }, 5000);
+  }
+
   volumeBtn.onclick = () => {
-    volumePanel.classList.toggle("hidden");
+    if (volumePanel.classList.contains("hidden")) {
+      showVolumePanel();
+    } else {
+      if (volumeHideTimer) {
+        clearTimeout(volumeHideTimer);
+      }
+
+      hideVolumePanel();
+    }
   };
 
   volumeSlider.oninput = () => {
     const volume = Number(volumeSlider.value);
     radioPlayer.volume = volume;
+    showVolumePanel();
   };
 
   volumeSlider.addEventListener("touchstart", e => {
     e.stopPropagation();
+    showVolumePanel();
   }, { passive: true });
 
   volumeSlider.addEventListener("touchmove", e => {
@@ -938,7 +970,18 @@ function setupVolume() {
 
     volumeSlider.value = percent.toFixed(2);
     radioPlayer.volume = percent;
+    showVolumePanel();
   }, { passive: false });
+
+  volumeSlider.addEventListener("mousedown", () => {
+    showVolumePanel();
+  });
+
+  volumeSlider.addEventListener("mousemove", event => {
+    if (event.buttons === 1) {
+      showVolumePanel();
+    }
+  });
 }
 
 /* NOW PLAYING */
