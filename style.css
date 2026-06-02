@@ -1205,10 +1205,10 @@ body.pox-theme .song-progress-fill {
 
 .volume-panel {
   position: fixed;
-  left: 12px;
+  left: 24px;
   top: 46%;
   transform: translateY(-50%);
-  width: 36px;
+  width: 40px;
   height: 128px;
   padding: 7px 5px;
   border-radius: 24px;
@@ -1233,6 +1233,7 @@ body.pox-theme .song-progress-fill {
   -webkit-backdrop-filter: blur(20px) saturate(150%);
 
   touch-action: none;
+  overflow: visible;
 }
 
 .volume-panel.hidden {
