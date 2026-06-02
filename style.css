@@ -973,17 +973,17 @@ body.pox-theme .play-btn { color: #d71920; }
 .song-box-now {
   align-items: center;
   position: relative;
-  padding: 18px 18px 16px;
-  border-radius: 28px;
+  padding: 10px 12px;
+  border-radius: 22px;
   background:
-    linear-gradient(145deg, rgba(255,255,255,0.11), rgba(255,255,255,0.025)),
-    rgba(255,255,255,0.035);
-  border: 1px solid rgba(255,255,255,0.10);
+    linear-gradient(145deg, rgba(255,255,255,0.09), rgba(255,255,255,0.018)),
+    rgba(255,255,255,0.026);
+  border: 1px solid rgba(255,255,255,0.08);
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.12),
-    0 12px 28px rgba(0,0,0,0.14);
-  backdrop-filter: blur(14px) saturate(130%);
-  -webkit-backdrop-filter: blur(14px) saturate(130%);
+    inset 0 1px 0 rgba(255,255,255,0.10),
+    0 8px 18px rgba(0,0,0,0.12);
+  backdrop-filter: blur(12px) saturate(125%);
+  -webkit-backdrop-filter: blur(12px) saturate(125%);
   overflow: hidden;
 }
 
@@ -1002,9 +1002,9 @@ body.pox-theme .play-btn { color: #d71920; }
 }
 
 .song-cover-main {
-  width: 82px;
-  height: 82px;
-  border-radius: 22px;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
   overflow: hidden;
   flex-shrink: 0;
   background: rgba(255,255,255,0.08);
@@ -1057,16 +1057,16 @@ body.pox-theme .play-btn { color: #d71920; }
 .now-artist-mask {
   position: relative;
   width: 100%;
-  height: 34px;
-  margin-top: 6px;
+  height: 27px;
+  margin-top: 0;
   overflow: hidden;
   white-space: nowrap;
 }
 
 .now-artist-text {
   display: inline-block;
-  font-size: 25px;
-  line-height: 34px;
+  font-size: 20px;
+  line-height: 27px;
   font-weight: 900;
   letter-spacing: 1px;
   white-space: nowrap;
@@ -1075,8 +1075,8 @@ body.pox-theme .play-btn { color: #d71920; }
 .now-title-mask {
   position: relative;
   width: 100%;
-  height: 25px;
-  margin-top: 3px;
+  height: 20px;
+  margin-top: 2px;
   overflow: hidden;
   white-space: nowrap;
   opacity: .78;
@@ -1084,8 +1084,8 @@ body.pox-theme .play-btn { color: #d71920; }
 
 .now-title-text {
   display: inline-block;
-  font-size: 16px;
-  line-height: 25px;
+  font-size: 13px;
+  line-height: 20px;
   font-weight: 500;
   white-space: nowrap;
 }
@@ -1114,8 +1114,8 @@ body.pox-theme .play-btn { color: #d71920; }
 
 .song-signal-line {
   width: 100%;
-  height: 9px;
-  margin-top: 11px;
+  height: 6px;
+  margin-top: 8px;
   border-radius: 30px;
   position: relative;
   overflow: hidden;
@@ -1173,14 +1173,14 @@ body.pox-theme .song-progress-fill {
 }
 
 .song-times {
-  margin-top: 6px;
+  margin-top: 4px;
   display: flex;
   justify-content: space-between;
   gap: 10px;
 }
 
 .song-times small {
-  font-size: 10px;
+  font-size: 9px;
   opacity: 0.62;
   font-weight: 800;
 }
@@ -1633,20 +1633,36 @@ body.pox-theme .song-progress-fill {
   }
 
   .song-cover-main {
-    width: 66px;
-    height: 66px;
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+  }
+
+  .song-box-now {
+    padding: 9px 11px;
+    border-radius: 20px;
   }
 
   .player-card {
     padding: 0 !important;
   }
 
+  .now-artist-mask {
+    height: 25px;
+  }
+
   .now-artist-text {
-    font-size: 22px;
+    font-size: 19px;
+    line-height: 25px;
+  }
+
+  .now-title-mask {
+    height: 18px;
   }
 
   .now-title-text {
-    font-size: 15px;
+    font-size: 12px;
+    line-height: 18px;
   }
 
   .quick-actions {
