@@ -276,6 +276,7 @@ async function loadStreamingLinks() {
         .map(item => normalizeFrequencyItem(item))
         .filter(item => item.id && item.pais && item.provincia && item.frecuencia);
 
+      agregarRadiosCompradasDesdeFrecuencias();
       renderCountries();
     }
   } catch (error) {
@@ -322,8 +323,59 @@ function normalizeFrequencyItem(item) {
     areaServidaReferencia: String(item.areaServidaReferencia || item.AREA_SERVIDA_REFERENCIA || "").trim(),
     whatsapp: String(item.whatsapp || item.WHATSAPP || "").trim(),
     observacion: String(item.observacion || item.OBSERVACION || "").trim(),
-    fuente: String(item.fuente || item.FUENTE || "").trim()
+    fuente: String(item.fuente || item.FUENTE || "").trim(),
+    stream: String(item.stream || item.STREAM || "").trim(),
+    apiNowPlaying: String(item.apiNowPlaying || item.API_NOWPLAYING || "").trim(),
+    activo: String(item.activo || item.ACTIVO || "").trim().toLowerCase()
   };
+}
+
+/* AGREGA RADIOS COMPRADAS AL CARRUSEL */
+
+function agregarRadiosCompradasDesdeFrecuencias() {
+  if (!Array.isArray(venevoFrequencies) || venevoFrequencies.length === 0) return;
+
+  const radiosCompradas = venevoFrequencies
+    .filter(item => {
+      const estado = String(item.estado || "").trim().toLowerCase();
+      const activo = String(item.activo || "").trim().toLowerCase();
+      const stream = String(item.stream || "").trim();
+
+      return estado === "ocupado" && activo === "si" && stream;
+    })
+    .map(item => {
+      const frecuenciaNumero = Number(String(item.frecuencia).replace(",", "."));
+
+      return {
+        id: item.id,
+        name: item.radioReferencia || `Radio ${item.frecuencia}`,
+        number: isNaN(frecuenciaNumero) ? 0 : frecuenciaNumero,
+        subtitle: `${String(item.pais || "").toUpperCase()} · ${String(item.provincia || "").toUpperCase()}`,
+        theme: "custom-radio-theme",
+        stream: item.stream,
+        metadataApi: item.apiNowPlaying || "",
+        logoVideo: "venevologovideo.mp4",
+        logoCarro: "logovenevocarro.png",
+        dialVideo: "",
+        streaming: "",
+        isPurchasedRadio: true
+      };
+    });
+
+  radiosCompradas.forEach(radioNueva => {
+    const indexExistente = radios.findIndex(radio => radio.id === radioNueva.id);
+
+    if (indexExistente === -1) {
+      radios.push(radioNueva);
+    } else {
+      radios[indexExistente] = {
+        ...radios[indexExistente],
+        ...radioNueva
+      };
+    }
+  });
+
+  updateRadioCarousel();
 }
 
 function uniqueByName(items, key) {
@@ -959,6 +1011,13 @@ function loadRadio(index) {
   const radio = radios[index];
 
   document.body.className = radio.theme;
+
+  if (radio.theme === "custom-radio-theme") {
+    document.body.style.background =
+      "radial-gradient(circle at top, #1b1b1b, #090909 48%, #000)";
+  } else {
+    document.body.style.removeProperty("background");
+  }
 
   spinDial();
   animateNumber(currentNumber, radio.number);
@@ -2056,3 +2115,7 @@ loadStreamingLinks().then(() => {
   loadRadio(currentRadio);
   renderFavorites();
 });
+
+setInterval(() => {
+  loadStreamingLinks();
+}, 30000);
