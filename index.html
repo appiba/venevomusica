@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Venevo Música</title>
-  <link rel="stylesheet" href="style.css?v=205" />
+  <link rel="stylesheet" href="style.css?v=206" />
 </head>
 
 <body class="lafan-theme">
@@ -32,6 +32,11 @@
         <p>Frecuencia Digital</p>
       </div>
     </div>
+
+    <button id="drawerFrequencyBtn" class="drawer-item">
+      <span>Obtén tu frecuencia</span>
+      <small>Adquiere tu dial digital</small>
+    </button>
 
     <button id="drawerShareBtn" class="drawer-item">
       <span>Compartir app</span>
@@ -353,8 +358,139 @@
     </button>
   </nav>
 
+  <!-- MODAL OBTÉN TU FRECUENCIA -->
+  <section id="frequencyModal" class="frequency-modal hidden" aria-hidden="true">
+    <div id="frequencyModalOverlay" class="frequency-modal-overlay"></div>
+
+    <div class="frequency-panel liquid-card" role="dialog" aria-modal="true" aria-labelledby="frequencyModalTitle">
+      <div class="frequency-panel-header">
+        <div>
+          <span class="frequency-kicker">VENEVO DIGITAL</span>
+          <h2 id="frequencyModalTitle">Obtén tu frecuencia</h2>
+          <p>Reserva tu dial digital dentro de Venevo.</p>
+        </div>
+
+        <button id="closeFrequencyModalBtn" class="frequency-close" aria-label="Cerrar">×</button>
+      </div>
+
+      <div class="frequency-note">
+        Las frecuencias Venevo son identificadores digitales internos basados en diales FM referenciales.
+      </div>
+
+      <div class="frequency-steps">
+
+        <!-- PASO 1 -->
+        <section class="frequency-step">
+          <div class="frequency-step-title">
+            <span>1</span>
+            <div>
+              <h3>Elige tu país</h3>
+              <p>Busca el país donde quieres adquirir tu frecuencia.</p>
+            </div>
+          </div>
+
+          <div class="frequency-search-box">
+            <input id="countrySearchInput" type="text" placeholder="Buscar país..." autocomplete="off">
+          </div>
+
+          <div id="countryList" class="frequency-options-list"></div>
+        </section>
+
+        <!-- PASO 2 -->
+        <section id="provinceStep" class="frequency-step frequency-step-disabled">
+          <div class="frequency-step-title">
+            <span>2</span>
+            <div>
+              <h3>Elige provincia / departamento</h3>
+              <p>Selecciona la zona donde estará tu dial digital.</p>
+            </div>
+          </div>
+
+          <div class="frequency-search-box">
+            <input id="provinceSearchInput" type="text" placeholder="Buscar provincia o departamento..." autocomplete="off" disabled>
+          </div>
+
+          <div id="provinceList" class="frequency-options-list"></div>
+        </section>
+
+        <!-- PASO 3 -->
+        <section id="frequencyStep" class="frequency-step frequency-step-disabled">
+          <div class="frequency-step-title">
+            <span>3</span>
+            <div>
+              <h3>Busca tu frecuencia</h3>
+              <p>Revisa si el número está libre u ocupado.</p>
+            </div>
+          </div>
+
+          <div class="frequency-search-box">
+            <input id="frequencySearchInput" type="text" placeholder="Buscar número, ejemplo 93.1..." autocomplete="off" disabled>
+          </div>
+
+          <div id="frequencyResults" class="frequency-results-list"></div>
+        </section>
+
+        <!-- PASO 4 -->
+        <section id="frequencyBuyBox" class="frequency-buy-box hidden">
+          <div class="selected-frequency-card">
+            <span class="selected-label">Frecuencia seleccionada</span>
+            <h3 id="selectedFrequencyTitle">93.1 FD</h3>
+            <p id="selectedFrequencyLocation">Colombia / Nariño</p>
+            <strong id="selectedFrequencyPrice">$0</strong>
+          </div>
+
+          <div class="frequency-form">
+            <div class="frequency-form-grid">
+              <label>
+                Nombre de la radio
+                <input id="requestRadioName" type="text" placeholder="Ej: Radio Éxito">
+              </label>
+
+              <label>
+                Titular
+                <input id="requestOwnerName" type="text" placeholder="Nombre del titular">
+              </label>
+
+              <label>
+                WhatsApp
+                <input id="requestWhatsapp" type="tel" placeholder="Ej: +593...">
+              </label>
+
+              <label>
+                Correo
+                <input id="requestEmail" type="email" placeholder="correo@ejemplo.com">
+              </label>
+
+              <label>
+                Stream de la radio
+                <input id="requestStream" type="url" placeholder="https://.../stream">
+              </label>
+
+              <label>
+                API Now Playing
+                <input id="requestApiNowPlaying" type="url" placeholder="https://.../api/nowplaying/...">
+              </label>
+            </div>
+
+            <label class="frequency-observation-label">
+              Observación
+              <textarea id="requestObservation" rows="3" placeholder="Cuéntanos algún detalle adicional de tu radio."></textarea>
+            </label>
+
+            <button id="submitFrequencyRequestBtn" class="frequency-submit-btn">
+              Enviar solicitud
+            </button>
+
+            <p id="frequencyFormMessage" class="frequency-form-message"></p>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </section>
+
   <audio id="radioPlayer" crossorigin="anonymous"></audio>
 
-  <script src="script.js?v=197"></script>
+  <script src="script.js?v=198"></script>
 </body>
 </html>
