@@ -1,4 +1,4 @@
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzQ9MncHHlMc3WFcQgdrp-2BfGI4YKuKN9F10e-izjC07OXAuGdgsvVUwbUEwzbr7M33Q/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx7LOdADewvPyVut9oXOtitMVocJ4sZ9JxnY8W78HAq1-DKNYryQboyfPYiS6DMxhucFA/exec";
 
 const radios = [
   {
@@ -157,6 +157,61 @@ const bottomTabs = document.querySelectorAll(".bottom-tab");
 const views = document.querySelectorAll(".view");
 const bottomStreamingBtn = document.getElementById("bottomStreamingBtn");
 
+/* FRECUENCIAS DIGITALES */
+const drawerFrequencyBtn = document.getElementById("drawerFrequencyBtn");
+const frequencyModal = document.getElementById("frequencyModal");
+const frequencyModalOverlay = document.getElementById("frequencyModalOverlay");
+const closeFrequencyModalBtn = document.getElementById("closeFrequencyModalBtn");
+
+const countrySearchInput = document.getElementById("countrySearchInput");
+const countryList = document.getElementById("countryList");
+
+const provinceStep = document.getElementById("provinceStep");
+const provinceSearchInput = document.getElementById("provinceSearchInput");
+const provinceList = document.getElementById("provinceList");
+
+const frequencyStep = document.getElementById("frequencyStep");
+const frequencySearchInput = document.getElementById("frequencySearchInput");
+const frequencyResults = document.getElementById("frequencyResults");
+
+const frequencyBuyBox = document.getElementById("frequencyBuyBox");
+const selectedFrequencyTitle = document.getElementById("selectedFrequencyTitle");
+const selectedFrequencyLocation = document.getElementById("selectedFrequencyLocation");
+const selectedFrequencyPrice = document.getElementById("selectedFrequencyPrice");
+
+const requestRadioName = document.getElementById("requestRadioName");
+const requestOwnerName = document.getElementById("requestOwnerName");
+const requestWhatsapp = document.getElementById("requestWhatsapp");
+const requestEmail = document.getElementById("requestEmail");
+const requestStream = document.getElementById("requestStream");
+const requestApiNowPlaying = document.getElementById("requestApiNowPlaying");
+const requestObservation = document.getElementById("requestObservation");
+const submitFrequencyRequestBtn = document.getElementById("submitFrequencyRequestBtn");
+const frequencyFormMessage = document.getElementById("frequencyFormMessage");
+
+let venevoFrequencies = [];
+let selectedCountry = "";
+let selectedProvince = "";
+let selectedFrequency = null;
+
+const countryFlags = {
+  "Ecuador": "🇪🇨",
+  "Colombia": "🇨🇴",
+  "Perú": "🇵🇪",
+  "Peru": "🇵🇪",
+  "México": "🇲🇽",
+  "Mexico": "🇲🇽",
+  "Chile": "🇨🇱",
+  "Argentina": "🇦🇷",
+  "Brasil": "🇧🇷",
+  "Bolivia": "🇧🇴",
+  "Panamá": "🇵🇦",
+  "Panama": "🇵🇦",
+  "Venezuela": "🇻🇪",
+  "Estados Unidos": "🇺🇸",
+  "España": "🇪🇸"
+};
+
 /* SPLASH */
 
 function hideSplash() {
@@ -202,7 +257,10 @@ function convertToEmbedUrl(url) {
 
 async function loadStreamingLinks() {
   try {
-    const response = await fetch(APPS_SCRIPT_URL);
+    const response = await fetch(`${APPS_SCRIPT_URL}?t=${Date.now()}`, {
+      cache: "no-store"
+    });
+
     const data = await response.json();
 
     if (data.success && data.radios) {
@@ -212,9 +270,469 @@ async function loadStreamingLinks() {
         }
       });
     }
+
+    if (data.success && Array.isArray(data.frecuencias)) {
+      venevoFrequencies = data.frecuencias
+        .map(item => normalizeFrequencyItem(item))
+        .filter(item => item.id && item.pais && item.provincia && item.frecuencia);
+
+      renderCountries();
+    }
   } catch (error) {
     console.log("No se pudo cargar Google Sheets.");
   }
+}
+
+/* MODAL OBTÉN TU FRECUENCIA */
+
+function normalizeText(value) {
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+function normalizeEstado(value) {
+  const clean = normalizeText(value);
+
+  if (clean === "ocupada" || clean === "ocupado") {
+    return "ocupado";
+  }
+
+  return "libre";
+}
+
+function normalizeFrequencyItem(item) {
+  const pais = String(item.pais || item.PAIS || "").trim();
+  const provincia = String(item.provincia || item.PROVINCIA_DEPARTAMENTO || "").trim();
+  const frecuencia = String(item.frecuencia || item.FRECUENCIA || "").trim();
+
+  return {
+    id: String(item.id || item.ID || "").trim(),
+    pais,
+    bandera: countryFlags[pais] || "🌐",
+    provincia,
+    frecuencia,
+    banda: String(item.banda || item.BANDA || "FM").trim() || "FM",
+    estado: normalizeEstado(item.estado || item.ESTADO || "libre"),
+    precio: String(item.precio || item.PRECIO || "").trim(),
+    radioReferencia: String(item.radioReferencia || item.RADIO_REFERENCIA || "").trim(),
+    tipoReferencia: String(item.tipoReferencia || item.TIPO_REFERENCIA || "").trim(),
+    areaServidaReferencia: String(item.areaServidaReferencia || item.AREA_SERVIDA_REFERENCIA || "").trim(),
+    whatsapp: String(item.whatsapp || item.WHATSAPP || "").trim(),
+    observacion: String(item.observacion || item.OBSERVACION || "").trim(),
+    fuente: String(item.fuente || item.FUENTE || "").trim()
+  };
+}
+
+function uniqueByName(items, key) {
+  const map = new Map();
+
+  items.forEach(item => {
+    const value = String(item[key] || "").trim();
+    if (!value) return;
+
+    const normalized = normalizeText(value);
+
+    if (!map.has(normalized)) {
+      map.set(normalized, value);
+    }
+  });
+
+  return Array.from(map.values()).sort((a, b) => a.localeCompare(b, "es"));
+}
+
+function openFrequencyModal() {
+  if (!frequencyModal) return;
+
+  frequencyModal.classList.remove("hidden");
+  frequencyModal.setAttribute("aria-hidden", "false");
+
+  closeDrawer();
+  renderCountries();
+
+  setTimeout(() => {
+    if (countrySearchInput) countrySearchInput.focus();
+  }, 150);
+}
+
+function closeFrequencyModal() {
+  if (!frequencyModal) return;
+
+  frequencyModal.classList.add("hidden");
+  frequencyModal.setAttribute("aria-hidden", "true");
+}
+
+function resetFrequencyFlow(level = "country") {
+  if (level === "country") {
+    selectedCountry = "";
+    selectedProvince = "";
+    selectedFrequency = null;
+
+    if (provinceSearchInput) {
+      provinceSearchInput.value = "";
+      provinceSearchInput.disabled = true;
+    }
+
+    if (frequencySearchInput) {
+      frequencySearchInput.value = "";
+      frequencySearchInput.disabled = true;
+    }
+
+    if (provinceStep) provinceStep.classList.add("frequency-step-disabled");
+    if (frequencyStep) frequencyStep.classList.add("frequency-step-disabled");
+    if (provinceList) provinceList.innerHTML = "";
+    if (frequencyResults) frequencyResults.innerHTML = "";
+    if (frequencyBuyBox) frequencyBuyBox.classList.add("hidden");
+  }
+
+  if (level === "province") {
+    selectedProvince = "";
+    selectedFrequency = null;
+
+    if (frequencySearchInput) {
+      frequencySearchInput.value = "";
+      frequencySearchInput.disabled = true;
+    }
+
+    if (frequencyStep) frequencyStep.classList.add("frequency-step-disabled");
+    if (frequencyResults) frequencyResults.innerHTML = "";
+    if (frequencyBuyBox) frequencyBuyBox.classList.add("hidden");
+  }
+
+  if (level === "frequency") {
+    selectedFrequency = null;
+
+    if (frequencyBuyBox) frequencyBuyBox.classList.add("hidden");
+  }
+}
+
+function renderCountries() {
+  if (!countryList) return;
+
+  const search = normalizeText(countrySearchInput ? countrySearchInput.value : "");
+  const countries = uniqueByName(venevoFrequencies, "pais")
+    .filter(country => normalizeText(country).includes(search));
+
+  countryList.innerHTML = "";
+
+  if (!countries.length) {
+    countryList.innerHTML = `<p class="frequency-empty">No hay países disponibles.</p>`;
+    return;
+  }
+
+  countries.forEach(country => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "frequency-option-btn";
+    button.classList.toggle("selected", selectedCountry === country);
+
+    button.innerHTML = `
+      <span class="frequency-flag">${countryFlags[country] || "🌐"}</span>
+      <strong>${country}</strong>
+    `;
+
+    button.addEventListener("click", () => {
+      selectedCountry = country;
+
+      if (countrySearchInput) {
+        countrySearchInput.value = country;
+      }
+
+      if (provinceStep) {
+        provinceStep.classList.remove("frequency-step-disabled");
+      }
+
+      if (provinceSearchInput) {
+        provinceSearchInput.disabled = false;
+        provinceSearchInput.value = "";
+        provinceSearchInput.focus();
+      }
+
+      resetFrequencyFlow("province");
+      renderCountries();
+      renderProvinces();
+    });
+
+    countryList.appendChild(button);
+  });
+}
+
+function renderProvinces() {
+  if (!provinceList) return;
+
+  const search = normalizeText(provinceSearchInput ? provinceSearchInput.value : "");
+
+  const provinces = uniqueByName(
+    venevoFrequencies.filter(item => item.pais === selectedCountry),
+    "provincia"
+  ).filter(province => normalizeText(province).includes(search));
+
+  provinceList.innerHTML = "";
+
+  if (!selectedCountry) {
+    provinceList.innerHTML = `<p class="frequency-empty">Primero elige un país.</p>`;
+    return;
+  }
+
+  if (!provinces.length) {
+    provinceList.innerHTML = `<p class="frequency-empty">No hay provincias disponibles.</p>`;
+    return;
+  }
+
+  provinces.forEach(province => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "frequency-option-btn";
+    button.classList.toggle("selected", selectedProvince === province);
+
+    const total = venevoFrequencies.filter(item =>
+      item.pais === selectedCountry &&
+      item.provincia === province
+    ).length;
+
+    button.innerHTML = `
+      <strong>${province}</strong>
+      <small>${total} frecuencias FM</small>
+    `;
+
+    button.addEventListener("click", () => {
+      selectedProvince = province;
+
+      if (provinceSearchInput) {
+        provinceSearchInput.value = province;
+      }
+
+      if (frequencyStep) {
+        frequencyStep.classList.remove("frequency-step-disabled");
+      }
+
+      if (frequencySearchInput) {
+        frequencySearchInput.disabled = false;
+        frequencySearchInput.value = "";
+        frequencySearchInput.focus();
+      }
+
+      resetFrequencyFlow("frequency");
+      renderProvinces();
+      renderFrequencyResults();
+    });
+
+    provinceList.appendChild(button);
+  });
+}
+
+function renderFrequencyResults() {
+  if (!frequencyResults) return;
+
+  const search = normalizeText(frequencySearchInput ? frequencySearchInput.value : "");
+
+  const items = venevoFrequencies
+    .filter(item =>
+      item.pais === selectedCountry &&
+      item.provincia === selectedProvince
+    )
+    .filter(item => {
+      if (!search) return true;
+
+      return (
+        normalizeText(item.frecuencia).includes(search) ||
+        normalizeText(item.radioReferencia).includes(search)
+      );
+    })
+    .sort((a, b) => Number(a.frecuencia) - Number(b.frecuencia));
+
+  frequencyResults.innerHTML = "";
+
+  if (!selectedCountry || !selectedProvince) {
+    frequencyResults.innerHTML = `<p class="frequency-empty">Primero elige país y provincia.</p>`;
+    return;
+  }
+
+  if (!items.length) {
+    frequencyResults.innerHTML = `<p class="frequency-empty">No hay frecuencias con esa búsqueda.</p>`;
+    return;
+  }
+
+  items.forEach(item => {
+    const isTaken = item.estado === "ocupado";
+
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = `frequency-result-card ${isTaken ? "taken" : "available"}`;
+
+    const price = item.precio ? `$${item.precio}` : "Consultar";
+
+    card.innerHTML = `
+      <div>
+        <span class="frequency-number">${item.frecuencia} FD</span>
+        <small>${item.banda || "FM"} · ${item.radioReferencia || "Frecuencia digital Venevo"}</small>
+      </div>
+      <div class="frequency-status">
+        <strong>${isTaken ? "Ocupado" : "Libre"}</strong>
+        <small>${isTaken ? "No disponible" : price}</small>
+      </div>
+    `;
+
+    card.addEventListener("click", () => {
+      if (isTaken) {
+        showFrequencyFormMessage("Esta frecuencia ya está ocupada en Venevo.", "error");
+        return;
+      }
+
+      selectFrequency(item);
+    });
+
+    frequencyResults.appendChild(card);
+  });
+}
+
+function selectFrequency(item) {
+  selectedFrequency = item;
+
+  if (selectedFrequencyTitle) {
+    selectedFrequencyTitle.textContent = `${item.frecuencia} FD`;
+  }
+
+  if (selectedFrequencyLocation) {
+    selectedFrequencyLocation.textContent = `${countryFlags[item.pais] || ""} ${item.pais} / ${item.provincia}`;
+  }
+
+  if (selectedFrequencyPrice) {
+    selectedFrequencyPrice.textContent = item.precio ? `$${item.precio}` : "Precio a confirmar";
+  }
+
+  if (frequencyBuyBox) {
+    frequencyBuyBox.classList.remove("hidden");
+    frequencyBuyBox.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  showFrequencyFormMessage("", "");
+}
+
+function clearFrequencyForm() {
+  if (requestRadioName) requestRadioName.value = "";
+  if (requestOwnerName) requestOwnerName.value = "";
+  if (requestWhatsapp) requestWhatsapp.value = "";
+  if (requestEmail) requestEmail.value = "";
+  if (requestStream) requestStream.value = "";
+  if (requestApiNowPlaying) requestApiNowPlaying.value = "";
+  if (requestObservation) requestObservation.value = "";
+}
+
+function showFrequencyFormMessage(message, type) {
+  if (!frequencyFormMessage) return;
+
+  frequencyFormMessage.textContent = message || "";
+  frequencyFormMessage.className = `frequency-form-message ${type || ""}`;
+}
+
+async function submitFrequencyRequest() {
+  if (!selectedFrequency) {
+    showFrequencyFormMessage("Primero selecciona una frecuencia libre.", "error");
+    return;
+  }
+
+  const radioName = requestRadioName ? requestRadioName.value.trim() : "";
+  const ownerName = requestOwnerName ? requestOwnerName.value.trim() : "";
+  const whatsapp = requestWhatsapp ? requestWhatsapp.value.trim() : "";
+  const email = requestEmail ? requestEmail.value.trim() : "";
+  const stream = requestStream ? requestStream.value.trim() : "";
+  const apiNowPlaying = requestApiNowPlaying ? requestApiNowPlaying.value.trim() : "";
+  const observation = requestObservation ? requestObservation.value.trim() : "";
+
+  if (!radioName || !ownerName || !whatsapp) {
+    showFrequencyFormMessage("Completa nombre de la radio, titular y WhatsApp.", "error");
+    return;
+  }
+
+  const payload = {
+    ID_FRECUENCIA: selectedFrequency.id,
+    PAIS: selectedFrequency.pais,
+    PROVINCIA_DEPARTAMENTO: selectedFrequency.provincia,
+    FRECUENCIA: selectedFrequency.frecuencia,
+    PRECIO: selectedFrequency.precio,
+    RADIO_SOLICITADA: radioName,
+    TITULAR: ownerName,
+    WHATSAPP: whatsapp,
+    CORREO: email,
+    STREAM: stream,
+    API_NOWPLAYING: apiNowPlaying,
+    OBSERVACION: observation,
+    ESTADO: "libre"
+  };
+
+  try {
+    if (submitFrequencyRequestBtn) {
+      submitFrequencyRequestBtn.disabled = true;
+      submitFrequencyRequestBtn.textContent = "Enviando...";
+    }
+
+    showFrequencyFormMessage("Enviando solicitud...", "");
+
+    const response = await fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+
+    if (!data.success) {
+      throw new Error(data.message || "No se pudo registrar la solicitud.");
+    }
+
+    showFrequencyFormMessage("Solicitud enviada correctamente. Te contactaremos para finalizar la compra.", "success");
+    clearFrequencyForm();
+
+  } catch (error) {
+    showFrequencyFormMessage("No se pudo enviar la solicitud. Intenta nuevamente.", "error");
+    console.log(error);
+  } finally {
+    if (submitFrequencyRequestBtn) {
+      submitFrequencyRequestBtn.disabled = false;
+      submitFrequencyRequestBtn.textContent = "Enviar solicitud";
+    }
+  }
+}
+
+function setupFrequencyModal() {
+  if (drawerFrequencyBtn) {
+    drawerFrequencyBtn.addEventListener("click", openFrequencyModal);
+  }
+
+  if (closeFrequencyModalBtn) {
+    closeFrequencyModalBtn.addEventListener("click", closeFrequencyModal);
+  }
+
+  if (frequencyModalOverlay) {
+    frequencyModalOverlay.addEventListener("click", closeFrequencyModal);
+  }
+
+  if (countrySearchInput) {
+    countrySearchInput.addEventListener("input", () => {
+      resetFrequencyFlow("country");
+      renderCountries();
+    });
+  }
+
+  if (provinceSearchInput) {
+    provinceSearchInput.addEventListener("input", renderProvinces);
+  }
+
+  if (frequencySearchInput) {
+    frequencySearchInput.addEventListener("input", renderFrequencyResults);
+  }
+
+  if (submitFrequencyRequestBtn) {
+    submitFrequencyRequestBtn.addEventListener("click", submitFrequencyRequest);
+  }
+
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && frequencyModal && !frequencyModal.classList.contains("hidden")) {
+      closeFrequencyModal();
+    }
+  });
 }
 
 /* LIVE STATUS */
@@ -1523,6 +2041,7 @@ function startFakeVisualizer() {
 
 /* INIT */
 
+setupFrequencyModal();
 setupVolume();
 setupDialPlayPause();
 setBarsIdle();
