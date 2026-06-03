@@ -1765,3 +1765,484 @@ body.pox-theme .song-progress-fill {
     font-size: 20px;
   }
 }
+/* ========================= */
+/* MODAL OBTÉN TU FRECUENCIA */
+/* ========================= */
+
+.frequency-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 12000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+
+.frequency-modal.hidden {
+  display: none !important;
+}
+
+.frequency-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 38%),
+    rgba(0,0,0,0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.frequency-panel {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 420px;
+  max-height: calc(100dvh - 34px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 30px;
+  padding: 18px;
+  color: white;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.045)),
+    rgba(5,5,15,0.82);
+  border: 1px solid rgba(255,255,255,0.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.18),
+    0 24px 60px rgba(0,0,0,0.46);
+  backdrop-filter: blur(26px) saturate(160%);
+  -webkit-backdrop-filter: blur(26px) saturate(160%);
+}
+
+.frequency-panel::-webkit-scrollbar {
+  display: none;
+}
+
+.frequency-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.frequency-kicker {
+  display: block;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 2.4px;
+  color: rgba(255,255,255,0.62);
+  margin-bottom: 7px;
+}
+
+.frequency-panel-header h2 {
+  font-size: 30px;
+  line-height: 1;
+  letter-spacing: -0.8px;
+}
+
+.frequency-panel-header p {
+  margin-top: 7px;
+  font-size: 13px;
+  line-height: 1.35;
+  color: rgba(255,255,255,0.72);
+}
+
+.frequency-close {
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.12);
+  color: white;
+  font-size: 28px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.frequency-note {
+  padding: 12px 13px;
+  border-radius: 18px;
+  margin-bottom: 14px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.10);
+  font-size: 12px;
+  line-height: 1.35;
+  color: rgba(255,255,255,0.72);
+}
+
+.frequency-steps {
+  display: grid;
+  gap: 14px;
+}
+
+.frequency-step {
+  padding: 14px;
+  border-radius: 24px;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.10), rgba(255,255,255,0.025)),
+    rgba(255,255,255,0.045);
+  border: 1px solid rgba(255,255,255,0.10);
+}
+
+.frequency-step-disabled {
+  opacity: 0.48;
+  pointer-events: none;
+}
+
+.frequency-step-title {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 12px;
+}
+
+.frequency-step-title > span {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  background: white;
+  color: black;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.frequency-step-title h3 {
+  font-size: 16px;
+  line-height: 1.1;
+}
+
+.frequency-step-title p {
+  margin-top: 4px;
+  font-size: 11px;
+  line-height: 1.25;
+  color: rgba(255,255,255,0.62);
+}
+
+.frequency-search-box {
+  margin-bottom: 10px;
+}
+
+.frequency-search-box input,
+.frequency-form input,
+.frequency-form textarea {
+  width: 100%;
+  border: none;
+  outline: none;
+  border-radius: 16px;
+  padding: 13px 14px;
+  color: white;
+  background: rgba(0,0,0,0.24);
+  border: 1px solid rgba(255,255,255,0.11);
+  font-size: 14px;
+}
+
+.frequency-search-box input::placeholder,
+.frequency-form input::placeholder,
+.frequency-form textarea::placeholder {
+  color: rgba(255,255,255,0.42);
+}
+
+.frequency-search-box input:focus,
+.frequency-form input:focus,
+.frequency-form textarea:focus {
+  border-color: rgba(255,255,255,0.34);
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.07);
+}
+
+.frequency-options-list {
+  max-height: 168px;
+  overflow-y: auto;
+  display: grid;
+  gap: 8px;
+  padding-right: 2px;
+}
+
+.frequency-options-list::-webkit-scrollbar,
+.frequency-results-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.frequency-options-list::-webkit-scrollbar-thumb,
+.frequency-results-list::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.25);
+  border-radius: 20px;
+}
+
+.frequency-option-btn {
+  width: 100%;
+  border: none;
+  border-radius: 17px;
+  padding: 12px 13px;
+  background: rgba(255,255,255,0.075);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  text-align: left;
+}
+
+.frequency-option-btn strong {
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.frequency-option-btn small {
+  font-size: 11px;
+  opacity: 0.58;
+  font-weight: 700;
+}
+
+.frequency-option-btn.selected {
+  background: rgba(255,255,255,0.92);
+  color: black;
+}
+
+.frequency-flag {
+  font-size: 23px;
+  line-height: 1;
+}
+
+.frequency-results-list {
+  max-height: 250px;
+  overflow-y: auto;
+  display: grid;
+  gap: 9px;
+  padding-right: 2px;
+}
+
+.frequency-result-card {
+  width: 100%;
+  border: none;
+  border-radius: 18px;
+  padding: 13px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  background: rgba(255,255,255,0.075);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.frequency-result-card.available {
+  box-shadow: inset 3px 0 0 rgba(0,255,136,0.78);
+}
+
+.frequency-result-card.taken {
+  opacity: 0.58;
+  box-shadow: inset 3px 0 0 rgba(255,75,75,0.82);
+}
+
+.frequency-number {
+  display: block;
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 900;
+}
+
+.frequency-result-card small {
+  display: block;
+  margin-top: 6px;
+  font-size: 10px;
+  line-height: 1.25;
+  color: rgba(255,255,255,0.58);
+}
+
+.frequency-status {
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.frequency-status strong {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.frequency-result-card.available .frequency-status strong {
+  color: #00ff88;
+}
+
+.frequency-result-card.taken .frequency-status strong {
+  color: #ff6b6b;
+}
+
+.frequency-empty {
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.055);
+  color: rgba(255,255,255,0.62);
+  font-size: 12px;
+  text-align: center;
+}
+
+.frequency-buy-box {
+  padding: 14px;
+  border-radius: 24px;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03)),
+    rgba(0,0,0,0.18);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.selected-frequency-card {
+  padding: 15px;
+  border-radius: 22px;
+  margin-bottom: 14px;
+  background:
+    radial-gradient(circle at top left, rgba(0,255,136,0.18), transparent 36%),
+    rgba(255,255,255,0.075);
+  border: 1px solid rgba(255,255,255,0.10);
+}
+
+.selected-label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 1.8px;
+  font-weight: 900;
+  color: rgba(255,255,255,0.55);
+  text-transform: uppercase;
+}
+
+.selected-frequency-card h3 {
+  margin-top: 6px;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.selected-frequency-card p {
+  margin-top: 7px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.70);
+}
+
+.selected-frequency-card strong {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 7px 11px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.90);
+  color: black;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.frequency-form {
+  display: grid;
+  gap: 12px;
+}
+
+.frequency-form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.frequency-form label {
+  display: grid;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.7px;
+  color: rgba(255,255,255,0.72);
+  text-transform: uppercase;
+}
+
+.frequency-form textarea {
+  resize: none;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.frequency-submit-btn {
+  width: 100%;
+  height: 52px;
+  border: none;
+  border-radius: 18px;
+  background: white;
+  color: black;
+  font-size: 15px;
+  font-weight: 900;
+  margin-top: 2px;
+}
+
+.frequency-submit-btn:disabled {
+  opacity: 0.55;
+}
+
+.frequency-form-message {
+  min-height: 18px;
+  font-size: 12px;
+  line-height: 1.3;
+  color: rgba(255,255,255,0.68);
+  text-align: center;
+}
+
+.frequency-form-message.success {
+  color: #00ff88;
+}
+
+.frequency-form-message.error {
+  color: #ff7b7b;
+}
+
+/* Ajustes por altura pequeña */
+@media (max-height: 760px) {
+  .frequency-panel {
+    max-height: calc(100dvh - 24px);
+    padding: 15px;
+    border-radius: 26px;
+  }
+
+  .frequency-panel-header h2 {
+    font-size: 26px;
+  }
+
+  .frequency-options-list {
+    max-height: 130px;
+  }
+
+  .frequency-results-list {
+    max-height: 210px;
+  }
+
+  .frequency-step {
+    padding: 12px;
+    border-radius: 21px;
+  }
+}
+
+/* Ajustes por ancho pequeño */
+@media (max-width: 390px) {
+  .frequency-modal {
+    padding: 12px;
+  }
+
+  .frequency-panel {
+    padding: 14px;
+    border-radius: 24px;
+  }
+
+  .frequency-panel-header h2 {
+    font-size: 25px;
+  }
+
+  .frequency-number {
+    font-size: 20px;
+  }
+
+  .frequency-result-card {
+    padding: 12px;
+  }
+
+  .frequency-result-card small {
+    font-size: 9px;
+  }
+}
