@@ -195,22 +195,130 @@ let selectedProvince = "";
 let selectedFrequency = null;
 
 const countryFlags = {
-  "Ecuador": "🇪🇨",
+  // Sudamérica
+  "Argentina": "🇦🇷",
+  "Bolivia": "🇧🇴",
+  "Brasil": "🇧🇷",
+  "Chile": "🇨🇱",
   "Colombia": "🇨🇴",
+  "Ecuador": "🇪🇨",
+  "Guyana": "🇬🇾",
+  "Paraguay": "🇵🇾",
   "Perú": "🇵🇪",
   "Peru": "🇵🇪",
+  "Surinam": "🇸🇷",
+  "Uruguay": "🇺🇾",
+  "Venezuela": "🇻🇪",
+
+  // Norteamérica
+  "Canadá": "🇨🇦",
+  "Canada": "🇨🇦",
+  "Estados Unidos": "🇺🇸",
   "México": "🇲🇽",
   "Mexico": "🇲🇽",
-  "Chile": "🇨🇱",
-  "Argentina": "🇦🇷",
-  "Brasil": "🇧🇷",
-  "Bolivia": "🇧🇴",
+
+  // Centroamérica
+  "Belice": "🇧🇿",
+  "Costa Rica": "🇨🇷",
+  "El Salvador": "🇸🇻",
+  "Guatemala": "🇬🇹",
+  "Honduras": "🇭🇳",
+  "Nicaragua": "🇳🇮",
   "Panamá": "🇵🇦",
   "Panama": "🇵🇦",
-  "Venezuela": "🇻🇪",
-  "Estados Unidos": "🇺🇸",
-  "España": "🇪🇸"
+
+  // Caribe
+  "Cuba": "🇨🇺",
+  "República Dominicana": "🇩🇴",
+  "Republica Dominicana": "🇩🇴",
+  "Puerto Rico": "🇵🇷",
+  "Haití": "🇭🇹",
+  "Haiti": "🇭🇹",
+  "Jamaica": "🇯🇲",
+
+  // Europa
+  "España": "🇪🇸",
+  "Portugal": "🇵🇹",
+  "Francia": "🇫🇷",
+  "Italia": "🇮🇹",
+  "Alemania": "🇩🇪",
+  "Reino Unido": "🇬🇧",
+  "Irlanda": "🇮🇪",
+  "Países Bajos": "🇳🇱",
+  "Paises Bajos": "🇳🇱",
+  "Bélgica": "🇧🇪",
+  "Belgica": "🇧🇪",
+  "Suiza": "🇨🇭",
+  "Austria": "🇦🇹",
+  "Suecia": "🇸🇪",
+  "Noruega": "🇳🇴",
+  "Dinamarca": "🇩🇰",
+  "Finlandia": "🇫🇮",
+  "Polonia": "🇵🇱",
+  "Grecia": "🇬🇷",
+  "Rumania": "🇷🇴",
+  "Ucrania": "🇺🇦",
+  "Rusia": "🇷🇺"
 };
+
+const availableCountriesCatalog = [
+  // Sudamérica
+  "Argentina",
+  "Bolivia",
+  "Brasil",
+  "Chile",
+  "Colombia",
+  "Ecuador",
+  "Guyana",
+  "Paraguay",
+  "Perú",
+  "Surinam",
+  "Uruguay",
+  "Venezuela",
+
+  // Norteamérica
+  "Canadá",
+  "Estados Unidos",
+  "México",
+
+  // Centroamérica
+  "Belice",
+  "Costa Rica",
+  "El Salvador",
+  "Guatemala",
+  "Honduras",
+  "Nicaragua",
+  "Panamá",
+
+  // Caribe
+  "Cuba",
+  "República Dominicana",
+  "Puerto Rico",
+  "Haití",
+  "Jamaica",
+
+  // Europa
+  "España",
+  "Portugal",
+  "Francia",
+  "Italia",
+  "Alemania",
+  "Reino Unido",
+  "Irlanda",
+  "Países Bajos",
+  "Bélgica",
+  "Suiza",
+  "Austria",
+  "Suecia",
+  "Noruega",
+  "Dinamarca",
+  "Finlandia",
+  "Polonia",
+  "Grecia",
+  "Rumania",
+  "Ucrania",
+  "Rusia"
+];
 
 /* SPLASH */
 
@@ -509,28 +617,60 @@ function renderCountries() {
   if (!countryList) return;
 
   const search = normalizeText(countrySearchInput ? countrySearchInput.value : "");
-  const countries = uniqueByName(venevoFrequencies, "pais")
+
+  /*
+    Países activos = países que realmente existen en Google Sheets.
+    Si mañana agregas Argentina, México o España en la hoja Frecuencias,
+    automáticamente dejarán de salir como "Próximamente".
+  */
+  const activeCountries = uniqueByName(venevoFrequencies, "pais");
+
+  /*
+    Lista visible = catálogo general + cualquier país nuevo que venga desde Google Sheets.
+  */
+  const mergedCountries = Array.from(
+    new Set([
+      ...availableCountriesCatalog,
+      ...activeCountries
+    ])
+  );
+
+  const countries = mergedCountries
     .filter(country => normalizeText(country).includes(search));
 
   countryList.innerHTML = "";
 
   if (!countries.length) {
-    countryList.innerHTML = `<p class="frequency-empty">No hay países disponibles.</p>`;
+    countryList.innerHTML = `<p class="frequency-empty">No hay países con esa búsqueda.</p>`;
     return;
   }
 
   countries.forEach(country => {
+    const isActive = activeCountries.some(activeCountry =>
+      normalizeText(activeCountry) === normalizeText(country)
+    );
+
     const button = document.createElement("button");
     button.type = "button";
     button.className = "frequency-option-btn";
     button.classList.toggle("selected", selectedCountry === country);
+    button.classList.toggle("frequency-option-disabled", !isActive);
+    button.disabled = false;
 
     button.innerHTML = `
       <span class="frequency-flag">${countryFlags[country] || "🌐"}</span>
-      <strong>${country}</strong>
+      <div class="frequency-country-text">
+        <strong>${country}</strong>
+        <small>${isActive ? "Disponible" : "Próximamente"}</small>
+      </div>
     `;
 
     button.addEventListener("click", () => {
+      if (!isActive) {
+        showFrequencyFormMessage("Este país estará disponible próximamente.", "error");
+        return;
+      }
+
       selectedCountry = country;
 
       if (countrySearchInput) {
