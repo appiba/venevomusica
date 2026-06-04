@@ -330,18 +330,33 @@ function normalizeFrequencyItem(item) {
   };
 }
 
-/* AGREGA RADIOS COMPRADAS AL CARRUSEL */
+/* AGREGA Y QUITA RADIOS COMPRADAS DEL CARRUSEL */
 
 function agregarRadiosCompradasDesdeFrecuencias() {
-  if (!Array.isArray(venevoFrequencies) || venevoFrequencies.length === 0) return;
+  if (!Array.isArray(venevoFrequencies)) return;
 
-  const radiosCompradas = venevoFrequencies
+  /*
+    REGLA SIMPLE:
+    - ESTADO = ocupado + STREAM lleno -> aparece en el carrusel
+    - ESTADO = libre -> desaparece completamente del carrusel
+  */
+
+  const idsRadiosOcupadas = new Set();
+
+  const radiosCompradasActivas = venevoFrequencies
     .filter(item => {
       const estado = String(item.estado || "").trim().toLowerCase();
-      const activo = String(item.activo || "").trim().toLowerCase();
       const stream = String(item.stream || "").trim();
 
-      return estado === "ocupado" && activo === "si" && stream;
+      const debeAparecer =
+        estado === "ocupado" &&
+        stream !== "";
+
+      if (debeAparecer) {
+        idsRadiosOcupadas.add(item.id);
+      }
+
+      return debeAparecer;
     })
     .map(item => {
       const frecuenciaNumero = Number(String(item.frecuencia).replace(",", "."));
@@ -362,7 +377,33 @@ function agregarRadiosCompradasDesdeFrecuencias() {
       };
     });
 
-  radiosCompradas.forEach(radioNueva => {
+  /*
+    Eliminar del carrusel las radios compradas que ya no estén ocupadas.
+    Si cambias en Google Sheets de ocupado a libre, desaparece.
+  */
+  for (let i = radios.length - 1; i >= 0; i--) {
+    const radio = radios[i];
+
+    if (radio.isPurchasedRadio && !idsRadiosOcupadas.has(radio.id)) {
+      const estabaSonando = i === currentRadio;
+
+      radios.splice(i, 1);
+
+      if (currentRadio >= radios.length) {
+        currentRadio = 0;
+      }
+
+      if (estabaSonando) {
+        pauseRadio();
+        loadRadio(currentRadio);
+      }
+    }
+  }
+
+  /*
+    Agregar o actualizar las radios compradas que sí estén ocupadas.
+  */
+  radiosCompradasActivas.forEach(radioNueva => {
     const indexExistente = radios.findIndex(radio => radio.id === radioNueva.id);
 
     if (indexExistente === -1) {
@@ -374,6 +415,10 @@ function agregarRadiosCompradasDesdeFrecuencias() {
       };
     }
   });
+
+  if (currentRadio >= radios.length) {
+    currentRadio = 0;
+  }
 
   updateRadioCarousel();
 }
