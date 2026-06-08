@@ -443,12 +443,6 @@ function normalizeFrequencyItem(item) {
 function agregarRadiosCompradasDesdeFrecuencias() {
   if (!Array.isArray(venevoFrequencies)) return;
 
-  /*
-    REGLA SIMPLE:
-    - ESTADO = ocupado + STREAM lleno -> aparece en el carrusel
-    - ESTADO = libre -> desaparece completamente del carrusel
-  */
-
   const idsRadiosOcupadas = new Set();
 
   const radiosCompradasActivas = venevoFrequencies
@@ -485,10 +479,6 @@ function agregarRadiosCompradasDesdeFrecuencias() {
       };
     });
 
-  /*
-    Eliminar del carrusel las radios compradas que ya no estén ocupadas.
-    Si cambias en Google Sheets de ocupado a libre, desaparece.
-  */
   for (let i = radios.length - 1; i >= 0; i--) {
     const radio = radios[i];
 
@@ -508,9 +498,6 @@ function agregarRadiosCompradasDesdeFrecuencias() {
     }
   }
 
-  /*
-    Agregar o actualizar las radios compradas que sí estén ocupadas.
-  */
   radiosCompradasActivas.forEach(radioNueva => {
     const indexExistente = radios.findIndex(radio => radio.id === radioNueva.id);
 
@@ -618,16 +605,8 @@ function renderCountries() {
 
   const search = normalizeText(countrySearchInput ? countrySearchInput.value : "");
 
-  /*
-    Países activos = países que realmente existen en Google Sheets.
-    Si mañana agregas Argentina, México o España en la hoja Frecuencias,
-    automáticamente dejarán de salir como "Próximamente".
-  */
   const activeCountries = uniqueByName(venevoFrequencies, "pais");
 
-  /*
-    Lista visible = catálogo general + cualquier país nuevo que venga desde Google Sheets.
-  */
   const mergedCountries = Array.from(
     new Set([
       ...availableCountriesCatalog,
@@ -1226,8 +1205,24 @@ function loadRadio(index) {
     radioLogoVideo.load();
   }
 
-  radioPlayer.src = radio.stream;
-  radioPlayer.load();
+  const cleanStream = String(radio.stream || "").trim();
+
+  try {
+    radioPlayer.pause();
+    radioPlayer.removeAttribute("src");
+    radioPlayer.load();
+  } catch (error) {
+    console.log("No se pudo limpiar el reproductor anterior.");
+  }
+
+  if (cleanStream) {
+    radioPlayer.preload = "none";
+    radioPlayer.src = cleanStream;
+    radioPlayer.load();
+    setLiveStatus("paused", "PAUSADO");
+  } else {
+    setLiveStatus("error", "SIN SEÑAL");
+  }
 
   updateFavoriteButton();
   updateStreamingBox();
@@ -1241,11 +1236,18 @@ function loadRadio(index) {
   loadNowPlaying();
   startNowPlayingUpdater();
 
-  if (isPlaying) {
+  if (isPlaying && cleanStream) {
     radioPlayer.play().then(() => {
-      startVisualizer();
-    }).catch(() => {
-      startVisualizer();
+      isPlaying = true;
+      playBtn.innerHTML = "❚❚";
+      setLiveStatus("playing", "EN VIVO");
+      startFakeVisualizer();
+    }).catch(error => {
+      console.log("Error al cambiar de radio:", error);
+      isPlaying = false;
+      playBtn.innerHTML = "▶";
+      setLiveStatus("error", "SIN SEÑAL");
+      stopVisualizer();
     });
   } else {
     stopVisualizer();
@@ -1260,16 +1262,35 @@ function changeRadio(direction) {
 /* PLAYER */
 
 async function playRadio() {
+  const radio = radios[currentRadio];
+  const cleanStream = String(radio.stream || "").trim();
+
+  if (!cleanStream) {
+    isPlaying = false;
+    playBtn.innerHTML = "▶";
+    setLiveStatus("error", "SIN SEÑAL");
+    stopVisualizer();
+    return;
+  }
+
   try {
-    await initAudioVisualizer();
+    if (!radioPlayer.src || !radioPlayer.src.includes(cleanStream)) {
+      radioPlayer.pause();
+      radioPlayer.removeAttribute("src");
+      radioPlayer.load();
+
+      radioPlayer.preload = "none";
+      radioPlayer.src = cleanStream;
+      radioPlayer.load();
+    }
+
     await radioPlayer.play();
 
     isPlaying = true;
     playBtn.innerHTML = "❚❚";
     setLiveStatus("playing", "EN VIVO");
-    startVisualizer();
 
-    const radio = radios[currentRadio];
+    startFakeVisualizer();
 
     updateDialVideo(radio);
 
@@ -1282,17 +1303,12 @@ async function playRadio() {
     loadNowPlaying();
 
   } catch (error) {
-    isPlaying = true;
-    playBtn.innerHTML = "❚❚";
-    setLiveStatus("connecting", "CARGANDO");
-    startVisualizer();
+    console.log("Error al reproducir stream:", error);
 
-    radioPlayer.play().catch(() => {
-      isPlaying = false;
-      playBtn.innerHTML = "▶";
-      setLiveStatus("error", "SIN SEÑAL");
-      stopVisualizer();
-    });
+    isPlaying = false;
+    playBtn.innerHTML = "▶";
+    setLiveStatus("error", "SIN SEÑAL");
+    stopVisualizer();
   }
 }
 
