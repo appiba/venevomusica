@@ -97,7 +97,6 @@ const dialWrapper = document.getElementById("dialWrapper");
 const dialArea = document.getElementById("dialArea");
 const dialVideo = document.getElementById("dialVideo");
 
-/* CARRUSEL 3D */
 const radioCardPrev = document.getElementById("radioCardPrev");
 const radioCardCurrent = document.getElementById("radioCardCurrent");
 const radioCardNext = document.getElementById("radioCardNext");
@@ -185,6 +184,9 @@ const requestWhatsapp = document.getElementById("requestWhatsapp");
 const requestEmail = document.getElementById("requestEmail");
 const requestStream = document.getElementById("requestStream");
 const requestApiNowPlaying = document.getElementById("requestApiNowPlaying");
+const requestStreamingLive = document.getElementById("requestStreamingLive");
+const requestColor1 = document.getElementById("requestColor1");
+const requestColor2 = document.getElementById("requestColor2");
 const requestObservation = document.getElementById("requestObservation");
 const submitFrequencyRequestBtn = document.getElementById("submitFrequencyRequestBtn");
 const frequencyFormMessage = document.getElementById("frequencyFormMessage");
@@ -195,7 +197,6 @@ let selectedProvince = "";
 let selectedFrequency = null;
 
 const countryFlags = {
-  // Sudamérica
   "Argentina": "🇦🇷",
   "Bolivia": "🇧🇴",
   "Brasil": "🇧🇷",
@@ -209,15 +210,11 @@ const countryFlags = {
   "Surinam": "🇸🇷",
   "Uruguay": "🇺🇾",
   "Venezuela": "🇻🇪",
-
-  // Norteamérica
   "Canadá": "🇨🇦",
   "Canada": "🇨🇦",
   "Estados Unidos": "🇺🇸",
   "México": "🇲🇽",
   "Mexico": "🇲🇽",
-
-  // Centroamérica
   "Belice": "🇧🇿",
   "Costa Rica": "🇨🇷",
   "El Salvador": "🇸🇻",
@@ -226,8 +223,6 @@ const countryFlags = {
   "Nicaragua": "🇳🇮",
   "Panamá": "🇵🇦",
   "Panama": "🇵🇦",
-
-  // Caribe
   "Cuba": "🇨🇺",
   "República Dominicana": "🇩🇴",
   "Republica Dominicana": "🇩🇴",
@@ -235,8 +230,6 @@ const countryFlags = {
   "Haití": "🇭🇹",
   "Haiti": "🇭🇹",
   "Jamaica": "🇯🇲",
-
-  // Europa
   "España": "🇪🇸",
   "Portugal": "🇵🇹",
   "Francia": "🇫🇷",
@@ -262,7 +255,6 @@ const countryFlags = {
 };
 
 const availableCountriesCatalog = [
-  // Sudamérica
   "Argentina",
   "Bolivia",
   "Brasil",
@@ -275,13 +267,9 @@ const availableCountriesCatalog = [
   "Surinam",
   "Uruguay",
   "Venezuela",
-
-  // Norteamérica
   "Canadá",
   "Estados Unidos",
   "México",
-
-  // Centroamérica
   "Belice",
   "Costa Rica",
   "El Salvador",
@@ -289,15 +277,11 @@ const availableCountriesCatalog = [
   "Honduras",
   "Nicaragua",
   "Panamá",
-
-  // Caribe
   "Cuba",
   "República Dominicana",
   "Puerto Rico",
   "Haití",
   "Jamaica",
-
-  // Europa
   "España",
   "Portugal",
   "Francia",
@@ -412,6 +396,20 @@ function normalizeEstado(value) {
   return "libre";
 }
 
+function isValidHexColor(value) {
+  return /^#[0-9A-Fa-f]{6}$/.test(String(value || "").trim());
+}
+
+function getSafeColor(value, fallback) {
+  const clean = String(value || "").trim();
+
+  if (isValidHexColor(clean)) {
+    return clean;
+  }
+
+  return fallback;
+}
+
 function normalizeFrequencyItem(item) {
   const pais = String(item.pais || item.PAIS || "").trim();
   const provincia = String(item.provincia || item.PROVINCIA_DEPARTAMENTO || "").trim();
@@ -420,7 +418,7 @@ function normalizeFrequencyItem(item) {
   return {
     id: String(item.id || item.ID || "").trim(),
     pais,
-    bandera: countryFlags[pais] || "🌐",
+    bandera: countryFlags[pais] || item.bandera || item.BANDERA || "🌐",
     provincia,
     frecuencia,
     banda: String(item.banda || item.BANDA || "FM").trim() || "FM",
@@ -434,11 +432,14 @@ function normalizeFrequencyItem(item) {
     fuente: String(item.fuente || item.FUENTE || "").trim(),
     stream: String(item.stream || item.STREAM || "").trim(),
     apiNowPlaying: String(item.apiNowPlaying || item.API_NOWPLAYING || "").trim(),
+    streamingLive: String(item.streamingLive || item.STREAMING_LIVE || "").trim(),
+    color1: getSafeColor(item.color1 || item.COLOR_1, "#1B1B1B"),
+    color2: getSafeColor(item.color2 || item.COLOR_2, "#090909"),
     activo: String(item.activo || item.ACTIVO || "").trim().toLowerCase()
   };
 }
 
-/* AGREGA Y QUITA RADIOS COMPRADAS DEL CARRUSEL */
+/* RADIOS COMPRADAS */
 
 function agregarRadiosCompradasDesdeFrecuencias() {
   if (!Array.isArray(venevoFrequencies)) return;
@@ -474,7 +475,9 @@ function agregarRadiosCompradasDesdeFrecuencias() {
         logoVideo: "venevologovideo.mp4",
         logoCarro: "logovenevocarro.png",
         dialVideo: "",
-        streaming: "",
+        streaming: item.streamingLive || "",
+        color1: item.color1 || "#1B1B1B",
+        color2: item.color2 || "#090909",
         isPurchasedRadio: true
       };
     });
@@ -516,6 +519,19 @@ function agregarRadiosCompradasDesdeFrecuencias() {
   }
 
   updateRadioCarousel();
+}
+
+function applyPurchasedRadioTheme(radio) {
+  if (!radio || !radio.isPurchasedRadio) return;
+
+  const color1 = getSafeColor(radio.color1, "#1B1B1B");
+  const color2 = getSafeColor(radio.color2, "#090909");
+
+  document.body.style.background =
+    `radial-gradient(circle at top, ${color1}, ${color2} 48%, #000)`;
+
+  document.documentElement.style.setProperty("--custom-radio-color-1", color1);
+  document.documentElement.style.setProperty("--custom-radio-color-2", color2);
 }
 
 function uniqueByName(items, key) {
@@ -604,7 +620,6 @@ function renderCountries() {
   if (!countryList) return;
 
   const search = normalizeText(countrySearchInput ? countrySearchInput.value : "");
-
   const activeCountries = uniqueByName(venevoFrequencies, "pais");
 
   const mergedCountries = Array.from(
@@ -834,6 +849,9 @@ function clearFrequencyForm() {
   if (requestEmail) requestEmail.value = "";
   if (requestStream) requestStream.value = "";
   if (requestApiNowPlaying) requestApiNowPlaying.value = "";
+  if (requestStreamingLive) requestStreamingLive.value = "";
+  if (requestColor1) requestColor1.value = "#FF4B00";
+  if (requestColor2) requestColor2.value = "#FFD000";
   if (requestObservation) requestObservation.value = "";
 }
 
@@ -856,6 +874,9 @@ async function submitFrequencyRequest() {
   const email = requestEmail ? requestEmail.value.trim() : "";
   const stream = requestStream ? requestStream.value.trim() : "";
   const apiNowPlaying = requestApiNowPlaying ? requestApiNowPlaying.value.trim() : "";
+  const streamingLive = requestStreamingLive ? requestStreamingLive.value.trim() : "";
+  const color1 = requestColor1 ? requestColor1.value.trim() : "#FF4B00";
+  const color2 = requestColor2 ? requestColor2.value.trim() : "#FFD000";
   const observation = requestObservation ? requestObservation.value.trim() : "";
 
   if (!radioName || !ownerName || !whatsapp) {
@@ -875,6 +896,9 @@ async function submitFrequencyRequest() {
     CORREO: email,
     STREAM: stream,
     API_NOWPLAYING: apiNowPlaying,
+    STREAMING_LIVE: streamingLive,
+    COLOR_1: color1,
+    COLOR_2: color2,
     OBSERVACION: observation,
     ESTADO: "libre"
   };
@@ -1177,10 +1201,11 @@ function loadRadio(index) {
   document.body.className = radio.theme;
 
   if (radio.theme === "custom-radio-theme") {
-    document.body.style.background =
-      "radial-gradient(circle at top, #1b1b1b, #090909 48%, #000)";
+    applyPurchasedRadioTheme(radio);
   } else {
     document.body.style.removeProperty("background");
+    document.documentElement.style.removeProperty("--custom-radio-color-1");
+    document.documentElement.style.removeProperty("--custom-radio-color-2");
   }
 
   spinDial();
@@ -1507,7 +1532,7 @@ if (streamingStreamingModeBtn) {
   streamingStreamingModeBtn.addEventListener("click", () => setMode("streaming"));
 }
 
-/* COMENTARIOS - MAQUETA INICIAL */
+/* COMENTARIOS */
 
 if (commentsBtn) {
   commentsBtn.addEventListener("click", () => {
