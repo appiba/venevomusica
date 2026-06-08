@@ -33,6 +33,15 @@ body.pox-theme {
   background: radial-gradient(circle at top, #ff4b4b, #350000 48%, #000);
 }
 
+body.custom-radio-theme {
+  background: radial-gradient(
+    circle at top,
+    var(--custom-radio-color-1, #1B1B1B),
+    var(--custom-radio-color-2, #090909) 48%,
+    #000
+  );
+}
+
 .hidden {
   display: none !important;
 }
@@ -282,6 +291,14 @@ body.pox-theme #radioNameTop {
   background-size: contain;
 }
 
+body.custom-radio-theme #radioNameTop {
+  font-size: 22px;
+  line-height: 1;
+  color: white;
+  max-width: 165px;
+  text-shadow: 0 0 18px var(--custom-radio-color-1, rgba(255,255,255,0.45));
+}
+
 @media (max-width: 420px) {
   body.lafan-theme #radioNameTop,
   body.clip-theme #radioNameTop,
@@ -371,8 +388,6 @@ body.pox-theme #radioNameTop {
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-
-  /* Espacio superior para que el dial y su brillo no se corten al hacer scroll */
   padding-top: 32px;
   padding-bottom: 150px;
 }
@@ -603,6 +618,10 @@ body.pox-theme #radioNameTop {
 .oye-theme .radio-card-glow { background: #00ff88; }
 .pox-theme .radio-card-glow { background: #ff4b4b; }
 
+.custom-radio-theme .radio-card-glow {
+  background: var(--custom-radio-color-1, #ffffff);
+}
+
 .radio-card-inner {
   position: relative;
   z-index: 3;
@@ -708,6 +727,10 @@ body.pox-theme #radioNameTop {
 .clip-theme .dial-glow { background: #00ff88; }
 .oye-theme .dial-glow { background: #00ff88; }
 .pox-theme .dial-glow { background: #ff4b4b; }
+
+.custom-radio-theme .dial-glow {
+  background: var(--custom-radio-color-1, #ffffff);
+}
 
 .dial-ring {
   position: absolute;
@@ -959,6 +982,10 @@ body.clip-theme .play-btn { color: #006b35; }
 body.oye-theme .play-btn { color: #006b35; }
 body.pox-theme .play-btn { color: #d71920; }
 
+body.custom-radio-theme .play-btn {
+  color: var(--custom-radio-color-1, #111111);
+}
+
 /* BOTÓN DE COMENTARIOS - MAQUETA */
 
 #commentsBtn svg {
@@ -1101,18 +1128,10 @@ body.pox-theme .play-btn { color: #d71920; }
 }
 
 @keyframes titleMarquee {
-  0% {
-    transform: translateX(0);
-  }
-  16% {
-    transform: translateX(0);
-  }
-  82% {
-    transform: translateX(calc(-1 * var(--marquee-distance, 120px)));
-  }
-  100% {
-    transform: translateX(0);
-  }
+  0% { transform: translateX(0); }
+  16% { transform: translateX(0); }
+  82% { transform: translateX(calc(-1 * var(--marquee-distance, 120px))); }
+  100% { transform: translateX(0); }
 }
 
 /* LÍNEA TIPO RADIO / SONAR */
@@ -1177,6 +1196,14 @@ body.pox-theme .song-progress-fill {
   background: linear-gradient(90deg, #ff4b4b, #ff9b33);
 }
 
+body.custom-radio-theme .song-progress-fill {
+  background: linear-gradient(
+    90deg,
+    var(--custom-radio-color-1, #ffffff),
+    var(--custom-radio-color-2, #999999)
+  );
+}
+
 .song-times {
   margin-top: 4px;
   display: flex;
@@ -1189,8 +1216,6 @@ body.pox-theme .song-progress-fill {
   opacity: 0.62;
   font-weight: 800;
 }
-
-/* CONTROLES PRINCIPALES ANTIGUOS - YA NO SE USAN EN INDEX NUEVO */
 
 .main-controls {
   display: none !important;
@@ -1206,44 +1231,33 @@ body.pox-theme .song-progress-fill {
   font-weight: bold;
 }
 
-/* VOLUME - MINI IPHONE VERTICAL A NIVEL DE LOS BOTONES
-   UBICACIÓN: lado izquierdo, a la altura de compartir/corazón/play/volumen/comentarios.
-   Ajuste fino: si lo quieres más arriba usa top: 56%; si lo quieres más abajo usa top: 60%.
-*/
+/* VOLUME */
 
 .volume-panel {
   position: fixed !important;
   left: 26px !important;
   top: 58% !important;
   transform: translateY(-50%) !important;
-
   width: 28px !important;
   height: 126px !important;
   padding: 6px 3px !important;
   border-radius: 22px !important;
   z-index: 99999 !important;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   background:
     linear-gradient(145deg, rgba(255,255,255,0.18), rgba(255,255,255,0.045)),
     rgba(0,0,0,0.24) !important;
-
   border: 1px solid rgba(255,255,255,0.14) !important;
-
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.18),
     inset 0 -8px 16px rgba(0,0,0,0.16),
     0 10px 24px rgba(0,0,0,0.28) !important;
-
   backdrop-filter: blur(20px) saturate(150%) !important;
   -webkit-backdrop-filter: blur(20px) saturate(150%) !important;
-
   touch-action: none;
   overflow: visible !important;
-
   opacity: 1;
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
@@ -1257,22 +1271,17 @@ body.pox-theme .song-progress-fill {
   transform: translateY(-50%) scale(0.96) !important;
 }
 
-/* Oculta el texto de ayuda para que no aparezca debajo del reproductor */
 .volume-label {
   display: none !important;
 }
 
-/* Slider vertical estilo iPhone */
 .volume-panel input[type="range"] {
   -webkit-appearance: none !important;
   appearance: none !important;
-
   width: 102px !important;
   height: 18px !important;
-
   transform: rotate(-90deg) !important;
   transform-origin: center !important;
-
   background: transparent !important;
   outline: none !important;
   touch-action: none;
@@ -1288,21 +1297,17 @@ body.pox-theme .song-progress-fill {
 .volume-panel input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none !important;
   appearance: none !important;
-
   width: 18px !important;
   height: 18px !important;
   margin-top: 0 !important;
-
   border-radius: 50% !important;
   background: white !important;
   border: none !important;
-
   box-shadow:
     0 0 0 1px rgba(0,0,0,0.06),
     0 4px 10px rgba(0,0,0,0.28) !important;
 }
 
-/* Firefox */
 .volume-panel input[type="range"]::-moz-range-track {
   height: 18px !important;
   border-radius: 999px !important;
@@ -1559,6 +1564,10 @@ body.pox-theme .song-progress-fill {
 .oye-theme .bottom-tab.active-tab { color: #00ff88; }
 .pox-theme .bottom-tab.active-tab { color: #ff4b4b; }
 
+.custom-radio-theme .bottom-tab.active-tab {
+  color: var(--custom-radio-color-1, #ffffff);
+}
+
 /* RESPONSIVE */
 
 @media (max-height: 760px) {
@@ -1765,6 +1774,7 @@ body.pox-theme .song-progress-fill {
     font-size: 20px;
   }
 }
+
 /* ========================= */
 /* MODAL OBTÉN TU FRECUENCIA */
 /* ========================= */
@@ -2003,6 +2013,34 @@ body.pox-theme .song-progress-fill {
   color: black;
 }
 
+.frequency-option-disabled {
+  opacity: 0.38;
+  filter: grayscale(1);
+  cursor: not-allowed;
+}
+
+.frequency-option-disabled strong,
+.frequency-option-disabled small {
+  color: rgba(255,255,255,0.45);
+}
+
+.frequency-option-disabled .frequency-flag {
+  opacity: 0.55;
+}
+
+.frequency-country-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.frequency-country-text small {
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0.72;
+}
+
 .frequency-flag {
   font-size: 23px;
   line-height: 1;
@@ -2159,6 +2197,67 @@ body.pox-theme .song-progress-fill {
 .frequency-form textarea {
   resize: none;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.frequency-color-section {
+  padding: 13px;
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,0.10), transparent 42%),
+    rgba(255,255,255,0.055);
+  border: 1px solid rgba(255,255,255,0.10);
+}
+
+.frequency-color-title {
+  display: block;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.78);
+  margin-bottom: 5px;
+}
+
+.frequency-color-section p {
+  font-size: 11px;
+  line-height: 1.35;
+  color: rgba(255,255,255,0.58);
+  margin-bottom: 12px;
+}
+
+.frequency-color-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.frequency-color-grid label {
+  display: grid;
+  gap: 8px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.7px;
+  color: rgba(255,255,255,0.70);
+  text-transform: uppercase;
+}
+
+.frequency-color-grid input[type="color"] {
+  width: 100%;
+  height: 48px;
+  padding: 4px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(0,0,0,0.25);
+  cursor: pointer;
+}
+
+.frequency-color-grid input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.frequency-color-grid input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 12px;
 }
 
 .frequency-submit-btn {
