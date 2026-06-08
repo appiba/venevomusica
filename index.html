@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Venevo Música</title>
-  <link rel="stylesheet" href="style.css?v=207" />
+  <link rel="stylesheet" href="style.css?v=208" />
 </head>
 
 <body class="lafan-theme">
@@ -80,7 +80,6 @@
         <h1 id="radioNameTop">LA FAN</h1>
       </div>
 
-      <!-- ESTADO + MÉTRICAS + RADIO/STREAMING FIJO EN HEADER -->
       <div class="header-live-stack">
         <div id="liveStatus" class="live-status paused">
           <span></span>
@@ -118,16 +117,13 @@
     <!-- RADIO VIEW -->
     <section id="radioView" class="view active-view">
 
-      <!-- RADIO MODE -->
       <section id="radioModeBox">
 
-        <!-- DIAL / CARRUSEL 3D -->
         <section id="dialArea" class="dial-container dial-stage">
           <button id="prevRadio" class="nav-arrow left-arrow liquid-btn" aria-label="Radio anterior">‹</button>
 
           <div class="radio-3d-carousel">
 
-            <!-- TARJETA IZQUIERDA / RADIO ANTERIOR -->
             <article id="radioCardPrev" class="radio-3d-card card-left">
               <div class="radio-card-glow"></div>
 
@@ -145,7 +141,6 @@
               </div>
             </article>
 
-            <!-- TARJETA CENTRAL / RADIO ACTUAL -->
             <article id="radioCardCurrent" class="radio-3d-card card-center">
               <div id="dialWrapper" class="dial-wrapper">
                 <div class="dial-glow"></div>
@@ -154,7 +149,6 @@
                 <div id="signalRing" class="signal-ring"></div>
 
                 <div class="dial-center">
-                  <!-- VIDEO INTERNO DEL DIAL -->
                   <video id="dialVideo" class="dial-video" muted loop playsinline preload="auto"></video>
 
                   <span class="playing-text">FD · FRECUENCIA DIGITAL</span>
@@ -171,7 +165,6 @@
               </div>
             </article>
 
-            <!-- TARJETA DERECHA / RADIO SIGUIENTE -->
             <article id="radioCardNext" class="radio-3d-card card-right">
               <div class="radio-card-glow"></div>
 
@@ -197,7 +190,6 @@
         <!-- PLAYER -->
         <section class="player-card liquid-card">
 
-          <!-- ACCIONES DEL REPRODUCTOR ARRIBA -->
           <div class="quick-actions player-actions">
             <button id="shareBtn" class="quick-btn liquid-btn" aria-label="Compartir">
               <svg viewBox="0 0 24 24">
@@ -228,7 +220,6 @@
             </button>
           </div>
 
-          <!-- CANCIÓN ABAJO -->
           <div class="song-box song-box-now">
             <div class="song-cover-main" id="songCoverMain">
               <img id="nowCover" alt="Cover canción actual">
@@ -265,7 +256,6 @@
         </section>
       </section>
 
-      <!-- STREAMING MODE -->
       <section id="streamingModeBox" class="streaming-mode hidden">
         <div id="streamingContent" class="streaming-content liquid-card">
           <p>Streaming no disponible por el momento.</p>
@@ -470,6 +460,28 @@
                 API Now Playing
                 <input id="requestApiNowPlaying" type="url" placeholder="https://.../api/nowplaying/...">
               </label>
+
+              <label>
+                Streaming Live
+                <input id="requestStreamingLive" type="url" placeholder="YouTube, Facebook, Twitch o link live">
+              </label>
+            </div>
+
+            <div class="frequency-color-section">
+              <span class="frequency-color-title">Colores de tu radio</span>
+              <p>Escoge dos colores para personalizar el fondo y el estilo visual de tu frecuencia.</p>
+
+              <div class="frequency-color-grid">
+                <label>
+                  Color principal
+                  <input id="requestColor1" type="color" value="#FF4B00">
+                </label>
+
+                <label>
+                  Color secundario
+                  <input id="requestColor2" type="color" value="#FFD000">
+                </label>
+              </div>
             </div>
 
             <label class="frequency-observation-label">
@@ -489,8 +501,8 @@
     </div>
   </section>
 
-  <audio id="radioPlayer" crossorigin="anonymous"></audio>
+  <audio id="radioPlayer"></audio>
 
-  <script src="script.js?v=207"></script>
+  <script src="script.js?v=208"></script>
 </body>
 </html>
