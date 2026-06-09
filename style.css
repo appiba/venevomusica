@@ -176,7 +176,7 @@ body.custom-radio-theme {
 
 .header-live-stack {
   flex-shrink: 0;
-  width: 170px;
+  width: 188px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -186,34 +186,37 @@ body.custom-radio-theme {
 }
 
 .header-live-metrics {
-  display: flex;
+  width: 188px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
-  justify-content: flex-end;
-  gap: 12px;
-  padding-right: 2px;
+  justify-items: center;
+  column-gap: 10px;
+  padding-right: 0;
   font-size: 12px;
   line-height: 1;
   font-weight: 800;
   color: rgba(255,255,255,0.74);
   white-space: nowrap;
-  min-width: max-content;
-  max-width: none;
+  min-width: 188px;
+  max-width: 188px;
   overflow: visible;
 }
 
 .header-metric-item {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
-  min-width: max-content;
-  max-width: none;
+  min-width: 0;
+  max-width: 100%;
   overflow: visible;
   white-space: nowrap;
 }
 
 .header-metric-item svg {
-  width: 14px;
-  height: 14px;
+  width: 15px;
+  height: 15px;
   fill: none;
   stroke: rgba(255,255,255,0.82);
   stroke-width: 2;
@@ -221,7 +224,7 @@ body.custom-radio-theme {
   stroke-linejoin: round;
 }
 
-/* CONTADORES SUPERIORES MÁS GRANDES Y SIN CORTARSE */
+/* CONTADORES SUPERIORES COMPACTOS */
 
 #liveUsersCount,
 #listenTime {
@@ -230,19 +233,19 @@ body.custom-radio-theme {
   max-width: none !important;
   overflow: visible !important;
   white-space: nowrap !important;
-  font-size: 18px !important;
-  line-height: 1.05 !important;
+  font-size: 16px !important;
+  line-height: 1 !important;
   font-weight: 900 !important;
   letter-spacing: -0.02em !important;
   font-variant-numeric: tabular-nums !important;
 }
 
 #liveUsersCount {
-  min-width: 74px !important;
+  min-width: 56px !important;
 }
 
 #listenTime {
-  min-width: 62px !important;
+  min-width: 48px !important;
 }
 
 /* ========================= */
@@ -1759,22 +1762,25 @@ body.custom-radio-theme .song-progress-fill {
 
 @media (max-width: 390px) {
   .header-live-stack {
-    width: 166px;
+    width: 188px;
   }
 
   .header-live-metrics {
+    width: 188px;
+    min-width: 188px;
+    max-width: 188px;
     font-size: 11px;
-    gap: 9px;
+    column-gap: 8px;
   }
 
   .header-metric-item svg {
-    width: 13px;
-    height: 13px;
+    width: 14px;
+    height: 14px;
   }
 
   #liveUsersCount,
   #listenTime {
-    font-size: 18px !important;
+    font-size: 16px !important;
   }
 
   .header-mode-tabs {
