@@ -431,7 +431,7 @@ function normalizeFrequencyItem(item) {
     precio: String(item.precio || item.PRECIO || "").trim(),
     radioReferencia: String(item.radioReferencia || item.RADIO_REFERENCIA || "").trim(),
     tipoReferencia: String(item.tipoReferencia || item.TIPO_REFERENCIA || "").trim(),
-    areaServidaReferencia: String(item.areaServidaReferencia || item.AREA_SERVIDA_REFERENCIA || "").trim(),
+    areaServidaReferencia: String(item.areaServidaReferencia || item.AREA_SERVIDA_REFERENCIA || "").trim(),    
     whatsapp: String(item.whatsapp || item.WHATSAPP || "").trim(),
     observacion: String(item.observacion || item.OBSERVACION || "").trim(),
     fuente: String(item.fuente || item.FUENTE || "").trim(),
@@ -693,7 +693,9 @@ function renderCountries() {
 
     countryList.appendChild(button);
   });
-}function renderProvinces() {
+}
+
+function renderProvinces() {
   if (!provinceList) return;
 
   const search = normalizeText(provinceSearchInput ? provinceSearchInput.value : "");
@@ -937,9 +939,7 @@ async function submitFrequencyRequest() {
       submitFrequencyRequestBtn.textContent = "Enviar solicitud";
     }
   }
-}
-
-function setupFrequencyModal() {
+}function setupFrequencyModal() {
   if (drawerFrequencyBtn) {
     drawerFrequencyBtn.addEventListener("click", openFrequencyModal);
   }
@@ -1023,59 +1023,143 @@ function setupLiveStatsVisualSize() {
     const style = document.createElement("style");
     style.id = styleId;
     style.textContent = `
+      .header-live-stack {
+        width: 188px !important;
+        align-items: flex-end !important;
+      }
+
+      .header-live-metrics {
+        width: 188px !important;
+        min-width: 188px !important;
+        max-width: 188px !important;
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        align-items: center !important;
+        justify-items: center !important;
+        column-gap: 8px !important;
+        padding-right: 0 !important;
+        overflow: visible !important;
+        white-space: nowrap !important;
+      }
+
+      .header-metric-item {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 4px !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        overflow: visible !important;
+        white-space: nowrap !important;
+      }
+
+      .header-metric-item svg {
+        width: 14px !important;
+        height: 14px !important;
+        flex-shrink: 0 !important;
+      }
+
       #liveUsersCount,
       #listenTime {
         display: inline-block !important;
-        min-width: max-content !important;
+        min-width: 0 !important;
         max-width: none !important;
         overflow: visible !important;
         white-space: nowrap !important;
-        font-size: 22px !important;
-        line-height: 1.05 !important;
+        font-size: 14px !important;
+        line-height: 1 !important;
         font-weight: 900 !important;
         letter-spacing: -0.02em !important;
         font-variant-numeric: tabular-nums !important;
       }
 
       #liveUsersCount {
-        min-width: 74px !important;
+        min-width: 44px !important;
+        text-align: left !important;
       }
 
       #listenTime {
-        min-width: 62px !important;
+        min-width: 40px !important;
+        text-align: left !important;
       }
 
       @media (max-width: 480px) {
+        .header-live-stack {
+          width: 188px !important;
+        }
+
+        .header-live-metrics {
+          width: 188px !important;
+          min-width: 188px !important;
+          max-width: 188px !important;
+          column-gap: 8px !important;
+        }
+
         #liveUsersCount,
         #listenTime {
-          font-size: 22px !important;
+          font-size: 14px !important;
         }
       }
     `;
     document.head.appendChild(style);
   }
 
+  const liveStack = document.querySelector(".header-live-stack");
+  const liveMetrics = document.querySelector(".header-live-metrics");
+
+  if (liveStack) {
+    liveStack.style.width = "188px";
+    liveStack.style.alignItems = "flex-end";
+  }
+
+  if (liveMetrics) {
+    liveMetrics.style.width = "188px";
+    liveMetrics.style.minWidth = "188px";
+    liveMetrics.style.maxWidth = "188px";
+    liveMetrics.style.display = "grid";
+    liveMetrics.style.gridTemplateColumns = "1fr 1fr";
+    liveMetrics.style.alignItems = "center";
+    liveMetrics.style.justifyItems = "center";
+    liveMetrics.style.columnGap = "8px";
+    liveMetrics.style.paddingRight = "0";
+    liveMetrics.style.overflow = "visible";
+    liveMetrics.style.whiteSpace = "nowrap";
+  }
+
+  document.querySelectorAll(".header-metric-item").forEach(item => {
+    item.style.display = "inline-flex";
+    item.style.alignItems = "center";
+    item.style.justifyContent = "center";
+    item.style.gap = "4px";
+    item.style.minWidth = "0";
+    item.style.maxWidth = "100%";
+    item.style.overflow = "visible";
+    item.style.whiteSpace = "nowrap";
+  });
+
   [liveUsersCount, listenTime].forEach(element => {
     if (!element) return;
 
     element.style.display = "inline-block";
-    element.style.minWidth = "max-content";
+    element.style.minWidth = element === liveUsersCount ? "44px" : "40px";
     element.style.maxWidth = "none";
     element.style.overflow = "visible";
     element.style.whiteSpace = "nowrap";
-    element.style.fontSize = "22px";
-    element.style.lineHeight = "1.05";
+    element.style.fontSize = "14px";
+    element.style.lineHeight = "1";
     element.style.fontWeight = "900";
     element.style.letterSpacing = "-0.02em";
     element.style.fontVariantNumeric = "tabular-nums";
+    element.style.textAlign = "left";
 
     const parent = element.parentElement;
 
     if (parent) {
-      parent.style.minWidth = "max-content";
-      parent.style.maxWidth = "none";
+      parent.style.minWidth = "0";
+      parent.style.maxWidth = "100%";
       parent.style.overflow = "visible";
       parent.style.whiteSpace = "nowrap";
+      parent.style.gap = "4px";
     }
   });
 }
@@ -1819,9 +1903,7 @@ function renderFavorites() {
 
     favoritesList.appendChild(item);
   });
-}
-
-/* VOLUME */
+}/* VOLUME */
 
 function setupVolume() {
   if (!radioPlayer || !volumeSlider || !volumePanel || !volumeBtn) return;
