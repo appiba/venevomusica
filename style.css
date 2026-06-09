@@ -224,28 +224,36 @@ body.custom-radio-theme {
   stroke-linejoin: round;
 }
 
-/* CONTADORES SUPERIORES COMPACTOS */
-
-#liveUsersCount,
-#listenTime {
-  display: inline-block !important;
-  min-width: max-content !important;
-  max-width: none !important;
-  overflow: visible !important;
-  white-space: nowrap !important;
-  font-size: 16px !important;
-  line-height: 1 !important;
-  font-weight: 900 !important;
-  letter-spacing: -0.02em !important;
-  font-variant-numeric: tabular-nums !important;
+/* CONTADORES SUPERIORES */
+.header-stats {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* antes seguramente estaba space-between */
+  gap: 16px; /* aquí controlas qué tan cerca estarán */
+  margin-top: 6px;
+  width: auto;
 }
 
-#liveUsersCount {
-  min-width: 56px !important;
+.header-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
 }
 
-#listenTime {
-  min-width: 48px !important;
+.header-stat-item svg,
+.header-stat-item i {
+  width: 15px;
+  height: 15px;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.header-stat-item span,
+.header-stat-item strong {
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1;
 }
 
 /* ========================= */
