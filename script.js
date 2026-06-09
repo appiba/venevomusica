@@ -1029,14 +1029,13 @@ function setupLiveStatsVisualSize() {
       }
 
       .header-live-metrics {
-        width: 188px !important;
-        min-width: 188px !important;
-        max-width: 188px !important;
-        display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        display: flex !important;
         align-items: center !important;
-        justify-items: center !important;
-        column-gap: 8px !important;
+        justify-content: flex-end !important;
+        gap: 14px !important;
         padding-right: 0 !important;
         overflow: visible !important;
         white-space: nowrap !important;
@@ -1045,10 +1044,10 @@ function setupLiveStatsVisualSize() {
       .header-metric-item {
         display: inline-flex !important;
         align-items: center !important;
-        justify-content: center !important;
+        justify-content: flex-start !important;
         gap: 4px !important;
-        min-width: 0 !important;
-        max-width: 100% !important;
+        min-width: auto !important;
+        max-width: none !important;
         overflow: visible !important;
         white-space: nowrap !important;
       }
@@ -1062,7 +1061,7 @@ function setupLiveStatsVisualSize() {
       #liveUsersCount,
       #listenTime {
         display: inline-block !important;
-        min-width: 0 !important;
+        min-width: auto !important;
         max-width: none !important;
         overflow: visible !important;
         white-space: nowrap !important;
@@ -1074,25 +1073,23 @@ function setupLiveStatsVisualSize() {
       }
 
       #liveUsersCount {
-        min-width: 44px !important;
+        min-width: auto !important;
         text-align: left !important;
       }
 
       #listenTime {
-        min-width: 40px !important;
+        min-width: auto !important;
         text-align: left !important;
       }
 
       @media (max-width: 480px) {
-        .header-live-stack {
-          width: 188px !important;
-        }
-
         .header-live-metrics {
-          width: 188px !important;
-          min-width: 188px !important;
-          max-width: 188px !important;
-          column-gap: 8px !important;
+          width: auto !important;
+          min-width: 0 !important;
+          max-width: none !important;
+          display: flex !important;
+          justify-content: flex-end !important;
+          gap: 14px !important;
         }
 
         #liveUsersCount,
@@ -1113,14 +1110,13 @@ function setupLiveStatsVisualSize() {
   }
 
   if (liveMetrics) {
-    liveMetrics.style.width = "188px";
-    liveMetrics.style.minWidth = "188px";
-    liveMetrics.style.maxWidth = "188px";
-    liveMetrics.style.display = "grid";
-    liveMetrics.style.gridTemplateColumns = "1fr 1fr";
+    liveMetrics.style.width = "auto";
+    liveMetrics.style.minWidth = "0";
+    liveMetrics.style.maxWidth = "none";
+    liveMetrics.style.display = "flex";
     liveMetrics.style.alignItems = "center";
-    liveMetrics.style.justifyItems = "center";
-    liveMetrics.style.columnGap = "8px";
+    liveMetrics.style.justifyContent = "flex-end";
+    liveMetrics.style.gap = "14px";
     liveMetrics.style.paddingRight = "0";
     liveMetrics.style.overflow = "visible";
     liveMetrics.style.whiteSpace = "nowrap";
@@ -1129,10 +1125,10 @@ function setupLiveStatsVisualSize() {
   document.querySelectorAll(".header-metric-item").forEach(item => {
     item.style.display = "inline-flex";
     item.style.alignItems = "center";
-    item.style.justifyContent = "center";
+    item.style.justifyContent = "flex-start";
     item.style.gap = "4px";
-    item.style.minWidth = "0";
-    item.style.maxWidth = "100%";
+    item.style.minWidth = "auto";
+    item.style.maxWidth = "none";
     item.style.overflow = "visible";
     item.style.whiteSpace = "nowrap";
   });
@@ -1141,7 +1137,7 @@ function setupLiveStatsVisualSize() {
     if (!element) return;
 
     element.style.display = "inline-block";
-    element.style.minWidth = element === liveUsersCount ? "44px" : "40px";
+    element.style.minWidth = "auto";
     element.style.maxWidth = "none";
     element.style.overflow = "visible";
     element.style.whiteSpace = "nowrap";
@@ -1155,8 +1151,8 @@ function setupLiveStatsVisualSize() {
     const parent = element.parentElement;
 
     if (parent) {
-      parent.style.minWidth = "0";
-      parent.style.maxWidth = "100%";
+      parent.style.minWidth = "auto";
+      parent.style.maxWidth = "none";
       parent.style.overflow = "visible";
       parent.style.whiteSpace = "nowrap";
       parent.style.gap = "4px";
