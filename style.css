@@ -230,7 +230,7 @@ body.custom-radio-theme {
   max-width: none !important;
   overflow: visible !important;
   white-space: nowrap !important;
-  font-size: 22px !important;
+  font-size: 18px !important;
   line-height: 1.05 !important;
   font-weight: 900 !important;
   letter-spacing: -0.02em !important;
@@ -1774,7 +1774,7 @@ body.custom-radio-theme .song-progress-fill {
 
   #liveUsersCount,
   #listenTime {
-    font-size: 22px !important;
+    font-size: 18px !important;
   }
 
   .header-mode-tabs {
