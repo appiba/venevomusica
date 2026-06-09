@@ -62,6 +62,11 @@ let startX = 0;
 let startY = 0;
 let listeners = 2800;
 
+let liveUsersInterval = null;
+let listenTimerInterval = null;
+let listenTimerStartedAt = null;
+let listenTimerSeconds = 0;
+
 let dialTouchStartX = 0;
 let dialTouchStartY = 0;
 let dialTouchMoved = false;
@@ -688,9 +693,7 @@ function renderCountries() {
 
     countryList.appendChild(button);
   });
-}
-
-function renderProvinces() {
+}function renderProvinces() {
   if (!provinceList) return;
 
   const search = normalizeText(provinceSearchInput ? provinceSearchInput.value : "");
@@ -991,61 +994,179 @@ function setLiveStatus(type, label) {
 radioPlayer.addEventListener("waiting", () => setLiveStatus("connecting", "CONECTANDO"));
 radioPlayer.addEventListener("loadstart", () => setLiveStatus("connecting", "CARGANDO"));
 radioPlayer.addEventListener("playing", () => setLiveStatus("playing", "EN VIVO"));
-radioPlayer.addEventListener("pause", () => setLiveStatus("paused", "PAUSADO"));
-radioPlayer.addEventListener("error", () => setLiveStatus("error", "SIN SEÑAL"));
+
+radioPlayer.addEventListener("pause", () => {
+  setLiveStatus("paused", "PAUSADO");
+
+  if (isPlaying) {
+    stopListenTimer(false);
+  }
+});
+
+radioPlayer.addEventListener("error", () => {
+  setLiveStatus("error", "SIN SEÑAL");
+  stopListenTimer(true);
+});
 
 /* MINI LIVE USERS + LISTEN TIME */
 
-function formatUsersToK(value) {
-  if (!value || isNaN(value)) return "2.8K";
+function formatFullUsers(value) {
+  const number = Math.max(0, Math.round(Number(value) || 0));
 
-  const kValue = value / 1000;
-  return `${kValue.toFixed(1)}K`;
+  return String(number).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+function setupLiveStatsVisualSize() {
+  const styleId = "venevo-live-stats-visual-size";
+
+  if (!document.getElementById(styleId)) {
+    const style = document.createElement("style");
+    style.id = styleId;
+    style.textContent = `
+      #liveUsersCount,
+      #listenTime {
+        display: inline-block !important;
+        min-width: max-content !important;
+        max-width: none !important;
+        overflow: visible !important;
+        white-space: nowrap !important;
+        font-size: 22px !important;
+        line-height: 1.05 !important;
+        font-weight: 900 !important;
+        letter-spacing: -0.02em !important;
+        font-variant-numeric: tabular-nums !important;
+      }
+
+      #liveUsersCount {
+        min-width: 74px !important;
+      }
+
+      #listenTime {
+        min-width: 62px !important;
+      }
+
+      @media (max-width: 480px) {
+        #liveUsersCount,
+        #listenTime {
+          font-size: 22px !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  [liveUsersCount, listenTime].forEach(element => {
+    if (!element) return;
+
+    element.style.display = "inline-block";
+    element.style.minWidth = "max-content";
+    element.style.maxWidth = "none";
+    element.style.overflow = "visible";
+    element.style.whiteSpace = "nowrap";
+    element.style.fontSize = "22px";
+    element.style.lineHeight = "1.05";
+    element.style.fontWeight = "900";
+    element.style.letterSpacing = "-0.02em";
+    element.style.fontVariantNumeric = "tabular-nums";
+
+    const parent = element.parentElement;
+
+    if (parent) {
+      parent.style.minWidth = "max-content";
+      parent.style.maxWidth = "none";
+      parent.style.overflow = "visible";
+      parent.style.whiteSpace = "nowrap";
+    }
+  });
 }
 
 function updateLiveUsers() {
-  const variation = Math.floor(Math.random() * 180) + 35;
+  const variation = Math.floor(Math.random() * 9) + 1;
   const up = Math.random() > 0.48;
 
   listeners = up ? listeners + variation : listeners - variation;
 
-  if (listeners < 1500) listeners = 1650 + Math.floor(Math.random() * 280);
-  if (listeners > 4000) listeners = 3650 - Math.floor(Math.random() * 250);
+  if (listeners < 2150) {
+    listeners = 2235 + Math.floor(Math.random() * 65);
+  }
+
+  if (listeners > 3899) {
+    listeners = 3760 - Math.floor(Math.random() * 90);
+  }
 
   if (liveUsersCount) {
-    liveUsersCount.textContent = formatUsersToK(listeners);
+    liveUsersCount.textContent = formatFullUsers(listeners);
   }
 }
 
-function setupListenTime() {
-  const storageKey = "venevoListenStartTime";
-  let startTime = localStorage.getItem(storageKey);
+function formatListenTimer(seconds) {
+  const totalSeconds = Math.max(0, Math.floor(Number(seconds) || 0));
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const secs = totalSeconds % 60;
 
-  if (!startTime) {
-    startTime = String(Date.now());
-    localStorage.setItem(storageKey, startTime);
-  }
-
-  function updateListenTime() {
-    const savedStart = Number(localStorage.getItem(storageKey) || Date.now());
-    const elapsedSeconds = Math.floor((Date.now() - savedStart) / 1000);
-
-    const hours = Math.floor(elapsedSeconds / 3600);
-    const minutes = Math.floor((elapsedSeconds % 3600) / 60);
-    const seconds = elapsedSeconds % 60;
-
-    const formatted =
+  if (hours > 0) {
+    return (
       `${String(hours).padStart(2, "0")}:` +
       `${String(minutes).padStart(2, "0")}:` +
-      `${String(seconds).padStart(2, "0")}`;
-
-    if (listenTime) {
-      listenTime.textContent = formatted;
-    }
+      `${String(secs).padStart(2, "0")}`
+    );
   }
 
-  updateListenTime();
-  setInterval(updateListenTime, 1000);
+  return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+}
+
+function updateListenTimerDisplay() {
+  if (!listenTime) return;
+
+  listenTime.textContent = formatListenTimer(listenTimerSeconds);
+}
+
+function resetListenTimer() {
+  listenTimerSeconds = 0;
+  listenTimerStartedAt = Date.now();
+  updateListenTimerDisplay();
+}
+
+function startListenTimer(reset = true) {
+  if (reset) {
+    resetListenTimer();
+  } else if (!listenTimerStartedAt) {
+    listenTimerStartedAt = Date.now() - listenTimerSeconds * 1000;
+  }
+
+  if (listenTimerInterval) {
+    clearInterval(listenTimerInterval);
+  }
+
+  listenTimerInterval = setInterval(() => {
+    if (!isPlaying || !listenTimerStartedAt) return;
+
+    listenTimerSeconds = Math.floor((Date.now() - listenTimerStartedAt) / 1000);
+    updateListenTimerDisplay();
+  }, 1000);
+
+  updateListenTimerDisplay();
+}
+
+function stopListenTimer(resetDisplay = false) {
+  if (listenTimerInterval) {
+    clearInterval(listenTimerInterval);
+    listenTimerInterval = null;
+  }
+
+  listenTimerStartedAt = null;
+
+  if (resetDisplay) {
+    listenTimerSeconds = 0;
+  }
+
+  updateListenTimerDisplay();
+}
+
+function setupListenTime() {
+  setupLiveStatsVisualSize();
+  stopListenTimer(true);
 }
 
 /* DIAL */
@@ -1151,9 +1272,7 @@ function updateRadioCarousel() {
   if (radioCardNext) {
     radioCardNext.dataset.radio = next.id;
   }
-}
-
-/* VIDEO DENTRO DEL DIAL */
+}/* VIDEO DENTRO DEL DIAL */
 
 function updateDialVideo(radio) {
   if (!dialVideo || !dialWrapper) return;
@@ -1266,12 +1385,14 @@ function loadRadio(index) {
       isPlaying = true;
       playBtn.innerHTML = "❚❚";
       setLiveStatus("playing", "EN VIVO");
+      startListenTimer(true);
       startFakeVisualizer();
     }).catch(error => {
       console.log("Error al cambiar de radio:", error);
       isPlaying = false;
       playBtn.innerHTML = "▶";
       setLiveStatus("error", "SIN SEÑAL");
+      stopListenTimer(true);
       stopVisualizer();
     });
   } else {
@@ -1294,6 +1415,7 @@ async function playRadio() {
     isPlaying = false;
     playBtn.innerHTML = "▶";
     setLiveStatus("error", "SIN SEÑAL");
+    stopListenTimer(true);
     stopVisualizer();
     return;
   }
@@ -1315,6 +1437,7 @@ async function playRadio() {
     playBtn.innerHTML = "❚❚";
     setLiveStatus("playing", "EN VIVO");
 
+    startListenTimer(true);
     startFakeVisualizer();
 
     updateDialVideo(radio);
@@ -1333,6 +1456,7 @@ async function playRadio() {
     isPlaying = false;
     playBtn.innerHTML = "▶";
     setLiveStatus("error", "SIN SEÑAL");
+    stopListenTimer(true);
     stopVisualizer();
   }
 }
@@ -1342,6 +1466,7 @@ function pauseRadio() {
   isPlaying = false;
   playBtn.innerHTML = "▶";
   setLiveStatus("paused", "PAUSADO");
+  stopListenTimer(false);
   stopVisualizer();
 }
 
@@ -2333,7 +2458,12 @@ setBarsIdle();
 setupListenTime();
 
 updateLiveUsers();
-setInterval(updateLiveUsers, 4500);
+
+if (liveUsersInterval) {
+  clearInterval(liveUsersInterval);
+}
+
+liveUsersInterval = setInterval(updateLiveUsers, 3500);
 
 updateRadioCarousel();
 
