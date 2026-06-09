@@ -229,7 +229,7 @@ body.custom-radio-theme {
   display: flex;
   align-items: center;
   justify-content: flex-end; /* antes seguramente estaba space-between */
-  gap: 16px; /* aquí controlas qué tan cerca estarán */
+  gap: 10px; /* aquí controlas qué tan cerca estarán */
   margin-top: 6px;
   width: auto;
 }
