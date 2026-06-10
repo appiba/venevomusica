@@ -1,1 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <title>Administrador | Venevo Música</title>
+
+  <link rel="stylesheet" href="admin.css?v=1" />
+</head>
+
+<body>
+  <main class="admin-app">
+
+    <!-- LOGIN -->
+    <section class="admin-login-screen" id="loginScreen">
+      <div class="admin-login-card">
+        <div class="admin-brand">
+          <span>VENEVO</span>
+          <h1>Administrador</h1>
+          <p>Gestión de radios, streams y frecuencias digitales</p>
+        </div>
+
+        <form class="admin-login-form" id="loginForm">
+          <label>
+            Usuario
+            <input
+              type="text"
+              id="adminUser"
+              placeholder="Ingresa tu usuario"
+              autocomplete="username"
+              required
+            />
+          </label>
+
+          <label>
+            Contraseña
+            <input
+              type="password"
+              id="adminPassword"
+              placeholder="Ingresa tu contraseña"
+              autocomplete="current-password"
+              required
+            />
+          </label>
+
+          <button type="submit" id="loginBtn">
+            Ingresar al panel
+          </button>
+
+          <p class="admin-message" id="loginMessage"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- DASHBOARD -->
+    <section class="admin-dashboard hidden" id="dashboardScreen">
+
+      <!-- TOP BAR -->
+      <header class="admin-topbar">
+        <div>
+          <span class="admin-kicker">PANEL DE CONTROL</span>
+          <h2>Venevo Música</h2>
+        </div>
+
+        <button class="admin-logout-btn" id="logoutBtn">
+          Salir
+        </button>
+      </header>
+
+      <!-- NAV -->
+      <nav class="admin-tabs">
+        <button class="admin-tab active" data-panel="radiosPanel">
+          Radios
+        </button>
+
+        <button class="admin-tab" data-panel="frecuenciasPanel">
+          Frecuencias
+        </button>
+
+        <button class="admin-tab" data-panel="solicitudesPanel">
+          Solicitudes
+        </button>
+
+        <button class="admin-tab" data-panel="configPanel">
+          Configuración
+        </button>
+      </nav>
+
+      <!-- RADIOS PRINCIPALES -->
+      <section class="admin-panel active-panel" id="radiosPanel">
+        <div class="panel-header">
+          <div>
+            <h3>Radios principales</h3>
+            <p>Edita las radios madre de Venevo: LA FAN, CLIP, OYE y POX.</p>
+          </div>
+
+          <button class="admin-primary-btn" id="loadRadiosBtn">
+            Cargar radios
+          </button>
+        </div>
+
+        <div class="admin-grid" id="radiosList">
+          <div class="empty-box">
+            Presiona “Cargar radios” para ver la información.
+          </div>
+        </div>
+      </section>
+
+      <!-- FRECUENCIAS -->
+      <section class="admin-panel" id="frecuenciasPanel">
+        <div class="panel-header">
+          <div>
+            <h3>Frecuencias digitales</h3>
+            <p>Administra las frecuencias libres, ocupadas y sus streams.</p>
+          </div>
+
+          <button class="admin-primary-btn" id="loadFrecuenciasBtn">
+            Cargar frecuencias
+          </button>
+        </div>
+
+        <div class="admin-tools">
+          <input
+            type="text"
+            id="frequencySearchAdmin"
+            placeholder="Buscar por país, provincia o frecuencia..."
+          />
+        </div>
+
+        <div class="admin-grid" id="frecuenciasList">
+          <div class="empty-box">
+            Presiona “Cargar frecuencias” para ver la información.
+          </div>
+        </div>
+      </section>
+
+      <!-- SOLICITUDES -->
+      <section class="admin-panel" id="solicitudesPanel">
+        <div class="panel-header">
+          <div>
+            <h3>Solicitudes recibidas</h3>
+            <p>Revisa las solicitudes de compra de frecuencias digitales.</p>
+          </div>
+
+          <button class="admin-primary-btn" id="loadSolicitudesBtn">
+            Cargar solicitudes
+          </button>
+        </div>
+
+        <div class="admin-grid" id="solicitudesList">
+          <div class="empty-box">
+            Presiona “Cargar solicitudes” para ver la información.
+          </div>
+        </div>
+      </section>
+
+      <!-- CONFIGURACIÓN -->
+      <section class="admin-panel" id="configPanel">
+        <div class="panel-header">
+          <div>
+            <h3>Configuración general</h3>
+            <p>Ajustes principales del panel administrador.</p>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <h4>Conexión Apps Script</h4>
+
+          <label>
+            URL de Apps Script
+            <input
+              type="text"
+              id="appsScriptUrlInput"
+              placeholder="URL de Apps Script"
+            />
+          </label>
+
+          <button class="admin-primary-btn" id="saveConfigBtn">
+            Guardar configuración
+          </button>
+
+          <p class="admin-message" id="configMessage"></p>
+        </div>
+      </section>
+
+    </section>
+
+  </main>
+
+  <!-- MODAL EDITAR -->
+  <div class="admin-modal hidden" id="editModal">
+    <div class="admin-modal-overlay" id="editModalOverlay"></div>
+
+    <div class="admin-modal-card">
+      <div class="modal-header">
+        <div>
+          <span class="admin-kicker">EDITAR</span>
+          <h3 id="editModalTitle">Editar información</h3>
+        </div>
+
+        <button class="modal-close" id="closeEditModalBtn">
+          ×
+        </button>
+      </div>
+
+      <form id="editForm" class="edit-form">
+        <input type="hidden" id="editType" />
+        <input type="hidden" id="editId" />
+
+        <label>
+          Nombre de radio
+          <input type="text" id="editRadioName" placeholder="Nombre de radio" />
+        </label>
+
+        <label>
+          Stream de audio
+          <input type="text" id="editStream" placeholder="https://..." />
+        </label>
+
+        <label>
+          API Now Playing
+          <input type="text" id="editApiNowPlaying" placeholder="https://..." />
+        </label>
+
+        <label>
+          Streaming Live
+          <input type="text" id="editStreamingLive" placeholder="YouTube, Facebook, etc." />
+        </label>
+
+        <div class="color-row">
+          <label>
+            Color 1
+            <input type="color" id="editColor1" value="#FF4B00" />
+          </label>
+
+          <label>
+            Color 2
+            <input type="color" id="editColor2" value="#FFD000" />
+          </label>
+        </div>
+
+        <label>
+          Estado
+          <select id="editEstado">
+            <option value="libre">Libre</option>
+            <option value="ocupado">Ocupado</option>
+          </select>
+        </label>
+
+        <label>
+          Activo en la app
+          <select id="editActivo">
+            <option value="si">Sí</option>
+            <option value="no">No</option>
+          </select>
+        </label>
+
+        <button type="submit" class="admin-primary-btn">
+          Guardar cambios
+        </button>
+
+        <p class="admin-message" id="editMessage"></p>
+      </form>
+    </div>
+  </div>
+
+  <script src="admin.js?v=1"></script>
+</body>
+</html>
