@@ -7,7 +7,7 @@ const radios = [
     number: 90.5,
     subtitle: "POP · TOP HITS",
     theme: "lafan-theme",
-    stream: "https://radio.megahostec.com/listen/radio_la_fan_fm/stream",
+    stream: "https://radio.megahostec.com:8160/stream",
     metadataApi: "https://radio.megahostec.com/api/nowplaying/radio_la_fan_fm",
     logoVideo: "introlafanlogo.mp4",
     logoCarro: "logolafancarro.png",
